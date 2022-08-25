@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 13:16:23 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/08/25 20:42:46 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/08/25 20:44:58 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ class vector
         arr = new T[capacity];
         current = val;
     };
-    
     ~vector<T>()
     {
         delete [] arr;

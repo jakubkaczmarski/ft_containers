@@ -6,11 +6,11 @@
 #    By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 21:03:55 by jkaczmar          #+#    #+#              #
-#    Updated: 2022/08/25 20:38:12 by jkaczmar         ###   ########.fr        #
+#    Updated: 2022/08/25 20:43:49 by jkaczmar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= phonebook
+NAME	= program
 CC		= g++
 CFLAGS	= -Wall -Werror -Wextra -std=c++98
 
