@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 13:17:04 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/09/07 17:16:06 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:39:28 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 // copy (4)	
 // vector (const vector& x);
 
+#include <iostream>
 template<typename T>
 class Vector
 {
@@ -58,9 +59,40 @@ class Vector
 
     void    push_back(const T &val)
     {
-        
-    }
+        std::allocator<T> alloc;
+        if(l_el_  +  1 == end_)
+        {
+            T *tmp;
+            T *beg_tmp;
+            T *end_tmp;
+            T   *l_el_;
+            //We are in need to realocate
+            tmp = alloc.allocate(this->size() + 1 * 2);
+            beg_tmp = tmp;
+            l_el_ = beg_tmp;
+            end_tmp = beg_tmp + (this->size() + 1 * 2);
+            for( ; beg_ != end_ ; )
+            {
+                alloc.construct(l_el_ , *beg_);
+                beg_++;
+                l_el_++;
+            }
+            alloc.construct(l_el_, val);
+            l_el_++;
+            alloc.deallocate(arr_, this->size());
+            arr_ = tmp;
+            beg_ = beg_tmp;
+            end_ = end_tmp;
+        }else{
     
+            alloc.construct(l_el_, val);
+            l_el_++;
+        }
+    }
+    size_t  size()
+    {
+        return l_el_ - beg_;
+    }
     T * get_arr()
     {
         return beg_;
@@ -74,14 +106,14 @@ class Vector
 
 
 // #include "Vector.hpp"
-#include <vector>
-#include <iostream>
 // #include <Vector.hpp>
+#include <vector>
 int main()
 {
     Vector<int> vecs(20, 3);
+    vecs.push_back(12);
     int *arr = vecs.get_arr();
-    for(int i = 0; i < 20; i++)
+    for(int i = 0; i < 21; i++)
     {
         std::cout << arr[i] << std::endl;
     }
