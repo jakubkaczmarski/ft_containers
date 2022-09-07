@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 13:17:04 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/09/07 19:20:44 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:30:14 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ class Vector
             T *end_tmp;
             T   *tmp_l_el;
             //We are in need to realocate
-            tmp = alloc.allocate(this->size() + 1 * 2);
+            tmp = alloc.allocate(this->size() * 2  +1);
             beg_tmp = tmp;
             tmp_l_el = beg_tmp;
-            end_tmp = beg_tmp + (this->size() + 1 * 2);
+            end_tmp = beg_tmp + (this->size() * 2 + 1);
             for( ; beg_ != l_el_ ; )
             {
                 alloc.construct(tmp_l_el , *beg_);
@@ -94,10 +94,21 @@ class Vector
             l_el_++;
         }
     }
+
+    // const &T pop_back()
+    // {
+        
+    // }
+    
     size_t  size()
     {
         return l_el_ - beg_;
     }
+    size_t capacity()
+    {
+        return end_ - beg_;
+    }
+    
     T * get_arr()
     {
         return beg_;
@@ -119,11 +130,17 @@ int main()
     vecs.push_back(12);
     vecs.push_back(25);
     vecs.push_back(33);
+    vecs.push_back(33);
+    vecs.push_back(33);
+    vecs.push_back(33);
     int *arr = vecs.get_arr();
+
     for(int i = 0; i < 3; i++)
     {
         std::cout << arr[i] << std::endl;
     }
+    std::cout << "Size " << vecs.size() << std::endl;
+    std::cout << "Capacity " << vecs.capacity() << std::endl;
     // std::vector<int>vec1(2);
     // vector<int> vec;/
 }
