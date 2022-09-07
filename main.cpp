@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 13:17:04 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/09/07 17:39:28 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:20:44 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ class Vector
         arr_ = alloc.allocate(2);
         beg_ = arr_;
         l_el_ = arr_;
-        alloc.construct( l_el_, 0);
-        l_el_++;
+        // l_el_++;
         end_ = arr_ + 2;
     };
     
@@ -60,29 +59,35 @@ class Vector
     void    push_back(const T &val)
     {
         std::allocator<T> alloc;
-        if(l_el_  +  1 == end_)
+        if(l_el_ + 1  == end_)
         {
             T *tmp;
             T *beg_tmp;
             T *end_tmp;
-            T   *l_el_;
+            T   *tmp_l_el;
             //We are in need to realocate
             tmp = alloc.allocate(this->size() + 1 * 2);
             beg_tmp = tmp;
-            l_el_ = beg_tmp;
+            tmp_l_el = beg_tmp;
             end_tmp = beg_tmp + (this->size() + 1 * 2);
-            for( ; beg_ != end_ ; )
+            for( ; beg_ != l_el_ ; )
             {
-                alloc.construct(l_el_ , *beg_);
+                alloc.construct(tmp_l_el , *beg_);
                 beg_++;
-                l_el_++;
+                tmp_l_el++;
             }
-            alloc.construct(l_el_, val);
-            l_el_++;
+            alloc.construct(tmp_l_el, val);
+            tmp_l_el++;
             alloc.deallocate(arr_, this->size());
             arr_ = tmp;
             beg_ = beg_tmp;
             end_ = end_tmp;
+            l_el_ = tmp_l_el;
+            // for(; beg_ != l_el_ ;)
+            // {
+            //     std::cout << *beg_ << std::endl;
+            //     beg_++;
+            // }
         }else{
     
             alloc.construct(l_el_, val);
@@ -110,10 +115,12 @@ class Vector
 #include <vector>
 int main()
 {
-    Vector<int> vecs(20, 3);
+    Vector<int> vecs;
     vecs.push_back(12);
+    vecs.push_back(25);
+    vecs.push_back(33);
     int *arr = vecs.get_arr();
-    for(int i = 0; i < 21; i++)
+    for(int i = 0; i < 3; i++)
     {
         std::cout << arr[i] << std::endl;
     }
