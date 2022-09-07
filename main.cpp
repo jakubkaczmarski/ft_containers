@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 13:17:04 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/09/07 19:35:41 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:39:23 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ class Vector
             l_el_++;
         }
     }
-    
+
 T pop_back()
 {
     if(beg_ == l_el_)
@@ -105,7 +105,15 @@ T pop_back()
         return *l_el_;
     }
 }
-    
+    bool empty()
+    {
+        if(l_el_ == beg_)
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
     size_t  size()
     {
         return l_el_ - beg_;
@@ -132,11 +140,12 @@ T pop_back()
 #include <vector>
 int main()
 {
+    std::vector<int> d;
     Vector<int> vecs;
     vecs.push_back(12);
     vecs.push_back(25);
     vecs.push_back(33);
-
+    
     int *arr = vecs.get_arr();
 
     for(int i = 0; i < 3; i++)
@@ -146,6 +155,7 @@ int main()
     std::cout << "Size " << vecs.size() << std::endl;
     std::cout << "Capacity " << vecs.capacity() << std::endl;
     std::cout << "Pop \t" << vecs.pop_back() << std::endl;
+    //empty
     // std::vector<int>vec1(2);
     // vector<int> vec;/
 }
