@@ -11,6 +11,7 @@ namespace ft
         typedef size_t size_type;
         public:
 
+        //Constructors
         //default constructor
         explicit vector(const allocator_type& alloc = allocator_type())
         : begin(0), end(0), capacity(0), aloc()
@@ -27,15 +28,36 @@ namespace ft
                 end++;
             }
         }
-        
-        T &operator[](size_t index)   
+        //Range constructor
+        template <class InputIterator>
+        vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
         {
-            if(begin)
-            {
-                return  *(begin + index);
-            }
-            return *begin;
+
         }
+        //Copy constructor
+        vector(const vector &vec)
+        {
+
+        }
+        //Destructor
+        ~vector()
+        {
+
+        }
+
+        //Methods
+        void    push_back(const value_type &val)
+        {
+
+        }
+
+        void    pop_back()
+        {
+
+        }
+
+        
+
         private:
         allocator_type aloc;
         T *begin;
