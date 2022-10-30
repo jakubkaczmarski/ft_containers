@@ -85,50 +85,50 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
         {
             return (ptr_ < rhs.base());
         }
-        // bool operator <(constant_random_access_iterator<const T> rhs) const
-        // {
-        //     return (ptr_ < rhs.base());
-        // }
+        bool operator <(constant_random_access_iterator<const T> rhs) const
+        {
+            return (ptr_ < rhs.base());
+        }
         bool operator >(random_access_iterator<const T> rhs) const
         {
             return (ptr_ > rhs.base());
         }
-        // bool operator >(constant_random_access_iterator<const T> rhs) const
-        // {
-        //     return (ptr_ > rhs.base());
-        // }
+        bool operator >(constant_random_access_iterator<const T> rhs) const
+        {
+            return (ptr_ > rhs.base());
+        }
         bool operator <=(random_access_iterator<T> rhs)
         {
             return (ptr_ <= rhs.base());
         }
-        // bool operator <=(constant_random_access_iterator<const T> rhs)
-        // {
-        //     return (ptr_ <= rhs.base());
-        // }
+        bool operator <=(constant_random_access_iterator<const T> rhs)
+        {
+            return (ptr_ <= rhs.base());
+        }
         bool operator >=(random_access_iterator<T> rhs)
         {
             return (ptr_ >= rhs.base());
         }
-        // bool operator >=(constant_random_access_iterator<const T> rhs)
-        // {
-        //     return (ptr_ >= rhs.base());
-        // }
+        bool operator >=(constant_random_access_iterator<const T> rhs)
+        {
+            return (ptr_ >= rhs.base());
+        }
         bool operator ==(random_access_iterator<T> rhs)
         {
             return (ptr_ == rhs.base());
         }
-        // bool operator ==(constant_random_access_iterator<const T> rhs)
-        // {
-        //     return (ptr_ == rhs.base());
-        // }
+        bool operator ==(constant_random_access_iterator<const T> rhs)
+        {
+            return (ptr_ == rhs.base());
+        }
         bool operator !=(random_access_iterator<T> rhs)
         {
             return (ptr_ != rhs.base());
         }
-        // bool operator !=(constant_random_access_iterator<const T> rhs)
-        // {
-        //     return (ptr_ != rhs.base());
-        // }
+        bool operator !=(constant_random_access_iterator<const T> rhs)
+        {
+            return (ptr_ != rhs.base());
+        }
         reference operator +=(difference_type num) const
         {
             return (ptr_ += num);
