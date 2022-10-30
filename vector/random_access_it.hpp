@@ -274,6 +274,36 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         pointer ptr_;
 };
 
+template<typename T>
+random_access_iterator<T> operator+(typename ft::iterator<random_access_iterator_tag, T>::difference_type n, random_access_iterator<T> &it)
+{
+    return (it.base() + n);
+}
+template<typename T>
+random_access_iterator<T> operator+(typename ft::iterator<random_access_iterator_tag, T>::difference_type n, constant_random_access_iterator<T> &it)
+{
+    return (it.base() + n);
+}
+template<typename T>
+typename random_access_iterator<T>::difference_type operator-(const random_access_iterator<T> &lhs, const random_access_iterator<T> &rhs)
+{
+    return (lhs.base() - rhs.base());
+}
+template<typename T>
+typename random_access_iterator<T>::difference_type operator-(const constant_random_access_iterator<T> &lhs, const random_access_iterator<T> &rhs)
+{
+    return (lhs.base() - rhs.base());
+}
+template<typename T>
+typename random_access_iterator<T>::difference_type operator-(const random_access_iterator<T> &lhs, const constant_random_access_iterator<T> &rhs)
+{
+    return (lhs.base() - rhs.base());
+}
+template<typename T>
+typename random_access_iterator<T>::difference_type operator-(const constant_random_access_iterator<T> &lhs, const constant_random_access_iterator<T> &rhs)
+{
+    return (lhs.base() - rhs.base());
+}
 }
 
 
