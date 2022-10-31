@@ -1,49 +1,50 @@
+#include "random_access_it.hpp"
 #include <memory>
 
 namespace ft
 {   
-    template<typename T, typename allocator = std::allocator<T> >
-    class vector_iterator
-    {
-        public:
-            typedef vector_iterator self_type;
-            typedef T                       value_type;
-            typedef T&                     reference;
-            typedef T*                      pointer;
-            typedef std::random_access_iterator_tag iterator_category;
-            typedef ptrdiff_t            difference_type;
+    // template<typename T, typename allocator = std::allocator<T> >
+    // class vector_iterator
+    // {
+    //     public:
+    //         typedef vector_iterator self_type;
+    //         typedef T                       value_type;
+    //         typedef T&                     reference;
+    //         typedef T*                      pointer;
+    //         typedef std::random_access_iterator_tag iterator_category;
+    //         typedef ptrdiff_t            difference_type;
 
-            explicit vector_iterator(pointer ptr, size_t const index) : ptr(ptr), index(index)
-            {
+    //         explicit vector_iterator(pointer ptr, size_t const index) : ptr(ptr), index(index)
+    //         {
 
-            }
-            vector_iterator(vector_iterator const & o) = default;
-            vector_iterator& operator= (vector_iterator const & o) = default;
-            ~vector_iterator() = default;
-            self_type &operator++ ()
-            {
-                if(index >= size)
-                {
-                    throw std::out_of_range("It's out of range cannot increment");
-                }
-                ++index;
-                return *this;
-            }
-            self_type operator++ (int)
-            {
-                self_type tmp = *this;
-                ++*this;
-                return tmp;
-            }
-        private:
-            pointer ptr = nullptr;
-            size_t index = 0;
-        bool compatible(self_type const & other )const
-        {
-            return ptr == other.ptr;
-        }
+    //         }
+    //         vector_iterator(vector_iterator const & o) = default;
+    //         vector_iterator& operator= (vector_iterator const & o) = default;
+    //         ~vector_iterator() = default;
+    //         // self_type &operator++ ()
+    //         // {
+    //         //     if(index >= size)
+    //         //     {
+    //         //         throw std::out_of_range("It's out of range cannot increment");
+    //         //     }
+    //         //     ++index;
+    //         //     return *this;
+    //         // }
+    //         // self_type operator++ (int)
+    //         // {
+    //         //     self_type tmp = *this;
+    //         //     ++*this;
+    //         //     return tmp;
+    //         // }
+    //     private:
+    //         pointer ptr = nullptr;
+    //         size_t index = 0;
+    //     bool compatible(self_type const & other )const
+    //     {
+    //         return ptr == other.ptr;
+    //     }
     
-    };
+    // };
     template<typename T, typename allocator = std::allocator<T> >
     class vector
     {
@@ -62,7 +63,7 @@ namespace ft
         //Constructors
         //default constructor
         explicit vector(const allocator_type& alloc = allocator_type())
-        : begin(0), end(0), capacity(0), aloc()
+        : begin(0), end(0), capacity(0), alloc()
         {
 
         }
@@ -78,15 +79,42 @@ namespace ft
             }
         }
         //Range constructor
-        template <class InputIterator>
-        vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+        template <typename InputIterator>
+        vector(InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type(), 
+            typename std::enable_if<!std::is_integral<InputIterator>::value>::type* = 0) : alloc(alloc)
         {
-            
+            InputIterator test = first;
+            size_type n = 0;
+        
+            while(test != last)
+            {
+                test++;
+                n++;
+            }
+            begin = this->alloc.allocate(n);
+            while(first != last)
+            {
+                this->alloc.construct(end, *first);
+                first++;
+                end++;
+            }
+
+            capacity = end;
+            this->begin = capacity -  n;
         }
         //Copy constructor
         vector(const vector &vec)
         {
 
+        }
+        void print_all()
+        {
+            T *  s = begin;
+            while(s != end)
+            {
+                std::cout << *s << std::endl;
+                s++;
+            }
         }
         //Destructor
         ~vector()
@@ -106,7 +134,7 @@ namespace ft
 
         
         private:
-        allocator_type aloc;
+        allocator_type alloc;
         T *begin;
         T *end;
         T *capacity;
