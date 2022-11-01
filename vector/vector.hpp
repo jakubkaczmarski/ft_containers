@@ -63,7 +63,7 @@ namespace ft
                 capacity_num++;
                 tmp++;
             }
-            if(capacity_num > count)
+            if(this->size() > count)
             {
                 while(count != capacity_num--)
                 {
@@ -71,7 +71,7 @@ namespace ft
                 }
                 capacity_ = end_;
                 return ;
-            }else{
+            }else if(capacity_num < count){
                 if(count > capacity_num * 2)
                 {
                     this->alloc.allocate(count);
