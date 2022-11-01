@@ -46,10 +46,10 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
         {
             return *(ptr_);
         }
-        reference operator =(random_access_iterator<T> const &rhs)
+        random_access_iterator operator =(random_access_iterator<T> const &rhs)
         {
             ptr_ = rhs.base();
-            return *(this);
+            return (*this);
         }
         random_access_iterator operator ++()
         {

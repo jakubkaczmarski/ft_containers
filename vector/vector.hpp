@@ -36,24 +36,7 @@ namespace ft
         vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
                typename std::enable_if<!std::is_integral<InputIterator>::value>::type * = 0) : alloc(alloc)
         {
-            InputIterator test = first;
-            size_type n = 0;
 
-            while (test != last)
-            {
-                test++;
-                n++;
-            }
-            begin_ = this->alloc.allocate(n);
-            while (first != last)
-        {
-                this->alloc.construct(end_, *first);
-                first++;
-                end_++;
-            }
-
-            capacity_ = end_;
-            this->begin_ = capacity_ - n;
         }
         // Copy constructor
         vector(const vector &vec)
@@ -70,7 +53,31 @@ namespace ft
             iterator halp(this->end_);
             return halp;
         }
-
+        
+        void resize(size_type count, T value = T())
+        {
+            int capacity_num = 0;
+            T *tmp = begin_;
+            while(tmp != capacity_)
+            {
+                capacity_num++;
+                tmp++;
+            }
+            
+            //If we resize to less than we had before we have
+            //to save elements somewhere temporary and copy them to a new place in 
+            //Memory
+    
+            if(capacity_num > count)
+            {
+                while(count != capacity_num--)
+                {
+                    this->alloc.destroy(end_--);
+                }
+                capacity_ = end_;
+            }
+        }
+    
         void print_all()
         {
             T *s = begin_;
@@ -92,7 +99,10 @@ namespace ft
         void pop_back()
         {
         }
-
+        size_type size()
+        {
+            return (end_ - begin_);
+        }
     private:
         allocator_type alloc;
         T *begin_;

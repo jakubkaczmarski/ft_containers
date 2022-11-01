@@ -16,10 +16,19 @@ int main()
     std::vector<int>::iterator it_e = vec.end();
     ft::vector<int> ft(4, 3);
     ft::vector<int>::iterator c = ft.begin();
-    std::cout << *c << std::endl;
-    c++;
-    std::cout << *c << std::endl;
-    
+    for(int i = 0; i < ft.size(); i++)
+    {
+        std::cout << *c << std::endl;
+        c++;
+    }
+    std::cout << "After resizing " << std::endl;
+    ft.resize(2, 0);
+    c = ft.begin();
+    for(int i = 0; i < ft.size(); i++)
+    {
+        std::cout << *c << std::endl;
+        c++;
+    }
     // ft.begin();
     // vec.reserve(12);
     // ft::vector<int> ft_vec(vec.begin(), vec.end());
