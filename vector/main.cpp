@@ -22,7 +22,7 @@ int main()
         c++;
     }
     std::cout << "After resizing " << std::endl;
-    ft.resize(2, 0);
+    ft.resize(5);
     c = ft.begin();
     for(int i = 0; i < ft.size(); i++)
     {

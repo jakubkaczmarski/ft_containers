@@ -63,11 +63,6 @@ namespace ft
                 capacity_num++;
                 tmp++;
             }
-            
-            //If we resize to less than we had before we have
-            //to save elements somewhere temporary and copy them to a new place in 
-            //Memory
-    
             if(capacity_num > count)
             {
                 while(count != capacity_num--)
@@ -75,7 +70,21 @@ namespace ft
                     this->alloc.destroy(end_--);
                 }
                 capacity_ = end_;
+                return ;
+            }else{
+                if(count > capacity_num * 2)
+                {
+                    this->alloc.allocate(count);
+                }else{
+                    this->alloc.allocate(count * 2);
+                }
             }
+            while(capacity_num < count)
+            {
+                alloc.construct(end_++, value);
+                capacity_num++;
+            }
+            capacity_ = begin_ + count;
         }
     
         void print_all()
