@@ -2,7 +2,7 @@
 #include <memory>
 
 namespace ft
-{   
+{
     // template<typename T, typename allocator = std::allocator<T> >
     // class vector_iterator
     // {
@@ -43,101 +43,107 @@ namespace ft
     //     {
     //         return ptr == other.ptr;
     //     }
-    
+
     // };
-    template<typename T, typename allocator = std::allocator<T> >
+    template <typename T, typename allocator = std::allocator<T> >
     class vector
     {
-        
-        public:
+
+    public:
         // typedef value_type T;
         typedef allocator allocator_type;
         // typedef reference allocator_type::reference;
         // typedef const_reference allocator_type::const_reference;
         // typedef pointer allocator_type::pointer;
         // typedef const_pointer allocator_type::const_pointer;
-        //Iterator Time
+        // Iterator Time
         // typedef iterator std::iterator<T>;
         typedef T value_type;
         typedef size_t size_type;
-        //Constructors
-        //default constructor
-        explicit vector(const allocator_type& alloc = allocator_type())
-        : begin(0), end(0), capacity(0), alloc()
+        typedef typename ft::random_access_iterator<value_type> iterator;
+        // Constructors
+        // default constructor
+        explicit vector(const allocator_type &alloc = allocator_type())
+            : begin_(0), end_(0), capacity_(0), alloc()
         {
-
         }
-        //Fill constructor
-        explicit vector(size_type n, const value_type &val = value_type(), const allocator_type& alloc = allocator_type())
+        // Fill constructor
+        explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
         {
-            begin = alloc.allocate(n);
-            end = begin;
-            for(size_type i = 0; i < n; i++)
+            begin_ = alloc.allocate(n);
+            end_ = begin_;
+            for (size_type i = 0; i < n; i++)
             {
-                alloc.construct(end, val);
-                end++;
+                alloc.construct(end_, val);
+                end_++;
             }
+            capacity_ = end_;
         }
-        //Range constructor
+        // Range constructor
         template <typename InputIterator>
-        vector(InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type(), 
-            typename std::enable_if<!std::is_integral<InputIterator>::value>::type* = 0) : alloc(alloc)
+        vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
+               typename std::enable_if<!std::is_integral<InputIterator>::value>::type * = 0) : alloc(alloc)
         {
             InputIterator test = first;
             size_type n = 0;
-        
-            while(test != last)
+
+            while (test != last)
             {
                 test++;
                 n++;
             }
-            begin = this->alloc.allocate(n);
-            while(first != last)
+            begin_ = this->alloc.allocate(n);
+            while (first != last)
             {
-                this->alloc.construct(end, *first);
+                this->alloc.construct(end_, *first);
                 first++;
-                end++;
+                end_++;
             }
 
-            capacity = end;
-            this->begin = capacity -  n;
+            capacity_ = end_;
+            this->begin_ = capacity_ - n;
         }
-        //Copy constructor
+        // Copy constructor
         vector(const vector &vec)
         {
-
         }
+        iterator begin()
+        {
+            iterator halp(this->begin_);
+            return halp;
+        }
+        iterator end()
+        {
+            iterator halp(this->end_);
+            return halp;
+        }
+
         void print_all()
         {
-            T *  s = begin;
-            while(s != end)
+            T *s = begin_;
+            while (s != end_)
             {
                 std::cout << *s << std::endl;
                 s++;
             }
         }
-        //Destructor
+        // Destructor
         ~vector()
         {
-
         }
         //  Methods
-        void    push_back(const value_type &val)
+        void push_back(const value_type &val)
         {
-        
         }
 
-        void    pop_back()
+        void pop_back()
         {
-
         }
 
-        
-        private:
+    private:
         allocator_type alloc;
-        T *begin;
-        T *end;
-        T *capacity;
-
+        T *begin_;
+        T *end_;
+        T *capacity_;
     };
 }
