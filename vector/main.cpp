@@ -13,12 +13,13 @@ int main()
     vec.push_back(11);
     vec.push_back(154);
     std::vector<int>::iterator it = vec.begin();
-    it++;
-    std::cout << *it << std::endl;
-    ft::vector<int> ft;
+    std::vector<int>::iterator it_e = vec.end();
+    ft::vector<int> ft(4, 3);
     ft::vector<int>::iterator c = ft.begin();
     std::cout << *c << std::endl;
-
+    c++;
+    std::cout << *c << std::endl;
+    
     // ft.begin();
     // vec.reserve(12);
     // ft::vector<int> ft_vec(vec.begin(), vec.end());

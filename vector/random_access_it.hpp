@@ -51,33 +51,33 @@ class random_access_iterator : public iterator<random_access_iterator_tag, T>
             ptr_ = rhs.base();
             return *(this);
         }
-        reference operator ++()
+        random_access_iterator operator ++()
         {
             ptr_++;
-            return *(this);
+            return (*this);
         }
-        reference operator ++(int)
+        random_access_iterator operator ++(int)
         {
-            random_access_iterator tmp(ptr_);
-            ptr_++;
-            return tmp;
-        }
-        reference operator --()
-        {
-            ptr_--;
-            return *(this);
-        }
-        reference operator --(int)
-        {
-            random_access_iterator tmp (ptr_);
+            random_access_iterator tmp(*this);
             ptr_++;
             return (tmp);
         }
-        reference operator +(difference_type num) const
+        random_access_iterator operator --()
+        {
+            ptr_--;
+            return (*this);
+        }
+        random_access_iterator operator --(int)
+        {
+            random_access_iterator tmp (*this);
+            ptr_++;
+            return (tmp);
+        }
+        random_access_iterator operator +(difference_type num) const
         {
             return (ptr_ + num);
         }
-        reference operator -(difference_type num) const
+        random_access_iterator operator -(difference_type num) const
         {
             return (ptr_ - num);
         }
@@ -176,33 +176,33 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
             ptr_ = rhs.base();
             return *(this);
         }
-        reference operator ++()
+        constant_random_access_iterator operator ++()
         {
             ptr_++;
             return *(this);
         }
-        reference operator ++(int)
+        constant_random_access_iterator operator ++(int)
         {
-            constant_random_access_iterator tmp(ptr_);
+            constant_random_access_iterator tmp(*this);
             ptr_++;
             return tmp;
         }
-        reference operator --()
+        constant_random_access_iterator operator --()
         {
             ptr_--;
             return *(this);
         }
-        reference operator --(int)
+        constant_random_access_iterator operator --(int)
         {
-            constant_random_access_iterator tmp (ptr_);
+            constant_random_access_iterator tmp (*this);
             ptr_++;
             return (tmp);
         }
-        reference operator +(difference_type num) const
+        constant_random_access_iterator operator +(difference_type num) const
         {
             return (ptr_ + num);
         }
-        reference operator -(difference_type num) const
+        constant_random_access_iterator operator -(difference_type num) const
         {
             return (ptr_ - num);
         }
