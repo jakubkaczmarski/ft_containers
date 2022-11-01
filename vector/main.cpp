@@ -18,17 +18,13 @@ int main()
     ft::vector<int>::iterator c = ft.begin();
     for(int i = 0; i < ft.size(); i++)
     {
-        std::cout << *c << std::endl;
-        c++;
+        std::cout << ft.at(i) << std::endl;
     }
-    std::cout << "After resizing " << std::endl;
-    ft.resize(5);
-    c = ft.begin();
-    for(int i = 0; i < ft.size(); i++)
-    {
-        std::cout << *c << std::endl;
-        c++;
-    }
+    // for(int i = 0; i < ft.size(); i++)
+    // {
+        // std::cout << *c << std::endl;
+        // c++;
+    // }
     // ft.begin();
     // vec.reserve(12);
     // ft::vector<int> ft_vec(vec.begin(), vec.end());

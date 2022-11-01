@@ -10,6 +10,8 @@ namespace ft
     public:
         typedef allocator allocator_type;
         typedef T value_type;
+        typedef typename allocator_type::reference reference;
+        typedef typename allocator_type::const_reference const_reference;
         typedef size_t size_type;
         typedef typename ft::random_access_iterator<value_type> iterator;
 
@@ -86,7 +88,20 @@ namespace ft
             }
             capacity_ = begin_ + count;
         }
-    
+
+        iterator insert(iterator position, const value_type &val)
+        {
+
+        }
+        void insert(iterator position, size_type n, const value_type &val)
+        {
+
+        }
+        template<typename InputIterator>
+        void insert(iterator position, InputIterator first, InputIterator second)
+        {
+
+        }
         void print_all()
         {
             T *s = begin_;
@@ -111,6 +126,30 @@ namespace ft
         size_type size()
         {
             return (end_ - begin_);
+        }
+        reference operator [](size_t num)
+        {
+            return (*(this->begin_ + num));
+        }
+        const_reference operator [](size_t num) const
+        {
+            return (*(this->begin_ + num));
+        }
+        reference at (size_type num)
+        {
+            if(num >= this->size())
+            {
+                throw std::out_of_range("Index too big");
+            }
+            return (*(this->begin_ + num));
+        }
+        const_reference at (size_type num) const
+        {
+            if(num >= this->size())
+            {
+                throw std::out_of_range("Index too big");
+            }
+            return (*(this->begin_ + num));
         }
     private:
         allocator_type alloc;
