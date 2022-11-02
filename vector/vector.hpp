@@ -163,6 +163,10 @@ namespace ft
             this->insert(position, 1, val);
             return (position);
         }
+        iterator erase (iterator position)
+        {
+            return (this->erase(position, position +1));
+        }
         iterator erase( iterator first, iterator last )
         {
             T *tmp_first = first;
@@ -180,6 +184,7 @@ namespace ft
             }
             return last - first;
         }
+
         //Inserting a single element 
         //{ 5 , 3 , 2 , 4}
         //insert(begin() + 1, 42)
@@ -304,6 +309,7 @@ namespace ft
         
         void pop_back()
         {
+            erase(end_);
         }
         size_type capacity()
         {
