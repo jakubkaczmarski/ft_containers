@@ -25,9 +25,9 @@ namespace ft
         }
         void clear()
         {
-            for(size_type i = 0; i < this->size(); i++)
+            for(size_type i = 0; i < this->size();i++)
             {
-                this->alloc.destruct(begin_ + i);
+                this->alloc.destroy(begin_ + i);
             }
             this->end_ = this->begin_;
         }
@@ -48,7 +48,7 @@ namespace ft
         vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
                typename std::enable_if<!std::is_integral<InputIterator>::value>::type * = 0) : alloc(alloc)
         {
-            insert(this->begin_, first, last);
+
         }
         // Copy constructor
         vector(const vector &vec)
@@ -138,6 +138,18 @@ namespace ft
         {
             ft::vector<T> tmp(n, val);
             this->insert(position, tmp.begin(), tmp.end()); 
+        }
+        template<typename InputIterator>
+        void assign (InputIterator first, InputIterator last)
+        {
+            this->clear();
+            this->insert(this->end(), first, last);
+        }
+        void assign (size_type n, const value_type& val)
+        {
+            ft::vector<T> tmp(n, val);
+            this->clear();
+            this->insert(this->end(), tmp.begin(), tmp.end());
         }
         template<typename InputIterator>
         void insert(iterator position, InputIterator first, InputIterator second , typename std::enable_if<!std::is_integral<InputIterator>::value>::type* = 0)

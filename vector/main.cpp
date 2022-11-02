@@ -27,10 +27,11 @@ int main()
     ft::vector<int> my_vec;
     my_vec.push_back(12);
     std::cout << my_vec[0] << std::endl;
-    // for(int i = 0; i < ft.size(); i++)
-    // {
-    //     std::cout << ft.at(i) << std::endl;
-    // }
+    my_vec.assign(5, 2);
+    for(int i = 0; i < my_vec.size(); i++)
+    {
+        std::cout << my_vec.at(i) << std::endl;
+    }
     // ft.resize(5);
     // ft.insert(ft.begin(), 12);
     // for(int i = 0; i < ft.size(); i++)
