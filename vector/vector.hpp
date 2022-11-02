@@ -31,6 +31,24 @@ namespace ft
             }
             this->end_ = this->begin_;
         }
+        void swap( vector& other )
+        {
+            //swap one vector with the other
+            T *tmp_beg = begin_;
+            T *tmp_end = end_;
+            T *tmp_cap = capacity_;
+            allocator_type tmp_alloc = this->alloc;
+
+            begin_ = other.begin_;
+            end_ = other.end_;
+            capacity_ = other.capacity_;
+            tmp_alloc = other.alloc_;
+
+            other.begin_ = tmp_beg;
+            other.end_ = tmp_end;
+            other.capacity_ = tmp_cap;
+            other.alloc = tmp_alloc;
+        }
         T* data()
         {
             return (begin_);
@@ -315,7 +333,7 @@ namespace ft
         {
             return (capacity_ - begin_);
         }
-
+    	
         size_type size()
         {
             return (end_ - begin_);
