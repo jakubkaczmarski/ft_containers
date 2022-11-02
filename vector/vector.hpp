@@ -170,32 +170,44 @@ namespace ft
         template<typename InputIterator>
         void insert(iterator position, InputIterator first, InputIterator second)
         {
-            int inserted_size = second - first;
+            int inserted_size = second.base() - first.base();
             T   *tmp_beg = begin_;
             T   *after_insert = begin_;
-            T   *end_after_insert = end_ + second - first;
+            int size_after_insert = this->size() + (second.base() - first.base());
+            std::cout << "Size of inserted thingy " << second.base() - first.base() << std::endl;
             T   *save_pos;
             if(inserted_size <= capacity_ - end_)
             {
-                while(tmp_beg != position)
+                
+                while(tmp_beg != position.base())
                 {
                     tmp_beg++;
                 }
                 save_pos = tmp_beg;
-                after_insert = tmp_beg + second - first;
-                while(after_insert != end_after_insert)
+                int i = 0;
+                after_insert = tmp_beg + (second.base() - first.base());
+                while(save_pos != end_)
                 {
                     *after_insert = *save_pos;
+                    i++;
                     after_insert++;
                     save_pos++;
                 }
+                std::cout << "inside the thingy " << std::endl;
                 while(first != second)
                 {
                     *tmp_beg = *first;
+                    
+                    std::cout << *tmp_beg << std::endl;
+                    tmp_beg++;
                     first++;
-                }
+                } 
+                
+                this->end_ = after_insert;
+                std::cout << *end_ << std::endl;
             }
         }
+        
         void print_all()
         {
             T *s = begin_;

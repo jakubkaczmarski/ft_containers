@@ -23,21 +23,30 @@ int main()
     std::vector<int>::iterator it_e = vec.end();
     ft::vector<int> ft(4, 3);
     ft::vector<int>::iterator c = ft.begin();
-    for(int i = 0; i < ft.size(); i++)
-    {
-        std::cout << ft.at(i) << std::endl;
-    }
+    ft::vector<int> to_in(5, 2);
+    // for(int i = 0; i < ft.size(); i++)
+    // {
+    //     std::cout << ft.at(i) << std::endl;
+    // }
     // ft.resize(5);
-    ft.insert(ft.begin(), 12);
+    // ft.insert(ft.begin(), 12);
+    // for(int i = 0; i < ft.size(); i++)
+    // {
+    //     std::cout << *c << std::endl;
+    //     c++;
+    // }
+    // ft.begin();
+    // std::cout << ft.capacity() << std::endl; 
+    ft.reserve(12);
+    // std::cout << ft.capacity() << std::endl; 
+    ft.insert(ft.begin() + 1,to_in.begin(), to_in.end());
+    c = ft.begin();
+    std::cout << "Size after insert " << ft.size() <<std::endl;  
     for(int i = 0; i < ft.size(); i++)
     {
         std::cout << *c << std::endl;
         c++;
     }
-    // ft.begin();
-    std::cout << ft.capacity() << std::endl; 
-    ft.reserve(12);
-    std::cout << ft.capacity() << std::endl; 
     // ft::vector<int> ft_vec(vec.begin(), vec.end());
     // ft_vec.print_all();
     // for(int i = 0; i < vec.size(); i++)

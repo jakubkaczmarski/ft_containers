@@ -206,7 +206,7 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         {
             return (ptr_ - num);
         }
-        bool operator <(constant_random_access_iterator<T> rhs) const
+        bool operator <(random_access_iterator<T> rhs) const
         {
             return (ptr_ < rhs.base());
         }
@@ -214,7 +214,7 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         {
             return (ptr_ < rhs.base());
         }
-        bool operator >(constant_random_access_iterator<T> rhs) const
+        bool operator >(random_access_iterator<T> rhs) const
         {
             return (ptr_ > rhs.base());
         }
@@ -222,7 +222,7 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         {
             return (ptr_ > rhs.base());
         }
-        bool operator <=(constant_random_access_iterator<T> rhs)
+        bool operator <=(random_access_iterator<T> rhs)
         {
             return (ptr_ <= rhs.base());
         }
@@ -230,7 +230,7 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         {
             return (ptr_ <= rhs.base());
         }
-        bool operator >=(constant_random_access_iterator<T> rhs)
+        bool operator >=(random_access_iterator<T> rhs)
         {
             return (ptr_ >= rhs.base());
         }
@@ -238,7 +238,7 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         {
             return (ptr_ >= rhs.base());
         }
-        bool operator ==(constant_random_access_iterator<T> rhs)
+        bool operator ==(random_access_iterator<T> rhs)
         {
             return (ptr_ == rhs.base());
         }
@@ -246,7 +246,7 @@ class constant_random_access_iterator : public iterator<random_access_iterator_t
         {
             return (ptr_ == rhs.base());
         }
-        bool operator !=(constant_random_access_iterator<T> rhs)
+        bool operator !=(random_access_iterator<T> rhs)
         {
             return (ptr_ != rhs.base());
         }
