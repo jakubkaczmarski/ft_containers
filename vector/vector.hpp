@@ -174,7 +174,7 @@ namespace ft
             T   *tmp_beg = begin_;
             T   *after_insert = begin_;
             int size_after_insert = this->size() + (second.base() - first.base());
-            std::cout << "Size of inserted thingy " << second.base() - first.base() << std::endl;
+        
             T   *save_pos;
             if(inserted_size <= capacity_ - end_)
             {
@@ -205,9 +205,54 @@ namespace ft
                 
                 this->end_ = after_insert;
                 std::cout << *end_ << std::endl;
+               
+            }else if(this->size() + inserted_size > this->capacity())
+            {
+                T *old_bg = begin_;
+                int cap_val;
+                if(this->size() + inserted_size > this->capacity() * 2)
+                {
+                    tmp_beg = alloc.allocate(this->size() + inserted_size);
+                    cap_val = this->size() + inserted_size;
+                }else{
+                    tmp_beg = alloc.allocate(this->capacity() * 2);
+                    cap_val = this->capacity() * 2;
+                }
+                T *new_beg = tmp_beg;
+                while(old_bg != position.base())
+                {
+                    *tmp_beg = *old_bg;
+                    old_bg++;
+                    tmp_beg++;
+                }
+                save_pos = tmp_beg;
+                int i = 0;
+                after_insert = tmp_beg + (second.base() - first.base());
+                while(old_bg != end_)
+                {
+                    std::cout << "inside the thingy " << std::endl;
+                    *after_insert = *old_bg;
+                    i++;
+                    after_insert++;
+                    old_bg++;
+                }
+                while(first != second)
+                {
+                    *tmp_beg = *first;
+                    
+                    std::cout << *tmp_beg << std::endl;
+                    tmp_beg++;
+                    first++;
+                }
+                this->alloc.deallocate(begin_, this->capacity());
+                begin_ = new_beg;
+                this->capacity_ = begin_ + cap_val;
+                this->end_ = after_insert;
+                std::cout << *end_ << std::endl;
             }
+            
         }
-        
+
         void print_all()
         {
             T *s = begin_;
@@ -220,6 +265,7 @@ namespace ft
         // Destructor
         ~vector()
         {
+            this->alloc.deallocate(this->begin_, this->capacity_ - this->begin_);
         }
         //  Methods
         void push_back(const value_type &val)

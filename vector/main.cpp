@@ -23,7 +23,7 @@ int main()
     std::vector<int>::iterator it_e = vec.end();
     ft::vector<int> ft(4, 3);
     ft::vector<int>::iterator c = ft.begin();
-    ft::vector<int> to_in(5, 2);
+    ft::vector<int> to_in(10, 2);
     // for(int i = 0; i < ft.size(); i++)
     // {
     //     std::cout << ft.at(i) << std::endl;
@@ -37,7 +37,7 @@ int main()
     // }
     // ft.begin();
     // std::cout << ft.capacity() << std::endl; 
-    ft.reserve(12);
+    // ft.reserve(12);
     // std::cout << ft.capacity() << std::endl; 
     ft.insert(ft.begin() + 1,to_in.begin(), to_in.end());
     c = ft.begin();
