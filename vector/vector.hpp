@@ -55,7 +55,33 @@ namespace ft
             iterator halp(this->end_);
             return halp;
         }
-        
+        size_type max_size()
+        {
+            return (this->alloc.max_size());
+        }
+        void reserve( size_type new_cap )
+        {
+            if(new_cap > this->max_size())
+            {
+                throw std::length_error("Cannot allocate this much memory");
+            }
+            if(new_cap > capacity_ - begin_)
+            {
+                T *new_beg = this->alloc.allocate(new_cap);
+                T *new_end = new_beg;
+                T *tmp_beg_old = begin_;
+                while(tmp_beg_old != end_)
+                {
+                    *new_end = *tmp_beg_old;
+                    new_end++;
+                    tmp_beg_old++;
+                }
+                this->alloc.deallocate(begin_, this->size());
+                begin_ = new_beg;
+                end_  = new_end;
+                this->capacity_ = new_beg + new_cap;
+            }
+        }
         void resize(size_type count, T value = T())
         {
             int capacity_num = 0;
@@ -95,7 +121,7 @@ namespace ft
             size_t vec_size = this->size();
             iterator position_to_place = position;
             iterator temp_end = end_ - 1 ;
-            if(end_ + 1 != capacity_)
+            if(end_ + 1 != capacity_ && end_ != capacity_)
             {
                 int i = pos_num;
                 while(pos_num < vec_size)
@@ -108,12 +134,29 @@ namespace ft
                 std::cout << *position_to_place << std::endl;
                 end_++;
             }else{
-                iterator temp_beg;
-                temp_beg = alloc.allocate((end_ + capacity_ + 1) * 2)
-                {
-                    
+                int num = end_ - begin_;
+                //Reallocate and change the pointers in the right order
+                T *temp_og_begin = begin_;
+                T  *temp_beg;
+                T  *temp_end;
+                temp_beg = alloc.allocate((num + 1 )* 2);
+                temp_end = temp_beg;
+                    while(temp_og_begin != end_)
+                    {
+                        
+                        if(temp_og_begin == position_to_place.base())
+                        {
+
+                            temp_beg++;
+                            *temp_beg = val;
+                            position_to_place = NULL;
+                            continue;
+                        }
+                        *temp_beg = *temp_og_begin;
+                        temp_beg++;
+                        temp_og_begin++;
+                    }
                 }
-            }
             return position_to_place;
         }
         //Inserting a single element 
@@ -127,7 +170,31 @@ namespace ft
         template<typename InputIterator>
         void insert(iterator position, InputIterator first, InputIterator second)
         {
-
+            int inserted_size = second - first;
+            T   *tmp_beg = begin_;
+            T   *after_insert = begin_;
+            T   *end_after_insert = end_ + second - first;
+            T   *save_pos;
+            if(inserted_size <= capacity_ - end_)
+            {
+                while(tmp_beg != position)
+                {
+                    tmp_beg++;
+                }
+                save_pos = tmp_beg;
+                after_insert = tmp_beg + second - first;
+                while(after_insert != end_after_insert)
+                {
+                    *after_insert = *save_pos;
+                    after_insert++;
+                    save_pos++;
+                }
+                while(first != second)
+                {
+                    *tmp_beg = *first;
+                    first++;
+                }
+            }
         }
         void print_all()
         {
@@ -150,6 +217,11 @@ namespace ft
         void pop_back()
         {
         }
+        size_type capacity()
+        {
+            return (capacity_ - begin_);
+        }
+
         size_type size()
         {
             return (end_ - begin_);

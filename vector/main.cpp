@@ -35,7 +35,9 @@ int main()
         c++;
     }
     // ft.begin();
-    // vec.reserve(12);
+    std::cout << ft.capacity() << std::endl; 
+    ft.reserve(12);
+    std::cout << ft.capacity() << std::endl; 
     // ft::vector<int> ft_vec(vec.begin(), vec.end());
     // ft_vec.print_all();
     // for(int i = 0; i < vec.size(); i++)
