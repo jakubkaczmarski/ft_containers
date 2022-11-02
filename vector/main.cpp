@@ -14,16 +14,19 @@ int main()
     vec.push_back(154);
     std::vector<int>::iterator thingy = vec.end() - 1;
     // thingy++;
-    vec.insert(thingy, 12);
+    // vec.insert(thingy, 12);
     // for(int i = 0; i < vec.size(); i++)
     // {
     //     std::cout << vec[i] << std::endl;
     // }
-    std::vector<int>::iterator it = vec.begin();
-    std::vector<int>::iterator it_e = vec.end();
-    ft::vector<int> ft(4, 3);
-    ft::vector<int>::iterator c = ft.begin();
-    ft::vector<int> to_in(10, 2);
+    // std::vector<int>::iterator it = vec.begin();
+    // std::vector<int>::iterator it_e = vec.end();
+    // ft::vector<int> ft(4, 3);
+    // ft::vector<int>::iterator c = ft.begin();
+    // ft::vector<int> to_in(10, 2);
+    ft::vector<int> my_vec;
+    my_vec.push_back(12);
+    std::cout << my_vec[0] << std::endl;
     // for(int i = 0; i < ft.size(); i++)
     // {
     //     std::cout << ft.at(i) << std::endl;
@@ -39,14 +42,14 @@ int main()
     // std::cout << ft.capacity() << std::endl; 
     // ft.reserve(12);
     // std::cout << ft.capacity() << std::endl; 
-    ft.insert(ft.begin() + 1,to_in.begin(), to_in.end());
-    c = ft.begin();
-    std::cout << "Size after insert " << ft.size() <<std::endl;  
-    for(int i = 0; i < ft.size(); i++)
-    {
-        std::cout << *c << std::endl;
-        c++;
-    }
+    // ft.insert(ft.begin() + 1,to_in.begin(), to_in.end());
+    // c = ft.begin();
+    // std::cout << "Size after insert " << ft.size() <<std::endl;  
+    // for(int i = 0; i < ft.size(); i++)
+    // {
+    //     std::cout << *c << std::endl;
+    //     c++;
+    // }
     // ft::vector<int> ft_vec(vec.begin(), vec.end());
     // ft_vec.print_all();
     // for(int i = 0; i < vec.size(); i++)

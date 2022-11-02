@@ -3,6 +3,8 @@
 
 namespace ft
 {
+
+
     template <typename T, typename allocator = std::allocator<T> >
     class vector
     {
@@ -118,7 +120,7 @@ namespace ft
         iterator insert(iterator position, const value_type &val)
         {
             this->insert(position, 1, val);
-            return position - this->begin;
+            return (position);
         }
         //Inserting a single element 
         //{ 5 , 3 , 2 , 4}
@@ -126,11 +128,11 @@ namespace ft
         //{5 , 42, 3 , 2 , 4 }
         void insert(iterator position, size_type n, const value_type &val)
         {
-            ft::vector<value_type> tmp(n, val);
+            ft::vector<T> tmp(n, val);
             this->insert(position, tmp.begin(), tmp.end()); 
         }
         template<typename InputIterator>
-        void insert(iterator position, InputIterator first, InputIterator second)
+        void insert(iterator position, InputIterator first, InputIterator second , typename std::enable_if<!std::is_integral<InputIterator>::value>::type* = 0)
         {
             int inserted_size = second.base() - first.base();
             T   *tmp_beg = begin_;
@@ -155,7 +157,6 @@ namespace ft
                     after_insert++;
                     save_pos++;
                 }
-                std::cout << "inside the thingy " << std::endl;
                 while(first != second)
                 {
                     *tmp_beg = *first;
@@ -192,7 +193,6 @@ namespace ft
                 after_insert = tmp_beg + (second.base() - first.base());
                 while(old_bg != end_)
                 {
-                    std::cout << "inside the thingy " << std::endl;
                     *after_insert = *old_bg;
                     i++;
                     after_insert++;
@@ -201,8 +201,6 @@ namespace ft
                 while(first != second)
                 {
                     *tmp_beg = *first;
-                    
-                    std::cout << *tmp_beg << std::endl;
                     tmp_beg++;
                     first++;
                 }
@@ -210,7 +208,6 @@ namespace ft
                 begin_ = new_beg;
                 this->capacity_ = begin_ + cap_val;
                 this->end_ = after_insert;
-                std::cout << *end_ << std::endl;
             }
             
         }
@@ -234,7 +231,7 @@ namespace ft
         {
             this->insert(this->end_, val);
         }
-
+        
         void pop_back()
         {
         }
