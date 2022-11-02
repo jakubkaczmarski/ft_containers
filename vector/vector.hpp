@@ -232,7 +232,7 @@ namespace ft
         //  Methods
         void push_back(const value_type &val)
         {
-
+            this->insert(this->end_, val);
         }
 
         void pop_back()
