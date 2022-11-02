@@ -117,47 +117,8 @@ namespace ft
 
         iterator insert(iterator position, const value_type &val)
         {
-            size_t pos_num = position.base() - begin_;
-            size_t vec_size = this->size();
-            iterator position_to_place = position;
-            iterator temp_end = end_ - 1 ;
-            if(end_ + 1 != capacity_ && end_ != capacity_)
-            {
-                int i = pos_num;
-                while(pos_num < vec_size)
-                {
-                    *(temp_end + 1) = *temp_end;
-                    temp_end--;
-                    pos_num++;
-                }
-                *position_to_place = val;
-                std::cout << *position_to_place << std::endl;
-                end_++;
-            }else{
-                int num = end_ - begin_;
-                //Reallocate and change the pointers in the right order
-                T *temp_og_begin = begin_;
-                T  *temp_beg;
-                T  *temp_end;
-                temp_beg = alloc.allocate((num + 1 )* 2);
-                temp_end = temp_beg;
-                    while(temp_og_begin != end_)
-                    {
-                        
-                        if(temp_og_begin == position_to_place.base())
-                        {
-
-                            temp_beg++;
-                            *temp_beg = val;
-                            position_to_place = NULL;
-                            continue;
-                        }
-                        *temp_beg = *temp_og_begin;
-                        temp_beg++;
-                        temp_og_begin++;
-                    }
-                }
-            return position_to_place;
+            this->insert(position, 1, val);
+            return position - this->begin;
         }
         //Inserting a single element 
         //{ 5 , 3 , 2 , 4}
@@ -165,7 +126,8 @@ namespace ft
         //{5 , 42, 3 , 2 , 4 }
         void insert(iterator position, size_type n, const value_type &val)
         {
-            // if()
+            ft::vector<value_type> tmp(n, val);
+            this->insert(position, tmp.begin(), tmp.end()); 
         }
         template<typename InputIterator>
         void insert(iterator position, InputIterator first, InputIterator second)
@@ -270,6 +232,7 @@ namespace ft
         //  Methods
         void push_back(const value_type &val)
         {
+
         }
 
         void pop_back()
