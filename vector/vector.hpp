@@ -1,6 +1,6 @@
 #include "random_access_it.hpp"
 #include <memory>
-
+#include <algorithm>
 namespace ft
 {
 
@@ -30,6 +30,39 @@ namespace ft
                 this->alloc.destroy(begin_ + i);
             }
             this->end_ = this->begin_;
+        }
+        T* data()
+        {
+            return (begin_);
+        }
+        const T* data() const
+        {
+            return (begin_);
+        }
+        reference front()
+        {
+            return *(begin_);
+        }
+        const_reference front() const
+        {
+            return *(begin_);
+        }
+        reference back()
+        {
+            return *(this->end_);
+        }
+        const_reference back() const
+        {
+            return *(this->end_);
+        }
+        bool empty() const
+        {
+            if(this->size() == 0)
+            {
+                return true;
+            }else{
+                return false;
+            }
         }
         // Fill constructor
         explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
@@ -62,7 +95,7 @@ namespace ft
         }
         iterator end()
         {
-            iterator halp(this->end_);
+            iterator halp(this->end_);  
             return halp;
         }
         size_type max_size()
@@ -129,6 +162,23 @@ namespace ft
         {
             this->insert(position, 1, val);
             return (position);
+        }
+        iterator erase( iterator first, iterator last )
+        {
+            T *tmp_first = first;
+            int size_of_erase = last - first;
+            while(first.base() != last.base())
+            {
+                this->alloc.destroy(first);
+                first++;
+            }
+            std::copy(last.base(),end_, tmp_first);
+            for(int i = 0; i < size_of_erase; i++)
+            {
+                alloc.destroy(end_);
+                end_--;
+            }
+            return last - first;
         }
         //Inserting a single element 
         //{ 5 , 3 , 2 , 4}
