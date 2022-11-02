@@ -23,6 +23,14 @@ namespace ft
             : begin_(0), end_(0), capacity_(0), alloc()
         {
         }
+        void clear()
+        {
+            for(size_type i = 0; i < this->size(); i++)
+            {
+                this->alloc.destruct(begin_ + i);
+            }
+            this->end_ = this->begin_;
+        }
         // Fill constructor
         explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
         {
@@ -40,7 +48,7 @@ namespace ft
         vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
                typename std::enable_if<!std::is_integral<InputIterator>::value>::type * = 0) : alloc(alloc)
         {
-
+            insert(this->begin_, first, last);
         }
         // Copy constructor
         vector(const vector &vec)
