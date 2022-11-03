@@ -26,7 +26,7 @@ namespace ft
         void clear()
         {
             for(size_type i = 0; i < this->size();i++)
-            {
+            {   
                 this->alloc.destroy(begin_ + i);
             }
             this->end_ = this->begin_;
