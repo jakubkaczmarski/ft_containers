@@ -27,6 +27,37 @@ class pair
     T1 first;
     T2 second;
 };
+template<typename T1, typename T2>
+bool operator == (const pair<T1, T2> &f1, const pair<T1, T2> &f2)
+{
+    return (f1.first == f2.first && f1.first == f1.second);
+}
+template<typename T1, typename T2>
+bool operator != (const pair<T1, T2> &f1, const pair<T1, T2> &f2)
+{
+    return (f1 != f2);
+}
+template<typename T1, typename T2>
+bool operator < (const pair<T1, T2> &f1, const pair<T1, T2> &f2)
+{
+    return (f1.first < f2.first || !(f1.first < f2.first) && f1.second < f2.second);
+}
+template<typename T1, typename T2>
+bool operator <= (const pair<T1, T2> &f1, const pair<T1, T2> &f2)
+{
+    return (!(f1 < f2));
+}
+
+template<typename T1, typename T2>
+bool operator > (const pair<T1, T2> &f1, const pair<T1, T2> &f2)
+{
+    return ((f1 < f2));
+}
+template<typename T1, typename T2>
+bool operator >= (const pair<T1, T2> &f1, const pair<T1, T2> &f2)
+{
+    return (!(f1 < f2));
+}
 
 template< class T1, class T2 >
 pair<T1, T2> make_pair( T1 t, T2 u )
