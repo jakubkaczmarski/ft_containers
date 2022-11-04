@@ -16,6 +16,14 @@ struct Node
 
     bool color;  //  0 == black | 1 == red
 };
+//
+//RED Black tree requirements
+//Every node has a color either red or black
+//The root node is always black
+//All null leaves are black
+//A red node cannot have a red parent or any children
+//Every path from a node to any of its descendants NULL nodes has the same number of black nodes
+//
 template<typename T, typename key_type,typename allocator = std::allocator<T> >
 class Red_B_T
 {
