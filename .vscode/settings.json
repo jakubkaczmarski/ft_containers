@@ -2,6 +2,10 @@
     "files.associations": {
         "vector": "cpp",
         "ios": "cpp",
-        "__node_handle": "cpp"
+        "__node_handle": "cpp",
+        "iostream": "cpp",
+        "functional": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp"
     }
 }

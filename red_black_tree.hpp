@@ -158,6 +158,19 @@ class RBT
 {
     public:
     typedef struct Node<T> t_node;
+    t_node * get_root()
+    {
+        return root;
+    }
+    RBT()
+    {
+        nullnode = new t_node;
+        nullnode->color = 0;
+        nullnode->left = nullptr;
+        nullnode->right = nullptr;
+        root = nullnode;
+    }
+    
     void    sort_insert(t_node *ptr)
     {
         t_node *temp;
@@ -172,7 +185,9 @@ class RBT
                     ptr->parent->color = 0;
                     ptr->parent->parent->color = 1;
                     ptr = ptr->parent->parent;
+
                 }else{
+                    std::cout << "Rot 1" << std::endl ;
                     if(ptr == ptr->parent->left)
                     {
                         ptr = ptr->parent;
@@ -180,11 +195,13 @@ class RBT
                     }
                     ptr->parent->color = 0;
                     ptr->parent->parent->color = 1;
+
                     rot_left(ptr->parent->parent);
                 }
             }else{
+                std::cout << "Rot 2" << std::endl ;
                 temp = ptr->parent->parent->right;
-
+                
                 if(temp->color == 1)
                 {
                     temp->color = 0;
@@ -201,13 +218,13 @@ class RBT
                     ptr->parent->parent->color = 1;
                     rot_right(ptr->parent->parent);
                 }
+            }
                 if(ptr == root)
                 {
                     break;
                 }
-            }
-            root->color = 0;
         }
+        root->color = 0;
 
     }
     void rot_left(t_node *ptr)
@@ -262,7 +279,6 @@ class RBT
         ptr->left = nullnode;
         ptr->right = nullnode;
         ptr->color = 1;
-
         t_node * y = nullptr;
         t_node *x = this->root;
 
@@ -277,6 +293,7 @@ class RBT
                 x = x->right;
             }
         }
+
         ptr->parent = y;
         if(y == nullptr)
         {
@@ -297,10 +314,37 @@ class RBT
         {
             return ;
         }
+        std::cout << "Zium " << std::endl;
         sort_insert(ptr);
+        std::cout << "Brum" << std::endl;
+    } 
+    void print_tree()
+    {
+        this->print_tree_help(root, "", true);
     }
     private:
     t_node *root;
     t_node *nullnode;
+
+    void print_tree_help(t_node *root, std::string del, bool last)
+    {
+        if(root != nullnode)
+        {
+            std::cout << del;
+            if(last)
+            {
+                std::cout << "R----";
+                del += "    ";
+            }else{
+                std::cout << "L----";
+                del += "|   ";
+            }
+        std::string sCol = root->color ? "RED" : "BLACK";
+        std::cout << root->data << "(" << sCol << ")" << std::endl;
+        print_tree_help(root->left, del, false);
+        // std::cout << "Zium22";
+        print_tree_help(root->right, del, true);
+        }
+    }
 };
 
