@@ -34,7 +34,42 @@ class RBT
         nullnode->right = nullptr;
         root = nullnode;
     }
-    
+    t_node *smaller_el(t_node *ptr)
+    {
+        if(ptr->right != nullnode)
+        {
+            return min(ptr->right);
+        }
+        t_node *y = ptr->parent;
+        while(y != nullnode && ptr == y->right)
+        {
+            ptr = y;
+            y = y->right;
+        }
+        return  y;
+    }
+    t_node *max(t_node *ptr)
+    {
+        while(ptr->right != nullnode)
+        {
+            ptr = ptr->right;
+        }
+        return ptr;
+    }
+    t_node *prev_el(t_node *ptr)
+    {
+        if(ptr->left != nullnode)
+        {
+            return max(ptr->right);
+        }
+        t_node *y = ptr->parent;
+        while(y != nullnode && ptr == y->left)
+        {
+            ptr = y;
+            y = y->right;
+        }
+        return  y;
+    }
     t_node * search_key(t_node *node, T key)
     {
         if(key == node->key || node == nullnode)
@@ -293,7 +328,6 @@ class RBT
         }
 
     }
-
     void    delete_element(T key)
     {
         delete_node_thingy(this->root, key);
