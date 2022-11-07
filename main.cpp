@@ -14,4 +14,6 @@ int main()
     struct Node<int, std::string> * ptr = s.search(1);
     std::cout << ptr->color << std::endl;
     std::cout << ptr->key << std::endl;
+    s.delete_element(6);
+    s.print_tree();
 }

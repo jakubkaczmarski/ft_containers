@@ -151,6 +151,153 @@ class RBT
         ptr->parent = x;
     }
 
+    void  put_right_side(t_node *u, t_node *v)
+    {
+        if(u->parent == nullptr)
+        {
+            root = v;
+        }else if(u == u->parent->left)
+        {
+            u->parent->left = v;
+        }else{
+            u->parent->right = v;
+        }
+        v->parent = u->parent;
+    }
+    t_node *min(t_node *ptr)
+    {
+        while(ptr->left != nullnode)
+        {
+            ptr = ptr->left;
+        }
+        return ptr;
+    }
+    //balance tree
+    void fix_delete(t_node *ptr)
+    {
+        t_node *s;
+        while(ptr != root && ptr->color == 0)
+        {
+            if(ptr == ptr->parent->left)
+            {
+                s = ptr->parent->right;
+                if(s->color == 1 )
+                {
+                    s->color = 0;
+                    ptr->parent->color = 1;
+                    rot_left(ptr->parent);
+                    s = ptr->parent->right;
+                }
+                if(s->left->color == 0 && s->right->color == 0)
+                {
+                    s->color = 1;
+                    ptr = ptr->parent;
+                }else
+                {
+                    if(s->right->color == 0)
+                    {
+                        s->left->color = 0;
+                        s->color = 1;
+                        rot_right(s);
+                        s = ptr->parent->right;
+                    }
+                    s->color = ptr->parent->color;
+                    ptr->parent->color = 0;
+                    s->right->color = 0;
+                    rot_left(ptr->parent);
+                    ptr = root;
+                }
+            }else{
+                s = ptr->parent->left;
+                if(s->color == 1)
+                {
+                    s->color = 0;
+                    ptr->parent->color = 1;
+                    rot_right(ptr->parent);
+                    s = ptr->parent->left;
+                }
+                if(s->right->color == 0 && s->right->color == 0)
+                {
+                    s->color = 1;
+                    ptr = ptr->parent;
+                }else{
+                    if(s->left->color == 0)
+                    {
+                        s->right->color = 0;
+                        s->color = 1;
+                        rot_left(s);
+                        ptr = root;
+                    }
+                }
+            }
+            ptr->color = 0;
+        }
+
+    }
+    void delete_node_thingy(t_node *ptr , T key)
+    {
+        t_node *z = nullnode;
+        t_node *x;
+        t_node *y;
+        while(ptr != nullnode)
+        {
+            if(ptr->key == key)
+            {
+                z = ptr;
+            }
+            if(ptr->key <= key)
+            {
+                ptr = ptr->right;
+            }else
+            {
+                ptr = ptr->left;
+            }
+        }
+        if(z == nullnode)
+        {
+            std::cout << "Element doens't exist" << std::endl;
+            return ;
+        }
+
+        y = z;
+        int tmp_color = y->color;
+        if(z->left == nullnode)
+        {
+            x = z->right;
+            put_right_side(z, z->right);
+        }else if(z->right == nullnode)
+        {
+            x = z->left;
+            put_right_side(z, z->left);
+        }else{
+            y = min(z->right);
+            tmp_color = y->color;
+            x = y->right;
+            if(y->parent == z)
+            {
+                x->parent = y;
+            }else{
+                put_right_side(y, y->right);
+                y->right = z->right;
+                y->right->parent = y;
+            }
+                put_right_side(z, y);
+                y->left = z->left;
+                y->left->parent = y;
+                y->color = z->color;
+        }
+        delete z;
+        if(tmp_color == 0)
+        {
+            fix_delete(x);
+        }
+
+    }
+
+    void    delete_element(T key)
+    {
+        delete_node_thingy(this->root, key);
+    }
 
     void    insert(T key)
     {
