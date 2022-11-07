@@ -34,6 +34,23 @@ class RBT
         root = nullnode;
     }
     
+    t_node * search_data(t_node *node, T *key)
+    {
+        if(key == node->data || node == nullnode)
+        {
+            return node;
+        }
+        if(key < node->data)
+        {
+            return search_data(node->left, key);
+        }
+        return search_data(node->right, key);
+    }
+
+    t_node *search(T *data)
+    {
+        return search_data(root, data);
+    }
     void    sort_insert(t_node *ptr)
     {
         t_node *temp;

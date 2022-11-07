@@ -10,4 +10,7 @@ int main()
     s.insert(2);
     std::cout << "Red black trees are cool"  << std::endl;
     s.print_tree();
+    int b = 1;
+    struct Node<int> * ptr = s.search(&b);
+    std::cout << ptr->color << std::endl;
 }
