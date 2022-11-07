@@ -3,7 +3,7 @@
 #include <iostream>
 int main()
 {
-    RBT<int> s;
+    RBT<int, std::string> s;
     s.insert(1);
     s.insert(0);
     s.insert(6);
@@ -11,6 +11,7 @@ int main()
     std::cout << "Red black trees are cool"  << std::endl;
     s.print_tree();
     int b = 1;
-    struct Node<int> * ptr = s.search(&b);
+    struct Node<int, std::string> * ptr = s.search(1);
     std::cout << ptr->color << std::endl;
+    std::cout << ptr->key << std::endl;
 }

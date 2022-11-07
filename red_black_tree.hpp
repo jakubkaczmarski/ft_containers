@@ -6,21 +6,22 @@ enum color{
     black,
 };
 
-template<typename T>
+template<typename T, typename data>
 struct Node
 {
-    T   *data;
+    T       key;
+    // data    data;
     Node *parent;
     Node *right;
     Node *left;
     int color;
 };
 
-template <typename T>
+template <typename T, typename data>
 class RBT
 {
     public:
-    typedef struct Node<T> t_node;
+    typedef struct Node<T, data> t_node;
     t_node * get_root()
     {
         return root;
@@ -34,22 +35,22 @@ class RBT
         root = nullnode;
     }
     
-    t_node * search_data(t_node *node, T *key)
+    t_node * search_key(t_node *node, T key)
     {
-        if(key == node->data || node == nullnode)
+        if(key == node->key || node == nullnode)
         {
             return node;
         }
-        if(key < node->data)
+        if(key < node->key)
         {
-            return search_data(node->left, key);
+            return search_key(node->left, key);
         }
-        return search_data(node->right, key);
+        return search_key(node->right, key);
     }
 
-    t_node *search(T *data)
+    t_node *search(T key)
     {
-        return search_data(root, data);
+        return search_key(root, key);
     }
     void    sort_insert(t_node *ptr)
     {
@@ -151,11 +152,11 @@ class RBT
     }
 
 
-    void    insert(int key)
+    void    insert(T key)
     {
         t_node *ptr = new t_node;
         ptr->parent = nullptr;
-        ptr->data = &key;
+        ptr->key = key;
         ptr->left = nullnode;
         ptr->right = nullnode;
         ptr->color = 1;
@@ -165,7 +166,7 @@ class RBT
         while(x != nullnode)
         {
             y = x;
-            if(ptr->data < ptr->data)
+            if(ptr->key < ptr->key)
             {
                 x = x->left;
             }else
@@ -178,7 +179,7 @@ class RBT
         if(y == nullptr)
         {
             root = ptr;
-        }else if(ptr->data < y ->data)
+        }else if(ptr->key < y ->key)
         {
             y->left = ptr;
         }else{
@@ -220,7 +221,7 @@ class RBT
                 del += "|   ";
             }
         std::string sCol = root->color ? "RED" : "BLACK";
-        std::cout << root->data << "(" << sCol << ")" << std::endl;
+        std::cout << root->key << "(" << sCol << ")" << std::endl;
         print_tree_help(root->left, del, false);
         // std::cout << "Zium22";
         print_tree_help(root->right, del, true);
