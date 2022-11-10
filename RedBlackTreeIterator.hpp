@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <iterator>
+
 namespace ft
 {
 //Iterator tags
@@ -12,13 +13,23 @@ struct forward_iterator_tag : input_iterator_tag {};
 struct biderectional_iterator_tag : forward_iterator_tag {};
 struct random_access_iterator_tag : biderectional_iterator_tag {};
 // template<typename T, typename tree>
-class const_RedBlackTreeIterator{};
+template <typename Category, typename T, typename Distance = ptrdiff_t, typename Pointer = T*, typename Reference = T&>
+struct iterator
+{
+    typedef T   value_type;
+    typedef Distance difference_type;
+    typedef Pointer pointer;
+    typedef Reference   reference;
+    typedef Category    iterator_category;
+};
+template<typename T, typename tree>
+class const_RedBlackTreeIterator;
 
 template<typename T, typename tree>
 class RedBlackTreeIterator : public iterator<biderectional_iterator_tag, T>
 {
     public:
-    typedef typename Tree::value_type value_type;
+    typedef typename tree::value_type value_type;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::difference_type difference_type;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::pointer pointer;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::reference reference;
@@ -32,7 +43,7 @@ class RedBlackTreeIterator : public iterator<biderectional_iterator_tag, T>
     }
     RedBlackTreeIterator(const RedBlackTreeIterator& rhs) : current_(rhs.current_), end_(rhs.end_),rend_(rhs.rend_) {}
     template<typename oTree>
-    RedBlackTreeIterator(const RedBlackTreeIterator<T, oTree> &rhs) : current_(rhs.base()), end(rhs.getEnd()), rend(rhs.getRend()) {}
+    RedBlackTreeIterator(const RedBlackTreeIterator<T, oTree> &rhs) : current_(rhs.base()), end_(rhs.getEnd()), rend_(rhs.getRend()) {}
     T *base()
     {
         return current_;
@@ -49,11 +60,7 @@ class RedBlackTreeIterator : public iterator<biderectional_iterator_tag, T>
     {
         return (*(this->current_)->content);
     }
-    pointer operator*() const
-    {
-        return (this->current_->content);
-    }
-    pointer opeartor->() const
+    pointer operator->() const
     {
         return (this->current_->content);
     }
@@ -98,22 +105,22 @@ class RedBlackTreeIterator : public iterator<biderectional_iterator_tag, T>
 template<typename T, typename tree>
 class const_RedBlackTreeIterator
 {
-    public:
-    typedef typename Tree::value_type value_type;
+        public:
+    typedef typename tree::value_type value_type;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::difference_type difference_type;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::pointer pointer;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::reference reference;
     typedef typename ft::iterator<biderectional_iterator_tag, value_type>::iterator_category iterator_category;
 
-    RedBlackTreeIterator() : current_(0), end_(0),rend_(0) {
+    const_RedBlackTreeIterator() : current_(0), end_(0),rend_(0) {
         
     }
-    RedBlackTreeIterator(T *c, T *e, T* re) : current_(c), end_(e),rend_(re) {
+    const_RedBlackTreeIterator(T *c, T *e, T* re) : current_(c), end_(e),rend_(re) {
 
     }
-    RedBlackTreeIterator(const RedBlackTreeIterator& rhs) : current_(rhs.current_), end_(rhs.end_),rend_(rhs.rend_) {}
+    const_RedBlackTreeIterator(const const_RedBlackTreeIterator& rhs) : current_(rhs.current_), end_(rhs.end_),rend_(rhs.rend_) {}
     template<typename oTree>
-    RedBlackTreeIterator(const RedBlackTreeIterator<T, oTree> &rhs) : current_(rhs.base()), end(rhs.getEnd()), rend(rhs.getRend()) {}
+    const_RedBlackTreeIterator(const const_RedBlackTreeIterator<T, oTree> &rhs) : current_(rhs.base()), end_(rhs.getEnd()), rend_(rhs.getRend()) {}
     T *base()
     {
         return current_;
@@ -130,26 +137,22 @@ class const_RedBlackTreeIterator
     {
         return (*(this->current_)->content);
     }
-    pointer operator*() const
+    pointer operator->() const
     {
         return (this->current_->content);
     }
-    pointer opeartor->() const
-    {
-        return (this->current_->content);
-    }
-    RedBlackTreeIterator &operator++()
+    const_RedBlackTreeIterator &operator++()
     {
     }
-    RedBlackTreeIterator &operator++(int)
+    const_RedBlackTreeIterator &operator++(int)
     {
 
     }
-    RedBlackTreeIterator &operator--()
+    const_RedBlackTreeIterator &operator--()
     {
 
     }
-    RedBlackTreeIterator &operator--(int)
+    const_RedBlackTreeIterator &operator--(int)
     {
 
     }
@@ -173,7 +176,7 @@ class const_RedBlackTreeIterator
     T *current_;
     T *end_;
     T *rend_;
-
+};
 };
 //Class T tags
 #endif
