@@ -64,20 +64,73 @@ class RedBlackTreeIterator : public iterator<biderectional_iterator_tag, T>
     {
         return (this->current_->content);
     }
-    RedBlackTreeIterator &operator++()
+RedBlackTreeIterator &operator++()
     {
+        T *tmp = this->current_;
+        if(tmp == rend_)
+        {
+            tmp = rend_->parent;
+        }else if(tmp->right)
+        {
+            tmp = tmp->right;
+            while(tmp->left)
+            {
+                tmp = tmp->left;
+            }
+        }else{
+            while(tmp->parent && tmp == tmp->parent->right)
+            {
+                tmp = tmp->parent;
+            }
+            if(tmp->parent)
+                tmp = tmp->parent;
+            else{
+                tmp = end_;
+            }
+        }
+        current_ = tmp;
+        return (*this);
     }
+
     RedBlackTreeIterator &operator++(int)
     {
-
+        RedBlackTreeIterator tmp = *this;
+        ++(*this);
+        return tmp;
     }
     RedBlackTreeIterator &operator--()
     {
-
+        T *tmp = current_;
+        if(tmp == end_)
+        {
+            tmp = tmp->end_->parent;
+        }else if(tmp->left)
+        {
+            tmp = tmp->left;
+            while(tmp->right)
+            {
+                tmp = tmp->right;
+            }
+        }else{
+            while(tmp->parent && tmp == tmp->parent->left)
+            {
+                tmp = tmp->parent;
+            }
+            if(tmp->parent)
+            {
+                tmp = tmp->parent;
+            }else{
+                tmp = rend_;
+            }
+        }
+        current_ = tmp;
+        return (*this);
     }
     RedBlackTreeIterator &operator--(int)
     {
-
+        RedBlackTreeIterator tmp = *this;
+        --(*this);
+        return tmp;
     }
     bool operator==(RedBlackTreeIterator<T,tree> other_tree)
     {
@@ -143,18 +196,71 @@ class const_RedBlackTreeIterator
     }
     const_RedBlackTreeIterator &operator++()
     {
+        T *tmp = this->current_;
+        if(tmp == rend_)
+        {
+            tmp = rend_->parent;
+        }else if(tmp->right)
+        {
+            tmp = tmp->right;
+            while(tmp->left)
+            {
+                tmp = tmp->left;
+            }
+        }else{
+            while(tmp->parent && tmp == tmp->parent->right)
+            {
+                tmp = tmp->parent;
+            }
+            if(tmp->parent)
+                tmp = tmp->parent;
+            else{
+                tmp = end_;
+            }
+        }
+        current_ = tmp;
+        return (*this);
     }
+
     const_RedBlackTreeIterator &operator++(int)
     {
-
+        const_RedBlackTreeIterator tmp = *this;
+        ++(*this);
+        return tmp;
     }
     const_RedBlackTreeIterator &operator--()
     {
-
+        T *tmp = current_;
+        if(tmp == end_)
+        {
+            tmp = tmp->end_->parent;
+        }else if(tmp->left)
+        {
+            tmp = tmp->left;
+            while(tmp->right)
+            {
+                tmp = tmp->right;
+            }
+        }else{
+            while(tmp->parent && tmp == tmp->parent->left)
+            {
+                tmp = tmp->parent;
+            }
+            if(tmp->parent)
+            {
+                tmp = tmp->parent;
+            }else{
+                tmp = rend_;
+            }
+        }
+        current_ = tmp;
+        return (*this);
     }
     const_RedBlackTreeIterator &operator--(int)
     {
-
+        const_RedBlackTreeIterator tmp = *this;
+        --(*this);
+        return tmp;
     }
     bool operator==(RedBlackTreeIterator<T,tree> other_tree)
     {
