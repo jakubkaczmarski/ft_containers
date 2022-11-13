@@ -1,27 +1,32 @@
-#include <iostream>
 #include <memory>
+#include "../additional.hpp"
 
+#include <iostream>
+//key + Value pair in a content area
+//and then compare keys
 enum color{
     red,
     black,
 };
 
-template<typename T, typename data>
+template<typename T>
 struct Node
 {
-    T       key;
-    // data    data;
+    T*       pair_;
     Node *parent;
     Node *right;
     Node *left;
     int color;
 };
 
-template <typename T, typename data>
+template <typename T>
 class RBT
 {
     public:
-    typedef struct Node<T, data> t_node;
+    typedef T value_type;
+    typedef T* pointer;
+    typedef T& reference;
+    typedef struct Node<T> t_node;
     t_node * get_root()
     {
         return root;
@@ -70,23 +75,24 @@ class RBT
         }
         return  y;
     }
-    t_node * search_key(t_node *node, T key)
+    t_node * search_key(t_node *node, T *key)
     {
-        if(key == node->key || node == nullnode)
+        if(key->first == node->key.first || node == nullnode)
         {
             return node;
         }
-        if(key < node->key)
+        if(key->first < node->key->first)
         {
-            return search_key(node->left, key);
+            return search_key(node->left, key->first);
         }
-        return search_key(node->right, key);
+        return search_key(node->right, key->first);
     }
 
     t_node *search(T key)
     {
         return search_key(root, key);
     }
+    
     void    sort_insert(t_node *ptr)
     {
         t_node *temp;
@@ -337,7 +343,9 @@ class RBT
     {
         t_node *ptr = new t_node;
         ptr->parent = nullptr;
-        ptr->key = key;
+        std::allocator<value_type> alloc;
+        ptr->pair_ = alloc.allocate(1);
+        *ptr->pair_ =  key;
         ptr->left = nullnode;
         ptr->right = nullnode;
         ptr->color = 1;
@@ -347,7 +355,7 @@ class RBT
         while(x != nullnode)
         {
             y = x;
-            if(ptr->key < ptr->key)
+            if(ptr->pair_ < x->pair_)
             {
                 x = x->left;
             }else
@@ -360,7 +368,7 @@ class RBT
         if(y == nullptr)
         {
             root = ptr;
-        }else if(ptr->key < y ->key)
+        }else if(ptr->pair_ < y ->pair_)
         {
             y->left = ptr;
         }else{
@@ -404,7 +412,6 @@ class RBT
         std::string sCol = root->color ? "RED" : "BLACK";
         std::cout << root->key << "(" << sCol << ")" << std::endl;
         print_tree_help(root->left, del, false);
-        // std::cout << "Zium22";
         print_tree_help(root->right, del, true);
         }
     }
