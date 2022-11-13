@@ -17,6 +17,9 @@ int main()
     custom_map.insert(s);
     custom_map.insert(s);
     custom_map.print_tree();
+    custom_map.delete_element(s);
+    std::cout << std::endl;
+    custom_map.print_tree();
     // mapp.insert(make_pair<int, std::string>(2, "Siemanko"));
     // std::map<int, std::string>::iterator iter_map = mapp.begin();
     // std::cout << (*iter_map).first << std::endl;

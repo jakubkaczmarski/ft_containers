@@ -282,11 +282,11 @@ class RBT
         t_node *y;
         while(ptr != nullnode)
         {
-            if(ptr->key == key)
+            if(*ptr->pair_ == key)
             {
                 z = ptr;
             }
-            if(ptr->key <= key)
+            if(*ptr->pair_ <= key)
             {
                 ptr = ptr->right;
             }else
