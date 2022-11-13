@@ -410,7 +410,7 @@ class RBT
                 del += "|   ";
             }
         std::string sCol = root->color ? "RED" : "BLACK";
-        std::cout << root->key << "(" << sCol << ")" << std::endl;
+        std::cout << (*root->pair_).first << "(" << sCol << ")" << std::endl;
         print_tree_help(root->left, del, false);
         print_tree_help(root->right, del, true);
         }

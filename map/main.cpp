@@ -15,6 +15,8 @@ int main()
     std::cout << s.first << " | " << s.second << std::endl;
     RBT<pair<int, std::string> > custom_map;
     custom_map.insert(s);
+    custom_map.insert(s);
+    custom_map.print_tree();
     // mapp.insert(make_pair<int, std::string>(2, "Siemanko"));
     // std::map<int, std::string>::iterator iter_map = mapp.begin();
     // std::cout << (*iter_map).first << std::endl;
