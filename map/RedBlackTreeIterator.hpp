@@ -1,5 +1,5 @@
-#ifndef RED_BLACK_TREE_HPP
-#define RED_BLACK_TREE_HPP
+#ifndef RED_BLACK_TREE_ITERATOR_HPP
+#define RED_BLACK_TREE_ITERATOR_HPP
 
 #include <memory>
 #include <iterator>
