@@ -3,17 +3,18 @@
 #include <iostream>
 #include <iterator>
 #include "RedBlackTreeIterator.hpp"
+#include "map.hpp"
 int main()
 {
 
     //Red black tree iterator
     //
     std::map<int, std::string> mapp;
-    RBT<pair<int, std::string> > siemnako;
+    RBT<ft::pair<int, std::string> > siemnako;
     // sie
-    pair<int, std::string> s =  make_pair<int, std::string>(1, "Zlomek");
+    ft::pair<int, std::string> s =  ft::make_pair<int, std::string>(1, "Zlomek");
     std::cout << s.first << " | " << s.second << std::endl;
-    RBT<pair<int, std::string> > custom_map;
+    RBT<ft::pair<int, std::string> > custom_map;
     custom_map.insert(s);
     custom_map.insert(s);
     custom_map.print_tree();

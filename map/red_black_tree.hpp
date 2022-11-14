@@ -1,3 +1,6 @@
+#ifndef RED_BLACK_TREE_HPP
+#define RED_BLACK_TREE_HPP
+
 #include <memory>
 #include "../additional.hpp"
 
@@ -282,7 +285,7 @@ class RBT
         t_node *y;
         while(ptr != nullnode)
         {
-            if(*ptr->pair_ == key)
+            if(*(ptr->pair_) == key)
             {
                 z = ptr;
             }
@@ -417,3 +420,5 @@ class RBT
     }
 };
 
+
+#endif
