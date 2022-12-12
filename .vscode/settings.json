@@ -60,6 +60,8 @@
         "type_traits": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "__tree": "cpp",
+        "memory_resource": "cpp"
     }
 }
