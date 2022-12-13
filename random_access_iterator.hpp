@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:26:17 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/12/13 18:06:57 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/12/13 23:55:41 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ namespace ft
             return (this->base() <= rhs.base());
         }
         private:
-        value_type iter_;
+        pointer iter_;
     };
 
     template<typename T>

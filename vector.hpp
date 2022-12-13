@@ -384,9 +384,9 @@ namespace ft
         }
 
         //Inserting single element
-        iterator insert(const_iterator pos, const value_type& val)
+        iterator insert(iterator pos, const value_type& val)
         {
-            size_type ins_pos = pos - start_;
+            size_type ins_pos = pos.base() - start_;
             if(size_type(capacity_ - end_) >= this->size() + 1)
             {
                 for(size_type i = 0; i < ins_pos; i++)
@@ -394,7 +394,7 @@ namespace ft
                     alloc_.construct(end_ - i, *(end_ - i - 1));
                 }
                 end_++;
-                alloc_.construct(ins_pos, val);
+                alloc_.construct(start_ + ins_pos, val);
             }else{
                 int new_cap;
                 if(this->size() == 0)
