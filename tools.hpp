@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/12/10 15:59:19 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:08:07 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ namespace ft
         typedef t_2 type_two;
         
         pair() : first(), second(){}
-        pair(const type_one &x, const type_two &y) : first(x), second(b){};
-        template<class X, class Y>
+        pair(const type_one &x, const type_two &y) : first(x), second(y){};
+        template<typename x, typename y>
         pair(const pair<x, y> &ot) : first(ot.first), second(ot.second){}
 
         ~pair(void){}
@@ -188,7 +188,7 @@ class reverse_iterator
         reverse_iterator(void) : iter_(){}
         explicit reverse_iterator(iterator_type it) : iter_(it){};
         template<typename Iter>
-        reverse_iterator(const reverse_iterator<Iter> &cp) : iter_(cp.base());
+        reverse_iterator(const reverse_iterator<Iter> &cp) : iter_(cp.base()){}
         virtual ~reverse_iterator(void) {};
 
         reverse_iterator base(void) const{
@@ -197,7 +197,7 @@ class reverse_iterator
 
         reverse_iterator &operator=(const reverse_iterator &rhs)
         {
-            iter_ = rhs.iter_l
+            iter_ = rhs.iter_l;
             return (*this);
         }
 
@@ -205,14 +205,14 @@ class reverse_iterator
         {
             iterator_type tmp = this->iter_;
             iter_--;
-            return (*temp);
+            return (*tmp);
         }
 
         reference operator*(void)
         {
             iterator_type tmp = this->iter_;
             iter_--;
-            return (*temp);
+            return (*tmp);
         }
 
         reverse_iterator operator+(difference_type n) const
@@ -358,7 +358,7 @@ template<class InputIterator>
 typename ft::iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator second)
 {
     typename ft::iterator_traits<InputIterator>::difference_type n = 0;
-    while(first != last)
+    while(first != second)
     {
         first++;
         n++;

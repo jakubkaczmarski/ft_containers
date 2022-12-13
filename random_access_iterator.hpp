@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:26:17 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/12/10 17:17:40 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:06:57 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ namespace ft
 
         pointer operator->(void)
         {
-            return(&(this->operator*()))
+            return(&(this->operator*()));
         }
 
         random_access_iterator operator++(int)
@@ -212,7 +212,7 @@ namespace ft
 
         pointer operator->(void)
         {
-            return(&(this->operator*()))
+            return(&(this->operator*()));
         }
 
         const_random_access_iterator operator++(int)
@@ -334,7 +334,7 @@ namespace ft
     template<typename T>
     random_access_iterator<T> operator+(typename random_access_iterator<T>::difference_type n, random_access_iterator<T> &it)
     {
-        return (&((*it) + n))
+        return (&((*it) + n));
     }
 
     template<typename T>
