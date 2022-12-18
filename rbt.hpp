@@ -27,7 +27,7 @@ namespace ft
             typedef typename allocator_type::const_pointer const_pointer;
             typedef ptrdiff_t difference_type;
             typedef size_t size_type;
-            typdef node* iter;
+            typedef node* iter;
             typedef const node * const_iter;
             typedef Compare key_compare;
 
@@ -35,9 +35,9 @@ namespace ft
             struct node
             {
                 pointer data;
-                t_node *left;
-                t_node *right;
-                t_node *parent;
+                iter    left;
+                iter    right;
+                iter    parent;
                 bool    color;
             };
 
@@ -45,15 +45,13 @@ namespace ft
             {
                 nil_ = RBT(0);
                 nil_->color = true;
-                nil->left = NULL;
-                nil->right = NULL;
-                root_ = nil_;
+                // nil->left;
             }
 
-            void insert(t_node *ptr, T * value)
-            {
+            // void insert(node *ptr, T * value)
+            // {
                 
-            }
+            // }
 
 
             RBT(const key_compare &compare = key_compare(), const allocator_type &alloc = allocator_type())

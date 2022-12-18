@@ -18,7 +18,7 @@ namespace ft{
         typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer pointer;
         typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference reference;
 
-        rbt_iterator(T *p = nullptr) iter_(p), nil_(p)
+        rbt_iterator(T *p = nullptr) : iter_(p), nil_(p)
         {
             if(p)
             {
@@ -61,7 +61,7 @@ namespace ft{
             return *iter_->data;
         }
 
-        reference operaotr->() const
+        reference operator->() const
         {
             return &(this->operator*());
         }
@@ -115,12 +115,13 @@ namespace ft{
             }else if(tmp == nil_)
             {
                 tmp = nil_->parent;
-            }else if(tmp->left != nil_ && left_)
+            }else if(tmp->left != nil_ && tmp->left_)
             {
                 tmp = tmp->left;
-                while(tmp->right != __NO_INLINE__{
+                while(tmp->right != nil_)
+                {
                     tmp = tmp->right;
-                })
+                }
             }else if(tmp->parent && tmp == tmp->parent->right)
             {
                 tmp = tmp->parent;
@@ -174,12 +175,12 @@ namespace ft{
             return (this->base() == rhs.base());
         }
 
-        bool operator==(const rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const rbt_iterator<T, Tree> &rhs) const
         {
             return (this->base() != rhs.base());
         }
 
-        bool operator==(const const_rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const const_rbt_iterator<T, Tree> &rhs) const
         {
             return (this->base() != rhs.base());
         }
@@ -201,7 +202,7 @@ namespace ft{
         typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer pointer;
         typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference reference;
 
-        const_rbt_iterator(T *p = nullptr) iter_(p), nil_(p)
+        const_rbt_iterator(T *p = nullptr) : iter_(p), nil_(p)
         {
             if(p)
             {
@@ -244,12 +245,12 @@ namespace ft{
             return *iter_->data;
         }
 
-        reference operaotr->() const
+        reference operator->() const
         {
             return &(this->operator*());
         }
 
-        rbt_iterator &operator++()
+        const_rbt_iterator &operator++()
         {
             T *tmp = iter_;
             if(!tmp)
@@ -284,7 +285,7 @@ namespace ft{
 
         const_rbt_iterator operator++(int)
         {
-            rbt_iterator tmp = *this;
+            const_rbt_iterator tmp = *this;
             ++(*this);
             return tmp;
         }
@@ -298,12 +299,13 @@ namespace ft{
             }else if(tmp == nil_)
             {
                 tmp = nil_->parent;
-            }else if(tmp->left != nil_ && left_)
+            }else if(tmp->left != nil_ && tmp->left)
             {
                 tmp = tmp->left;
-                while(tmp->right != __NO_INLINE__{
+                while(tmp->right != nil_)
+                {
                     tmp = tmp->right;
-                })
+                }
             }else if(tmp->parent && tmp == tmp->parent->right)
             {
                 tmp = tmp->parent;
@@ -330,7 +332,7 @@ namespace ft{
         
         const_rbt_iterator operator--(int)
         {
-            rbt_iterator tmp = *this;
+            const_rbt_iterator tmp = *this;
             --(*this);
             return tmp;
         }
@@ -357,12 +359,12 @@ namespace ft{
             return (this->base() == rhs.base());
         }
 
-        bool operator==(const rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const rbt_iterator<T, Tree> &rhs) const
         {
             return (this->base() != rhs.base());
         }
 
-        bool operator==(const const_rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const const_rbt_iterator<T, Tree> &rhs) const
         {
             return (this->base() != rhs.base());
         }
