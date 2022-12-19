@@ -22,7 +22,11 @@ int main()
     // vec.insert(it, 123);
     ft::RBT<int, int> ss;
     int s = 12;
+    int b = 13;
     ss.insert(s);
+    ss.insert(b);
+    // ss.insert(s);
+    
     // ft::rbt_iterator<node, ft::RBT<int, std::string> > s;
     // for(int i = 0; i < vec1.size(); i++)
     // {

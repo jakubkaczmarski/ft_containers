@@ -19,6 +19,11 @@ namespace ft
         typedef Value value_type;
     
         public:
+        RBT()
+        : root_(NULL)
+        {
+
+        }
         template <typename Data>
         struct Node
         {
@@ -26,6 +31,22 @@ namespace ft
             {
                 this->data = data;
                 this->color = color;
+                this->child[left] = new Node<value_type>();
+                this->child[right] = new Node<value_type>();
+                printf("Constructor ran\n");
+            }
+            Node()
+            {
+                this->data = 0;
+                this->color = 0;
+                this->child[left] = new Node<value_type>(13);
+                this->child[right] = new Node<value_type>(12);
+            }
+
+            Node(int a)
+            {
+                this->data = 0;
+                this->color = 0;
                 this->child[left] = NULL;
                 this->child[right] = NULL;
             }
@@ -56,7 +77,12 @@ namespace ft
 
         void insert(value_type &data)
         {
+            if(root_)
+            {
+                std::cout << " " << root_->data << std::endl;
+            }
             root_ = this->internal_insert(root_, data);
+        
             root_->color = BLACK;
         }
         
@@ -64,33 +90,48 @@ namespace ft
         Node<value_type> *internal_insert(Node<value_type> *node, value_type &data)
         {
             bool direction;
-
+            
             if(node == NULL)
             {
                 return new Node<value_type>(data, RED);
             }
-            std::cout << "Zium" << std::endl;
-            std::cout << node->color << std::endl;
-            std::cout << "Zium" << std::endl;
             //Left 0, Right 1
+            printf("Direction\n");
+            
             direction = data > node->data;
-
+            
             node->child[direction] = internal_insert(node->child[direction], data);
+            
             return this->fix_insert(node, direction);;
         }
         
+        void colorFlip(Node<value_type> *node)
+        {
+            node->color = !node->color;
+            std::cout << node->child[left]->color << std::endl;
+            // std::cout << !node->child[left]->color << std::endl;
+            node->child[right]->color = !node->child[right]->color;
+        }
+
         Node<value_type> *fix_insert(Node<value_type> *node, bool direction)
         {
     
             if(node->child[direction]->color == RED)
             {
                 //Both children are red only one child has 2 reds in a row
+                printf("Hiello\n");
+                std::cout << node->child[direction]->color << std::endl;
+                std::cout << "Zium " << std::endl;
+                std::cout << node->child[direction]->child[direction]->color << std::endl;
+                std::cout << "Zium2 " << std::endl;
                 if(node->child[direction]->child[direction]->color == RED 
                     || node->child[direction]->child[!direction]->color == RED)
                 {
+                    printf("Woow\n");
                     this->colorFlip(node);
                 }else
                 {
+                    printf("Woow\n");
                     //Both children are red
                     if(node->child[direction]->child[direction]->color == RED)
                     {
@@ -104,15 +145,9 @@ namespace ft
                     }
                 }
             }
-            std::cout << "Zium2" << std::endl;
             return node;
         }
-        void colorFlip(Node<value_type> *node)
-        {
-            node->color = !node->color;
-            node->child[left]->color = !node->child[left]->color;
-            node->child[right]->color = !node->child[right]->color;
-        }
+
 
         private:
             struct Node<value_type> *root_;
