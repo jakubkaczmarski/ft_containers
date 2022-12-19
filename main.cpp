@@ -1,24 +1,28 @@
 #include "vector.hpp"
 #include <vector>
 // #include "rbt_iter.hpp"
-#include "test.hpp"
+#include "rbt.hpp"
 
 int main()
 {
+
+    // ft::RBT<12, "s"> val;
     // ft::rbt<int, int> s;
-    ft::vector<int> vec;
-    std::vector<int> vec1;
-    vec.push_back(12);
-    vec.push_back(12321);
-    vec.push_back(12321);
-    vec1.push_back(12);
-    vec1.push_back(12321);
-    vec1.push_back(12321);
-    ft::vector<int>::iterator it = vec.begin();
+    // ft::vector<int> vec;
+    // std::vector<int> vec1;
+    // vec.push_back(12);
+    // vec.push_back(12321);
+    // vec.push_back(12321);
+    // vec1.push_back(12);
+    // vec1.push_back(12321);
+    // vec1.push_back(12321);
+    // ft::vector<int>::iterator it = vec.begin();
     // vec1.insert(it1, 123);
-    std::vector<int>::iterator it1 = vec1.begin(); 
-    vec.insert(it, 123);
-    ft::RBT<int, std::string> c;
+    // std::vector<int>::iterator it1 = vec1.begin(); 
+    // vec.insert(it, 123);
+    ft::RBT<int, int> ss;
+    int s = 12;
+    ss.insert(s);
     // ft::rbt_iterator<node, ft::RBT<int, std::string> > s;
     // for(int i = 0; i < vec1.size(); i++)
     // {
