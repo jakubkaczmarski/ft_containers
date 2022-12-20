@@ -20,11 +20,20 @@ int main()
     // vec1.insert(it1, 123);
     // std::vector<int>::iterator it1 = vec1.begin(); 
     // vec.insert(it, 123);
-    ft::RBT<int, int> ss;
-    int s = 12;
-    int b = 13;
-    ss.insert(s);
-    ss.insert(b);
+    // Node<int> s(12, BLACK);/
+    // int b = 15;
+    // insert(&s, b);
+    ft::RBT<int,int> s;
+    int b = 12;
+    s.insert(b);
+    s.insert(b);
+    s.insert(b);
+    s.insert(b);
+
+    // int s = 12;
+    // int b = 13;
+    // ss.insert(s);
+    // ss.insert(b);
     // ss.insert(s);
     
     // ft::rbt_iterator<node, ft::RBT<int, std::string> > s;

@@ -31,34 +31,30 @@ namespace ft
             {
                 this->data = data;
                 this->color = color;
-                this->child[left] = new Node<value_type>();
-                this->child[right] = new Node<value_type>();
-                printf("Constructor ran\n");
-            }
-            Node()
-            {
-                this->data = 0;
-                this->color = 0;
-                this->child[left] = new Node<value_type>(13);
-                this->child[right] = new Node<value_type>(12);
-            }
-
-            Node(int a)
-            {
-                this->data = 0;
-                this->color = 0;
                 this->child[left] = NULL;
                 this->child[right] = NULL;
+                printf("Constructor ran\n");
             }
             Data data;
             int color;             
             Node *child[2];
         };
 
-
+        int    red(Node<value_type> *node)
+        {
+            if(!node)
+            {
+                return 0;
+            }else if(node->color == RED)
+            {
+                return 1;
+            }else{
+                return 0;
+            }
+        }
         Node<value_type> *rotate(Node<value_type> *node, bool direction)
         {
-            Node<value_type> *tmp = node->child[direction];
+            Node<value_type> *tmp = node->child[!direction];
             node->child[!direction] = tmp->child[direction];
             tmp->child[direction] = node;
 
@@ -108,40 +104,41 @@ namespace ft
         void colorFlip(Node<value_type> *node)
         {
             node->color = !node->color;
-            std::cout << node->child[left]->color << std::endl;
-            // std::cout << !node->child[left]->color << std::endl;
+            node->child[left]->color = !node->child[left]->color;
             node->child[right]->color = !node->child[right]->color;
         }
 
         Node<value_type> *fix_insert(Node<value_type> *node, bool direction)
         {
     
-            if(node->child[direction]->color == RED)
+            if(red(node->child[direction]))
             {
                 //Both children are red only one child has 2 reds in a row
-                printf("Hiello\n");
-                std::cout << node->child[direction]->color << std::endl;
-                std::cout << "Zium " << std::endl;
-                std::cout << node->child[direction]->child[direction]->color << std::endl;
-                std::cout << "Zium2 " << std::endl;
-                if(node->child[direction]->child[direction]->color == RED 
-                    || node->child[direction]->child[!direction]->color == RED)
+                printf("Segg fault1");
+                if(red(node->child[!direction]))
                 {
-                    printf("Woow\n");
-                    this->colorFlip(node);
-                }else
-                {
-                    printf("Woow\n");
-                    //Both children are red
-                    if(node->child[direction]->child[direction]->color == RED)
+                    if(red(node->child[direction]->child[direction])
+                    || red(node->child[direction]->child[!direction]))
                     {
-                        
+                        printf("Woow\n");
+                        this->colorFlip(node);
+                    }
+                }
+                else
+                {
+                    //Both children are red
+                    printf("Segg fault 321\n");
+                    if(red(node->child[direction]->child[direction]))
+                    {
+                        printf("ROtatitooon\n");
                         node = rotate(node, !direction);
 
-                    }else if(node->child[direction]->child[!direction]->color == RED)
+                    }else if(red(node->child[direction]->child[!direction]))
                     {
                         //Any one child has 2 reds in a row
+                  
                         node = doubleRotate(node, !direction);
+   
                     }
                 }
             }
