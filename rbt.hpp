@@ -145,7 +145,117 @@ namespace ft
             return node;
         }
 
+        void delete(value_type &data)
+        {
+            bool result = false;
+            root_ = internal_delete(data, result);
+            if(root != NULL)
+            {
+                root->color = BLACK:
+            }
+        }
 
+        delete_fix(Node<value_type> *node, bool direction, bool &result)
+        {
+            Node<value_type> *parent = node;
+            Node<value_type> *sibling = node->child[!direction];
+
+            if(red(sibling))
+            {
+                node = rotate(node, direction);
+                sibling = parent->child[!direction];
+            }
+
+            if(sibling)
+            {
+                if(!red(sibling->child[left]) && !red(sibling->child[right]))
+                {
+                    if(red(parent))
+                        result = true;
+
+                    parent->color = BLACK;
+                    sibling->color = RED;
+                }else{
+                    int init_color = parent->color;
+                    bool isRedSibling = !(node==parent);
+
+                    if(red(sibling->child[!direction]))
+                    {
+                        parent = rotate(parent, direction);
+                    }else{
+                        parent = doubleRotate(parent, direction);
+                    }
+
+                    parent->color = init_color;
+                    parent->child[left]->color = BLACK;
+                    parent->child[right]->color = BLACK;
+                    
+                    if(isRedSibling)
+                    {
+                        node->child[direction] = parent;
+                    }else
+                    {
+                        node = parent;
+                    }
+
+                    result = true;
+                }
+            }
+            return node;
+        }
+
+        // maximum value in the left subtree
+        
+        Node<value_type> *internal_delete(Node<value_type> *node, value_type &data, bool &result)
+        {
+            if(!node)
+            {
+                result(true);
+                return NULL;
+            }
+
+            if(node->data == data)
+            {
+                if(node->child[left] == NULL || node->child[right] == NULL)
+                {
+                    Node *tmp = NULL;
+                    if(node->child[left])
+                    {
+                        tmp = node->child[left];
+                    }
+                    if(node->child[right])
+                    {
+                        tmp = node->child[right];
+                    }
+                    if(red(node))
+                    {
+                        delete node;
+                        result = true;
+                    }else if(red(tmp))
+                    {
+                        tmp->color = BLACK;
+                        delete node;
+                        result = true;
+                    }
+
+                    return tmp;
+                }
+            }else{
+                Node *tmp = getMax(node->child[left]);
+                node->data = tmp->data;
+                data = tmp->data;
+            }
+            bool direction = data > node->data;
+
+            node->child[direction] = internal_delete(node->child[direction], data, result);
+
+            if(result)
+            {
+                return node;
+            }else{
+                return delete_fix(node, data, result);
+            }
+        }
         private:
             struct Node<value_type> *root_;
             // struct Node<value_Type 
