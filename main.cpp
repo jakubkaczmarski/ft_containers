@@ -25,10 +25,19 @@ int main()
     // insert(&s, b);
     ft::RBT<int,int> s;
     int b = 12;
+    int c = 31;
     s.insert(b);
-    s.insert(b);
-    s.insert(b);
-    s.insert(b);
+    s.insert(c);
+    s.print_tree();
+    printf("\n");
+    std::cout << s.search(c) << std::endl;
+    // s.delete_(b);
+    // s.delete_(b);
+    // s.delete_(b);
+    // s.delete_(b);
+    // s.delete_(b);
+    // s.delete_(b);
+    // s.print_tree();
 
     // int s = 12;
     // int b = 13;

@@ -19,11 +19,7 @@ namespace ft
         typedef Value value_type;
     
         public:
-        RBT()
-        : root_(NULL)
-        {
-
-        }
+       
         template <typename Data>
         struct Node
         {
@@ -39,7 +35,10 @@ namespace ft
             int color;             
             Node *child[2];
         };
-
+        RBT()
+        {
+            this->root_ = NULL;
+        }
         int    red(Node<value_type> *node)
         {
             if(!node)
@@ -73,13 +72,13 @@ namespace ft
 
         void insert(value_type &data)
         {
-            if(root_)
+            if(this->root_)
             {
-                std::cout << " " << root_->data << std::endl;
+                std::cout << " " << this->root_->data << std::endl;
             }
-            root_ = this->internal_insert(root_, data);
+            this->root_ = this->internal_insert(root_, data);
         
-            root_->color = BLACK;
+            this->root_->color = BLACK;
         }
         
 
@@ -145,17 +144,9 @@ namespace ft
             return node;
         }
 
-        void delete(value_type &data)
-        {
-            bool result = false;
-            root_ = internal_delete(data, result);
-            if(root != NULL)
-            {
-                root->color = BLACK:
-            }
-        }
+        
 
-        delete_fix(Node<value_type> *node, bool direction, bool &result)
+        Node<value_type> *delete_fix(Node<value_type> *node, bool direction, bool &result)
         {
             Node<value_type> *parent = node;
             Node<value_type> *sibling = node->child[!direction];
@@ -203,14 +194,61 @@ namespace ft
             }
             return node;
         }
-
+        void delete_(value_type &data)
+        {
+            bool result = false;
+            root_ = internal_delete(root_ ,data, result);
+            if(root_ != NULL)
+            {
+                root_->color = BLACK;
+            }
+        }
+        void print_tree()
+        {
+            this->printTree_internal(root_);
+        }
         // maximum value in the left subtree
-        
+        void printTree_internal(Node<value_type> *node)
+        {
+            if(node != NULL)
+            {
+                printTree_internal(node->child[left]);
+                printf("%d\t", node->data);
+                printTree_internal(node->child[right]);
+            }
+        }
+        Node<value_type> *getMax(Node<value_type> *node)
+        {
+            if(node->child[left])
+            {
+                getMax(node->child[left]);
+            }
+            return node;
+        }
+        value_type search(value_type key)
+        {
+            Node<value_type> *tmp = root_;
+            if(!tmp)
+            {
+                return 0;
+            }
+            while(tmp != NULL && tmp->data != key)
+            {
+                if(key < tmp->data)
+                {
+                    tmp = tmp->child[left];
+                }else{
+                    tmp = tmp->child[right];
+                }
+            }
+            return root_->data;
+
+        }
         Node<value_type> *internal_delete(Node<value_type> *node, value_type &data, bool &result)
         {
             if(!node)
             {
-                result(true);
+                result = true;
                 return NULL;
             }
 
@@ -218,7 +256,7 @@ namespace ft
             {
                 if(node->child[left] == NULL || node->child[right] == NULL)
                 {
-                    Node *tmp = NULL;
+                    Node<value_type> *tmp = NULL;
                     if(node->child[left])
                     {
                         tmp = node->child[left];
@@ -241,7 +279,7 @@ namespace ft
                     return tmp;
                 }
             }else{
-                Node *tmp = getMax(node->child[left]);
+                Node<value_type> *tmp = getMax(node->child[left]);
                 node->data = tmp->data;
                 data = tmp->data;
             }
@@ -256,6 +294,7 @@ namespace ft
                 return delete_fix(node, data, result);
             }
         }
+
         private:
             struct Node<value_type> *root_;
             // struct Node<value_Type 
