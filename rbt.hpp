@@ -12,34 +12,39 @@
 namespace ft
 {
     template <typename Key, typename Value,
-        typename Alloc = std::allocator<ft::pair<const Key, Value> >, typename Compare = std::less<Key> >
+        typename allocator = std::allocator<ft::pair<Key, Value> >, typename Compare = std::less<Key> >
     class RBT
     {
-
+        typedef allocator  allocator_type;
         typedef ft::pair<Key, Value> value_type;
-        
+
         public:
-       
-        template <typename Data>
+
+        template <typename Data, typename allocator_type>
         struct Node
         {
-            Node(Data data, int color)
+            Node()
             {
-                this->data = data;
+
+            }
+
+            void init(Data &data, int color, allocator_type &alloc_)
+            {
                 this->color = color;
                 this->child[left] = NULL;
                 this->child[right] = NULL;
                 printf("Constructor ran\n");
             }
-            Data data;
-            int color;             
+
+            Data *data;
+            int color;  
             Node *child[2];
         };
         RBT()
         {
             this->root_ = NULL;
         }
-        int    red(Node<value_type> *node)
+        int    red(Node<value_type, allocator_type> *node)
         {
             if(!node)
             {
@@ -51,9 +56,9 @@ namespace ft
                 return 0;
             }
         }
-        Node<value_type> *rotate(Node<value_type> *node, bool direction)
+        Node<value_type, allocator_type> *rotate(Node<value_type, allocator_type> *node, bool direction)
         {
-            Node<value_type> *tmp = node->child[!direction];
+            Node<value_type, allocator_type> *tmp = node->child[!direction];
             node->child[!direction] = tmp->child[direction];
             tmp->child[direction] = node;
 
@@ -63,7 +68,7 @@ namespace ft
             return tmp;
         }
 
-        Node<value_type> *doubleRotate(Node<value_type> *node, bool direction)
+        Node<value_type, allocator_type> *doubleRotate(Node<value_type, allocator_type> *node, bool direction)
         {
             node->child[!direction] = rotate(node->child[!direction], !direction);
             
@@ -78,31 +83,39 @@ namespace ft
         }
         
 
-        Node<value_type> *internal_insert(Node<value_type> *node, value_type &data)
+        Node<value_type, allocator_type> *internal_insert(Node<value_type, allocator_type> *node, value_type &data)
         {
             bool direction;
             
             if(node == NULL)
             {
-                return new Node<value_type>(data, RED);
+                Node<value_type, allocator_type> *val;
+                Node<value_type, allocator_type> val1;
+                val = node_alloc_.allocate(1);
+                std::cout << "Zium12 " << std::endl;
+                val1.init(data,RED, alloc_ );
+                val1.data = alloc_.allocate(1);
+                alloc_.construct(val1.data, data);
+                node_alloc_.construct(val, val1);
+                return val;
             }
             //Left 0, Right 1
             
-            direction = data.first > node->data.first;
+            direction = data.first > node->data->first;
             
             node->child[direction] = internal_insert(node->child[direction], data);
             
             return this->fix_insert(node, direction);;
         }
         
-        void colorFlip(Node<value_type> *node)
+        void colorFlip(Node<value_type, allocator_type> *node)
         {
             node->color = !node->color;
             node->child[left]->color = !node->child[left]->color;
             node->child[right]->color = !node->child[right]->color;
         }
 
-        Node<value_type> *fix_insert(Node<value_type> *node, bool direction)
+        Node<value_type, allocator_type> *fix_insert(Node<value_type, allocator_type> *node, bool direction)
         {
     
             if(red(node->child[direction]))
@@ -137,10 +150,10 @@ namespace ft
 
         
 
-        Node<value_type> *delete_fix(Node<value_type> *node, bool direction, bool &result)
+        Node<value_type, allocator_type> *delete_fix(Node<value_type, allocator_type> *node, bool direction, bool &result)
         {
-            Node<value_type> *parent = node;
-            Node<value_type> *sibling = node->child[!direction];
+            Node<value_type, allocator_type> *parent = node;
+            Node<value_type, allocator_type> *sibling = node->child[!direction];
 
             if(red(sibling))
             {
@@ -188,6 +201,7 @@ namespace ft
         void delete_(value_type &data)
         {
             bool result = false;
+            // if(search(data))
             root_ = internal_delete(root_ ,data, result);
             if(root_ != NULL)
             {
@@ -197,18 +211,21 @@ namespace ft
         void print_tree()
         {
             this->printTree_internal(root_);
+
         }
         // maximum value in the left subtree
-        void printTree_internal(Node<value_type> *node)
+        void printTree_internal(Node<value_type, allocator_type> *node)
         {
             if(node != NULL)
             {
                 printTree_internal(node->child[left]);
-                std::cout << node->data.first << "\t" << node->data.second << std::endl;
+                std::cout << node->data->first << "\t" << node->data->second << std::endl;
+                std::cout << "Color : " << node->color << std::endl;
                 printTree_internal(node->child[right]);
             }
         }
-        Node<value_type> *getMax(Node<value_type> *node)
+
+        Node<value_type, allocator_type> *getMax(Node<value_type, allocator_type> *node)
         {
             if(node->child[left])
             {
@@ -216,16 +233,17 @@ namespace ft
             }
             return node;
         }
+
         value_type search(value_type key)
         {
-            Node<value_type> *tmp = root_;
+            Node<value_type, allocator_type> *tmp = root_;
             if(!tmp)
             {
                 return 0;
             }
-            while(tmp != NULL && tmp->data.first != key)
+            while(tmp != NULL && tmp->data->first != key)
             {
-                if(key < tmp->data.first)
+                if(key < tmp->data->first)
                 {
                     tmp = tmp->child[left];
                 }else{
@@ -235,7 +253,8 @@ namespace ft
             return root_->data;
 
         }
-        Node<value_type> *internal_delete(Node<value_type> *node, value_type &data, bool &result)
+
+        Node<value_type, allocator_type> *internal_delete(Node<value_type, allocator_type> *node, value_type &data, bool &result)
         {
             if(!node)
             {
@@ -243,11 +262,11 @@ namespace ft
                 return NULL;
             }
 
-            if(node->data.first == data.first)
+            if(node->data->first == data.first)
             {
                 if(node->child[left] == NULL || node->child[right] == NULL)
                 {
-                    Node<value_type> *tmp = NULL;
+                    Node<value_type, allocator_type> *tmp = NULL;
                     if(node->child[left])
                     {
                         tmp = node->child[left];
@@ -258,36 +277,46 @@ namespace ft
                     }
                     if(red(node))
                     {
-                        delete node;
+                        alloc_.deallocate(node->data, 1);
+                        node_alloc_.deallocate(node, 1);
+                        std::cout << "Deallocate" << std::endl;
+                        // node_alloc_.destroy(node);
                         result = true;
                     }else if(red(tmp))
                     {
+                        std::cout << "Deallocate" << tmp->color << std::endl;
                         tmp->color = BLACK;
-                        delete node;
+                        alloc_.deallocate(node->data, 1);
+                        node_alloc_.deallocate(node, 1);
+                        // node_alloc_.destroy(node);
                         result = true;
                     }
 
                     return tmp;
                 }
-            }else{
-                Node<value_type> *tmp = getMax(node->child[left]);
+            else{
+                Node<value_type, allocator_type> *tmp = getMax(node->child[left]);
+                alloc_.deallocate(node->data, 1);
                 node->data = tmp->data;
-                data = tmp->data;
+                data = *tmp->data;
             }
-            bool direction = data.first > node->data.first;
-
+            }
+            bool direction = data.first > node->data->first;
             node->child[direction] = internal_delete(node->child[direction], data, result);
 
-            if(result)
+            if(result == true)
             {
+                std::cout << "Siemanko" << std::endl;
                 return node;
             }else{
-                return delete_fix(node, data, result);
+                return delete_fix(node, direction, result);
             }
         }
 
         private:
-            struct Node<value_type> *root_;
+            struct Node<value_type, allocator_type> *root_;
+            allocator_type alloc_;
+            std::allocator<Node<value_type, allocator_type> > node_alloc_;
             // struct Node<value_Type 
         //     // struct node;
         //     template<typename T>

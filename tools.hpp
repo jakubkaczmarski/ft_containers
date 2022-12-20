@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/12/13 18:08:07 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:50:31 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,12 @@ namespace ft
         pair(const type_one &x, const type_two &y) : first(x), second(y){};
         template<typename x, typename y>
         pair(const pair<x, y> &ot) : first(ot.first), second(ot.second){}
-
+        template<typename x, typename y>
+        pair operator=(pair<const x, y> &cp) 
+        {
+            this->first = cp.first;
+            this->second = cp.second;
+        }
         ~pair(void){}
         type_one first;
         type_two second;

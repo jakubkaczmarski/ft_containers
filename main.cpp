@@ -28,10 +28,20 @@ int main()
     ft::pair<int, std::string> s= ft::make_pair<int, std::string>(21, "Marek");
     ft::pair<int, std::string> s2= ft::make_pair<int, std::string>(1, "Borys");
     // ft::pair<int, std::string> s2= ft::make_pair<int, std::string>(5, "Borys");
-    // int c = 31;
+    // int c = 31
+
+    tree.insert(s2);
     tree.insert(s);
     tree.insert(s2);
+    // tree.insert(s2);
     tree.print_tree();
+    tree.delete_(s);
+    tree.delete_(s2);
+    tree.delete_(s2);
+    // tree.delete_(s2);
+    // tree.delete_(s2);
+    // tree.print_tree();
+    // tree.print_tree();
     // printf("\n");
     // std::cout << s.search(c) << std::endl;
     // s.delete_(b);
