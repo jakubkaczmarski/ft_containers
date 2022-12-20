@@ -2,6 +2,7 @@
 #include <vector>
 // #include "rbt_iter.hpp"
 #include "rbt.hpp"
+#include "tools.hpp"
 
 int main()
 {
@@ -23,14 +24,16 @@ int main()
     // Node<int> s(12, BLACK);/
     // int b = 15;
     // insert(&s, b);
-    ft::RBT<int,int> s;
-    int b = 12;
-    int c = 31;
-    s.insert(b);
-    s.insert(c);
-    s.print_tree();
-    printf("\n");
-    std::cout << s.search(c) << std::endl;
+    ft::RBT<int, std::string> tree;
+    ft::pair<int, std::string> s= ft::make_pair<int, std::string>(21, "Marek");
+    ft::pair<int, std::string> s2= ft::make_pair<int, std::string>(1, "Borys");
+    // ft::pair<int, std::string> s2= ft::make_pair<int, std::string>(5, "Borys");
+    // int c = 31;
+    tree.insert(s);
+    tree.insert(s2);
+    tree.print_tree();
+    // printf("\n");
+    // std::cout << s.search(c) << std::endl;
     // s.delete_(b);
     // s.delete_(b);
     // s.delete_(b);

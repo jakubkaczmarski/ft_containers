@@ -16,8 +16,8 @@ namespace ft
     class RBT
     {
 
-        typedef Value value_type;
-    
+        typedef ft::pair<Key, Value> value_type;
+        
         public:
        
         template <typename Data>
@@ -72,10 +72,6 @@ namespace ft
 
         void insert(value_type &data)
         {
-            if(this->root_)
-            {
-                std::cout << " " << this->root_->data << std::endl;
-            }
             this->root_ = this->internal_insert(root_, data);
         
             this->root_->color = BLACK;
@@ -91,9 +87,8 @@ namespace ft
                 return new Node<value_type>(data, RED);
             }
             //Left 0, Right 1
-            printf("Direction\n");
             
-            direction = data > node->data;
+            direction = data.first > node->data.first;
             
             node->child[direction] = internal_insert(node->child[direction], data);
             
@@ -113,23 +108,19 @@ namespace ft
             if(red(node->child[direction]))
             {
                 //Both children are red only one child has 2 reds in a row
-                printf("Segg fault1");
                 if(red(node->child[!direction]))
                 {
                     if(red(node->child[direction]->child[direction])
                     || red(node->child[direction]->child[!direction]))
                     {
-                        printf("Woow\n");
                         this->colorFlip(node);
                     }
                 }
                 else
                 {
                     //Both children are red
-                    printf("Segg fault 321\n");
                     if(red(node->child[direction]->child[direction]))
                     {
-                        printf("ROtatitooon\n");
                         node = rotate(node, !direction);
 
                     }else if(red(node->child[direction]->child[!direction]))
@@ -213,7 +204,7 @@ namespace ft
             if(node != NULL)
             {
                 printTree_internal(node->child[left]);
-                printf("%d\t", node->data);
+                std::cout << node->data.first << "\t" << node->data.second << std::endl;
                 printTree_internal(node->child[right]);
             }
         }
@@ -232,9 +223,9 @@ namespace ft
             {
                 return 0;
             }
-            while(tmp != NULL && tmp->data != key)
+            while(tmp != NULL && tmp->data.first != key)
             {
-                if(key < tmp->data)
+                if(key < tmp->data.first)
                 {
                     tmp = tmp->child[left];
                 }else{
@@ -252,7 +243,7 @@ namespace ft
                 return NULL;
             }
 
-            if(node->data == data)
+            if(node->data.first == data.first)
             {
                 if(node->child[left] == NULL || node->child[right] == NULL)
                 {
@@ -283,7 +274,7 @@ namespace ft
                 node->data = tmp->data;
                 data = tmp->data;
             }
-            bool direction = data > node->data;
+            bool direction = data.first > node->data.first;
 
             node->child[direction] = internal_delete(node->child[direction], data, result);
 
