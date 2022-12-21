@@ -36,9 +36,12 @@ int main()
     // tree.insert(s2);
     tree.print_tree();
     tree.delete_(s);
-    tree.delete_(s2);
-    tree.delete_(s2);
     // tree.delete_(s2);
+    tree.delete_(s2);
+    tree.delete_(s2);
+    tree.delete_(s2);
+    // tree.delete_(s2
+    tree.print_tree();
     // tree.delete_(s2);
     // tree.print_tree();
     // tree.print_tree();

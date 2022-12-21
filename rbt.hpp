@@ -46,8 +46,10 @@ namespace ft
         }
         int    red(Node<value_type, allocator_type> *node)
         {
+
             if(!node)
             {
+                std::cout << "check " << std::endl;
                 return 0;
             }else if(node->color == RED)
             {
@@ -269,29 +271,37 @@ namespace ft
                     Node<value_type, allocator_type> *tmp = NULL;
                     if(node->child[left])
                     {
+                        std::cout << "If delete " << std::endl;
                         tmp = node->child[left];
                     }
                     if(node->child[right])
                     {
+                        std::cout << "If delete " << std::endl;
                         tmp = node->child[right];
                     }
+                    std::cout << "Inside delete val\t" << node->data->first << "Color ";
+                    std::cout << node->color << std::endl;
                     if(red(node))
                     {
                         alloc_.deallocate(node->data, 1);
                         node_alloc_.deallocate(node, 1);
-                        std::cout << "Deallocate" << std::endl;
+                        std::cout << "Deallocate 1" << std::endl;
                         // node_alloc_.destroy(node);
                         result = true;
                     }else if(red(tmp))
                     {
-                        std::cout << "Deallocate" << tmp->color << std::endl;
+                        std::cout << "Deallocate 2\n" << tmp->color << std::endl;
                         tmp->color = BLACK;
                         alloc_.deallocate(node->data, 1);
                         node_alloc_.deallocate(node, 1);
                         // node_alloc_.destroy(node);
                         result = true;
+                    }else{
+                        alloc_.deallocate(node->data, 1);
+                        node_alloc_.deallocate(node, 1);
                     }
-
+                    
+                    std::cout << "Delete ran" << std::endl;
                     return tmp;
                 }
             else{
@@ -317,6 +327,8 @@ namespace ft
             struct Node<value_type, allocator_type> *root_;
             allocator_type alloc_;
             std::allocator<Node<value_type, allocator_type> > node_alloc_;
+    };
+}
             // struct Node<value_Type 
         //     // struct node;
         //     template<typename T>
@@ -346,96 +358,5 @@ namespace ft
        
 
         //     RBT(const key_compare &compare = key_compare(), const allocator_type &alloc = allocator_type())
-        //     : size_(0), comp_(compare), alloc_(alloc)
-        //     {
-        //         nil_ = node_alloc_.allocate(1);
-        //         nil_->color = BLACK;
-        //         nil_->left = nullptr;
-        //         nil_->right = nullptr;
-        //         root_ = nil_;
-        //     }
-
-        //     ~RBT()
-        //     {
-        //         dealloc();
-        //     }
-
-        //     void dealloc()
-        //     {
-        //         alloc_.deallocate(nil_, 1);
-        //     }
-
-        //     size_type size() const
-        //     {
-        //         return size_;
-        //     }
-
-        //     node *insert(const value_type &value)
-        //     {
-        //         node *tmp = node_alloc_.allocate(1);
-        //         tmp->data = alloc_.allocate(1);
-        //         alloc_.construct(tmp->data, value);
-        //         tmp->parent = nullptr;
-        //         tmp->left = nil_;
-        //         tmp->right = nil_;
-        //         tmp->color = RED;
-
-        //         node *i = nullptr;
-        //         node *j = root_;
-
-        //         while(i != nil_)
-        //         {
-        //             j = i;
-        //             if(this->comp_(tmp->data->first, j->data->first))
-        //             {
-        //                 i = i->left;
-        //             }
-        //             else if(comp_(i->data->first, tmp->data->first))
-        //             {
-        //                 i = i->right;
-        //             }else{
-        //                 return i;
-        //             }
-        //         }
-        //         tmp->parent = j;
-        //         if(j == nullptr)
-        //             root_ = tmp;
-        //         else if(comp_(tmp->data->first, j->data->first))
-        //             j->left = tmp;
-        //         else 
-        //             j->right = tmp;
-        //         size_++;
-
-        //         node *x = root_;
-
-        //         while(x->right != nil_)
-        //         {
-        //             x = x->right;
-        //         }
-        //         nil_->parent = x;
-
-        //         if(tmp->parent == nullptr)
-        //         {
-        //             tmp->color = BLACK:
-        //             return tmp;
-        //         }
-
-        //         if(tmp->parent->parent == nullptr)
-        //         {
-        //             return tmp;
-        //         }
-
-        //         //Fix insert
-        //         //Fixinsert(tmp);
-        //         return tmp;
-        //     }
-
-        // private:
-        //     node *root_;
-        //     size_type size_;
-        //     key_compare comp_;
-        //     allocator_type alloc_;
-        //     std::allocator<node> node_alloc_;
-        //     node *nil_;
-    };
-}
+    // };
+// }
