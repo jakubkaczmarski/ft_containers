@@ -44,8 +44,9 @@ int main()
     tree.delete_(s2);
     tree.delete_(s2);
     tree.delete_(s2);
-    // tree.delete_(s2);
-    // tree.delete_(s2);
+    tree.delete_(s2);
+    tree.delete_(s2);
+    tree.delete_(s2);
     std::cout << "printing out the thingy" << std::endl;
     tree.print_tree();
     // tree.delete_(s2);
