@@ -33,14 +33,20 @@ int main()
     tree.insert(s2);
     tree.insert(s);
     tree.insert(s2);
+    tree.insert(s2);
+    tree.insert(s2);
+    tree.insert(s2);
+    tree.insert(s2);
     // tree.insert(s2);
-    tree.print_tree();
+    // tree.print_tree();
     tree.delete_(s);
+    tree.delete_(s2);
+    tree.delete_(s2);
+    tree.delete_(s2);
+    tree.delete_(s2);
     // tree.delete_(s2);
-    tree.delete_(s2);
-    tree.delete_(s2);
-    tree.delete_(s2);
-    // tree.delete_(s2
+    // tree.delete_(s2);
+    std::cout << "printing out the thingy" << std::endl;
     tree.print_tree();
     // tree.delete_(s2);
     // tree.print_tree();
