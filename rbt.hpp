@@ -28,7 +28,6 @@ namespace ft
                 this->color = color;
                 this->child[left] = NULL;
                 this->child[right] = NULL;
-                printf("Constructor ran\n");
             }
 
             std::allocator<Data> internal_alloc_;
@@ -42,10 +41,8 @@ namespace ft
         }
         int    red(Node<value_type> *node)
         {
-
             if(!node)
             {
-                std::cout << "check " << std::endl;
                 return 0;
             }else if(node->color == RED)
             {
@@ -88,13 +85,9 @@ namespace ft
             if(node == NULL)
             {
                 Node<value_type> *val;
-                Node<value_type> val1(data, BLACK);
                 val = node_alloc_.allocate(1);
-                node_alloc_.construct(val, val1);
-
-                val1.data = alloc_.allocate(1);
-                alloc_.construct(val1.data, data);
-                node_alloc_.construct(val, val1);
+                val->data = val->internal_alloc_.allocate(1);
+                val->internal_alloc_.construct(val->data, data);
                 return val;
             }
             //Left 0, Right 1
@@ -196,16 +189,7 @@ namespace ft
             }
             return node;
         }
-        void delete_(value_type &data)
-        {
-            bool result = false;
-            // if(search(data))
-            root_ = internal_delete(root_ ,data, result);
-            if(root_ != NULL)
-            {
-                root_->color = BLACK;
-            }
-        }
+
         void print_tree()
         {
             this->printTree_internal(root_);
@@ -252,6 +236,29 @@ namespace ft
 
         }
 
+        void delete_(value_type &data)
+        {
+            bool result = false;
+            
+            if(!root_)
+            {
+                result = true;
+                return ;
+            }
+            if(root_->child[left] == NULL && root_->child[right] == NULL && (root_->data->first == data.first))
+            {
+                root_->internal_alloc_.deallocate(root_->data, 1);
+                node_alloc_.deallocate(root_, 1);
+                root_ = NULL;
+                return ;
+            }
+            root_ = internal_delete(root_ ,data, result);
+            if(root_ != NULL)
+            {
+                root_->color = BLACK;
+            }
+        }
+
         Node<value_type> *internal_delete(Node<value_type> *node, value_type &data, bool &result)
         {
             if(!node)
@@ -264,6 +271,7 @@ namespace ft
             {
                 if(node->child[left] == NULL || node->child[right] == NULL)
                 {
+
                     Node<value_type> *tmp = NULL;
                     if(node->child[left])
                     {
@@ -273,25 +281,23 @@ namespace ft
                     {
                         tmp = node->child[right];
                     }
-                    std::cout << node->color << std::endl;
+
+                   
                     if(red(node))
                     {
-                        alloc_.deallocate(node->data, 1);
+                        node->internal_alloc_.deallocate(node->data, 1);
                         node_alloc_.deallocate(node, 1);
                         result = true;
+
                     }else if(red(tmp))
                     {
+                        std::cout << node->data->second << " Hallo karthus " << std::endl;
                         tmp->color = BLACK;
-                        alloc_.deallocate(node->data, 1);
+                        node->internal_alloc_.deallocate(node->data, 1);
                         node_alloc_.deallocate(node, 1);
                         // node_alloc_.destroy(node);
                         result = true;
-                    }else if(node)
-                    {
-                        alloc_.deallocate(node->data, 1);
-                        node_alloc_.deallocate(node, 1);
                     }
-                    
                     return tmp;
                 }
             else{
