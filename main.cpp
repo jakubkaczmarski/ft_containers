@@ -1,7 +1,8 @@
 #include "vector.hpp"
 #include <vector>
+#include "map.hpp"
 // #include "rbt_iter.hpp"
-#include "rbt.hpp"
+// #include "rbt.hpp"
 #include "tools.hpp"
 
 int main()
@@ -24,6 +25,7 @@ int main()
     // Node<int> s(12, BLACK);/
     // int b = 15;
     // insert(&s, b);
+    // ft::map<int , std::string> d;
     ft::RBT<int, std::string> tree;
     ft::pair<int, std::string> marek = ft::make_pair<int, std::string>(21, "Marek");
     // ft::pair<int, std::string> s2= ft::make_pair<int, std::string>(5, "Borys");

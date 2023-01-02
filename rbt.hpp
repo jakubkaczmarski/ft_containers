@@ -2,7 +2,7 @@
 #include "rbt_iter.hpp"
 #include <memory>
 #include <iostream>
-
+#include <functional>
 #define BLACK true
 #define RED false
 
@@ -17,9 +17,7 @@ namespace ft
     {
         typedef allocator  allocator_type;
         typedef ft::pair<Key, Value> value_type;
-
         public:
-
         template <typename Data>
         struct Node
         {
@@ -92,7 +90,7 @@ namespace ft
             }
             //Left 0, Right 1
             
-            direction = data.first > node->data->first;
+            direction = !compare(data.first, node->data->first);
             
             node->child[direction] = internal_insert(node->child[direction], data);
             
@@ -323,6 +321,7 @@ namespace ft
             struct Node<value_type> *root_;
             allocator_type alloc_;
             std::allocator<Node<value_type> > node_alloc_;
+            Compare						compare;
     };
 }
             // struct Node<value_Type 
