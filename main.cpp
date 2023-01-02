@@ -42,7 +42,7 @@ int main()
     tree.delete_(dinoaur);
     tree.delete_(kapibara);
     // tree.delete_(s2);
-    // tree.print_tree();
+    tree.print_tree();
     // tree.print_tree();
     // printf("\n");
     // std::cout << s.search(c) << std::endl;

@@ -305,6 +305,7 @@ namespace ft
                 alloc_.deallocate(node->data, 1);
                 node->data = tmp->data;
                 data = *tmp->data;
+                free(tmp);
             }
             }
             bool direction = data.first > node->data->first;
