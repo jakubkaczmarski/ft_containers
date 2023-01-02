@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/02 20:13:55 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/02 23:37:54 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,17 @@ namespace ft
                     return comp(x.first, x.second);    
                 }
         };
-            explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
-            : tree_(comp, alloc), comp_(comp), alloc_(alloc)
-            {
+        explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+        : tree_(comp, alloc), comp_(comp), alloc_(alloc)
+        {
                 
-            }
-
-            // ft::pair<iterator,bool> insert (const value_type& val)
-	        // {
-            //     tree_.insert(val);
-		    //     // iterator temp = iterator(this->_tree.insert(val), this->_tree.getEnd(), this->_tree.getRend());
-		    //     // return (ft::make_pair<iterator, bool>(temp, booltemp));
-            // }
-
+        }        
+        // ft::pair<iterator,bool> insert (const value_type& val)
+        // {
+        //     tree_.insert(val);
+		//     // iterator temp = iterator(this->_tree.insert(val), this->_tree.getEnd(), this->_tree.getRend());
+		//     // return (ft::make_pair<iterator, bool>(temp, booltemp));
+        // }
             
             private:
             tree_type tree_;
