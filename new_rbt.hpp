@@ -19,10 +19,10 @@ namespace ft
         template<typename Data>
         struct Node
         {
-            Node(Data val)
+            Node()
             {
-                this->data = alloc.allocate(1);
-                alloc.construct(this->data, val);
+                // this->data = alloc.allocate(1);
+                // alloc.construct(this->data, val);
                parent = NULL;
                 left = NULL;
                 right = NULL;
@@ -36,6 +36,7 @@ namespace ft
             }
             ~Node()
             {
+                alloc.destroy(this->data);
                 alloc.deallocate(this->data, 1);
             }
             Node<Data> *parent;
@@ -151,11 +152,11 @@ namespace ft
             if(root == NULL)
                 return ptr;
             //Change to compare here
-            if(ptr->data->first < root->data->first)
+            if(compare(ptr->data->first, root->data->first))
             {
                 root->left = internal_insert(root->left, ptr);
                 root->left->parent = root;
-            }else if(ptr->data->first > root_->data->first)
+            }else if(compare(root_->data->first, ptr->data->first))
             {
                 root->right = internal_insert(root->right, ptr);
                 root->right->parent = root;
@@ -167,9 +168,10 @@ namespace ft
         void insert(value_type &val)
         {
             //Allocate for node 
-            std::cout << "Zium" << std::endl;
-            node * ptr = new Node<value_type> (val);
-            std::cout << "Zium" << std::endl;
+            // node * ptr = new Node<value_type> (;
+            node * ptr = node_alloc_.allocate(1);
+            ptr->data = ptr->alloc.allocate(1);
+            ptr->alloc.construct(ptr->data, val);
             root_ = internal_insert(root_, ptr);
             fix_insert(ptr);
         }
@@ -238,11 +240,11 @@ namespace ft
         {
             if(root == NULL)
                 return root;
-            if(data.first < root->data->first)
+            if(compare(data.first, root->data->first))
             {
                 return internal_delete(root->left, data);
             }
-            if(data.first > root->data->first)
+            if(compare(root->data->first ,data.first))
             {
                 return internal_delete(root->right, data);
             }
@@ -289,7 +291,8 @@ namespace ft
                     }
                     set_color(child, BLACK);
                     //freeing
-                    delete ptr;
+                    node_alloc_.destroy(ptr);
+                    node_alloc_.deallocate(ptr, 1);
                 }else{
                     ptr->parent->right = child;
                     if(child != nullptr)
@@ -297,8 +300,9 @@ namespace ft
                         child->parent = ptr->parent;
                     }
                     set_color(child, BLACK);
-                    
-                    delete ptr;
+
+                    node_alloc_.destroy(ptr);
+                    node_alloc_.deallocate(ptr, 1);
                 }
             }else
             {
@@ -393,7 +397,8 @@ namespace ft
                     ptr->parent->right = NULL;
                 }
                 
-                delete ptr;
+                node_alloc_.destroy(ptr);
+                node_alloc_.deallocate(ptr, 1);
                 set_color(root_, BLACK);
             }
 
@@ -429,7 +434,8 @@ namespace ft
         private:
         node *root_;
         node *nil_;
-        std::allocator<node> node_alloc;
+        std::allocator<Node<value_type> > node_alloc_;
+        Compare						compare;
     };
     
 }
