@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <map>
 
 #include "map.hpp"
 std::string * new_str (std::string &ref, std::allocator<std::string> alloc )
@@ -15,6 +16,8 @@ std::string * new_str (std::string &ref, std::allocator<std::string> alloc )
 int main()
 {
     ft::map<int, std::string> map;
+    std::map<int, std::string> mapp;
+    std::map<int, std::string>::iterator;
     // s.insert(p1);
     // s.insert(p3);
     // s.insert(p2);

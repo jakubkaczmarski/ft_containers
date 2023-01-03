@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/03 23:45:55 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/03 23:55:21 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,39 @@ namespace ft
         : tree_(), comp_(comp), alloc_(alloc)
         {
                 
-        }        
+        }
+
+        template <typename InputIterator>
+        map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
+            const allocator_type &alloc = allocator_type(),
+        typename enable_if<!is_integral<InputIterator>::value>::type* = NULL) : tree_()
+        {
+            while(first != last)
+            {
+                this->tree_.insert(*first);
+                first++;
+            }
+        }
+
+        map(const map &x) : tree_()
+        {
+            *this = x;
+        }
+
+        //To do
+        ~map()
+        {
+        }
+
+        map &operator=(const map &x)
+        {
+            
+        }
+
+        iterator begin()
+        {
+            // return this->tree_.begin();
+        }
         // ft::pair<iterator,bool> insert (const value_type& val)
         // {
         //     tree_.insert(val);

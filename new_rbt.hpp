@@ -1,9 +1,11 @@
 
+#ifndef NEW_RBT_HPP
+#define NEW_RBT_HPP
 #include "tools.hpp"
 #include <memory>
 #include <iostream>
 #include <functional>
-
+#include "rbt_iter.hpp"
 #define BLACK 0
 #define RED 1
 #define DOUBLE_BLACK 2
@@ -430,6 +432,15 @@ namespace ft
             }
         }
 
+        rbt_iterator<node, new_RBT> begin()
+        {
+            node *tmp = root_;
+            while(tmp != NULL && tmp->left != NULL)
+            {
+                tmp = tmp->left;
+            }
+            return rbt_iterator<node, new_RBT>(tmp,)
+        }
 
         private:
         node *root_;
@@ -439,3 +450,6 @@ namespace ft
     };
     
 }
+
+
+#endif

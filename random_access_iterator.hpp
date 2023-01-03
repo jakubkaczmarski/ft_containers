@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:26:17 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/12/13 23:55:41 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/03 23:51:30 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference reference;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category iterator_category;
-
+        
         random_access_iterator() : iter_(nullptr) {}
 
         random_access_iterator(const random_access_iterator &cp) : iter_(cp.iter_){}
