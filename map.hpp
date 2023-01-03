@@ -6,11 +6,11 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/02 23:37:54 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/03 23:45:55 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rbt.hpp"
+#include "new_rbt.hpp"
 #include "rbt_iter.hpp"
 #include "tools.hpp"
 // #include <functional>
@@ -36,14 +36,14 @@ namespace ft
     
 
         private:
-        typedef ft::RBT<key_type, mapped_type, allocator_type, key_compare> tree_type;
+        typedef ft::new_RBT<key_type, mapped_type, allocator_type, key_compare> tree_type;
 
         public:
         
-        // typedef rbt_iterator<tree_type, typename tree_type::Node> iterator;
-        // typedef const_rbt_iterator<typename tree_type::Node, tree_type> const_iterator;
-        // typedef ft::reverse_iterator<iterator> reverse_iterator;
-        // typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef rbt_iterator<tree_type, typename tree_type::node> iterator;
+        typedef const_rbt_iterator<typename tree_type::node, tree_type> const_iterator;
+        typedef ft::reverse_iterator<iterator> reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
         class value_compare : std::binary_function<value_type, value_type, bool>
         {
@@ -63,7 +63,7 @@ namespace ft
                 }
         };
         explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
-        : tree_(comp, alloc), comp_(comp), alloc_(alloc)
+        : tree_(), comp_(comp), alloc_(alloc)
         {
                 
         }        
