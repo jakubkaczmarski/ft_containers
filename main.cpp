@@ -36,15 +36,17 @@ int main()
 
     tree.insert(marek);
     tree.insert(borys);
+    tree.insert(borys);
+    tree.insert(borys);
     tree.insert(dinoaur);
     tree.insert(kapibara);
-    tree.print_tree();
-    tree.delete_(marek);
-    tree.delete_(borys);
-    tree.delete_(dinoaur);
-    tree.delete_(kapibara);
+    tree.print();
+    // tree.delete_(marek);
+    // tree.delete_(borys);
+    // tree.delete_(dinoaur);
+    // tree.delete_(kapibara);
     // tree.delete_(s2);
-    tree.print_tree();
+    // tree.print_tree();
     // tree.print_tree();
     // printf("\n");
     // std::cout << s.search(c) << std::endl;

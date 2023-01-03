@@ -9,14 +9,16 @@
 #define left 0
 #define right 1
 
+//Parent pointer has to be added
+//
+
+
 namespace ft
 {
     template <typename Key, typename Value,
         typename allocator = std::allocator<ft::pair<Key, Value> >, typename Compare = std::less<Key> >
     class RBT
-    {
-
-        
+    {         
         public:
         typedef allocator  allocator_type;
         typedef ft::pair<Key, Value> value_type;
@@ -30,17 +32,19 @@ namespace ft
                 this->color = color;
                 this->child[left] = NULL;
                 this->child[right] = NULL;
+                this->parent = NULL;
             }
 
             std::allocator<Data> internal_alloc_;
             Data *data;
-            int color;  
+            int color;
+            Node *parent;
             Node *child[2];
         };
         typedef Node<value_type>        node;
         typedef Node<value_type>*       node_ptr;
-        typedef rbt_iterator<value_type>    iterator;
-        typedef const_rbt_iterator<value_type>    const_iterator;
+        // typedef rbt_iterator<value_type>    iterator;
+        // typedef const_rbt_iterator<value_type>    const_iterator;
         RBT()
         {
             this->root_ = NULL;
@@ -79,12 +83,12 @@ namespace ft
         void insert(value_type &data)
         {
             this->root_ = this->internal_insert(root_, data);
-        
+
             this->root_->color = BLACK;
         }
         
 
-        Node<value_type> *internal_insert(Node<value_type> *node, value_type &data)
+        Node<value_type> *internal_insert(Node<value_type> *node, value_type &data, Node<value_type> *parent)
         {
             bool direction;
             
@@ -94,13 +98,14 @@ namespace ft
                 val = node_alloc_.allocate(1);
                 val->data = val->internal_alloc_.allocate(1);
                 val->internal_alloc_.construct(val->data, data);
+
                 return val;
             }
             //Left 0, Right 1
             
             direction = !compare(data.first, node->data->first);
             
-            node->child[direction] = internal_insert(node->child[direction], data);
+            node->child[direction] = internal_insert(node->child[direction], data, node);
             
             return this->fix_insert(node, direction);;
         }
@@ -324,7 +329,27 @@ namespace ft
                 return delete_fix(node, direction, result);
             }
         }
+        void _printHelper(const std::string& prefix, const node* n, bool isLeft) const
+		{
+			if (n != NULL)
+			{
+				std::cout << prefix;
 
+				std::cout << (isLeft ? "├──" : "└──" );
+
+				// print the value of the node
+				std::cout << n->data->first << std::endl;
+
+				// enter the next tree level - left and right branch
+				_printHelper(prefix + (isLeft ? "│   " : "    "), n->child[left], true);
+				_printHelper(prefix + (isLeft ? "│   " : "    "), n->child[right], false);
+			}
+		}
+
+        void print() const
+		{
+			_printHelper("", this->root_, false);
+		}   
         private:
             struct Node<value_type> *root_;
             allocator_type alloc_;

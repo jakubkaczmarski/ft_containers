@@ -361,7 +361,7 @@ namespace ft{
             return (this->base() == rhs.base());
         }
 
-        bool operator!=(const rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const rbt_iteratotior<T, Tree> &rhs) const
         {
             return (this->base() != rhs.base());
         }
