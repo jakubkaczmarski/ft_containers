@@ -11,14 +11,14 @@
 #define DOUBLE_BLACK 2
 namespace ft
 {
-    template<typename Key, typename Value, typename Compare, typename allocator = std::allocator<ft::pair<Key, Value> >  >
+    template<typename Key, typename Value, typename Compare = std::less<Key>, typename allocator = std::allocator<ft::pair<Key, Value> >  >
     class new_RBT
     {
         public:
         typedef allocator allocator_type;
         typedef ft::pair<Key, Value> value_type;
         typedef Compare key_compare;
-        typedef new_RBT<value_type, key_compare, allocator_type> tree_type; 
+        typedef new_RBT<Key, Value, key_compare, allocator_type> tree_type; 
         
         template<typename Data>
         struct Node
@@ -54,11 +54,10 @@ namespace ft
         typedef Node<value_type> node;
         typedef typename ft::rbt_iterator<Node<value_type>, tree_type> iterator;
 	    typedef typename ft::const_rbt_iterator<Node<value_type>, tree_type> const_iterator;
-        new_RBT()
+        new_RBT(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
         {
-            // nil_ = node_alloc.allocate(1);
-            // node_alloc.construct(nil_,s);
-            // nil_->construct();
+            compare = comp;
+            alloc_ = alloc;
             size_ = 0;
             create_ends();
             root_ = end_;
@@ -317,6 +316,10 @@ namespace ft
                 return ;
             }
             ptr->color = !ptr->color;
+        }
+        size_t max_size() const
+        {
+            return alloc_.max_size();
         }
         node * insert(value_type &val)
         {

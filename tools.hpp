@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2022/12/20 20:50:31 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:12:24 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,5 +388,26 @@ bool lexicographical_compare(InputIterator x, InputIterator x1, InputIterator2 y
     return x1 != y1;
 }
 
+template <class InputIterator1, class InputIterator2>
+bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+{
+	while (first1!=last1) {
+	if (!(*first1 == *first2))
+		return false;
+	++first1;
+	++first2;
+	}
+	return true;
+}
+template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+bool equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
+{
+	while (first1!=last1) {
+	if (!pred(*first1,*first2))
+		return false;
+	++first1; ++first2;
+	}
+	return true;
+}
 }
 #endif
