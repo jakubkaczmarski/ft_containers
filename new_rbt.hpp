@@ -599,11 +599,22 @@ namespace ft
                 return tmp;
             }
         }
-        // void delete_val(iterator pos)
-        // {
-            // if(pos){}
-            // node *ptr = pos->getNodeptr();
-        // }
+        void delete_val(iterator pos)
+        {
+            node *ptr = pos.base();
+            if(ptr == end_ || ptr == rend_)
+                return ;
+            node *tmp;
+            tmp = maxValue_node(root_);
+            if(ptr == tmp)
+            {
+                end_->parent = previous(tmp);
+            }
+            tmp = minValue_node(root_);
+            if(ptr == tmp)
+                rend_->parent = next(tmp);
+            delete_val(ptr);
+        }
         size_t delete_val(Key &k)
         {
             node *ptr = find_node(k);
@@ -725,6 +736,58 @@ namespace ft
             return (const_iterator(rend_, end_, rend_));
         }
 
+        void clear()
+        {
+            internal_clear(root_);
+            root_ = end_;
+            size_ = 0;
+        }
+        void internal_clear(node *ptr)
+        {
+            if(!ptr || ptr == end_)
+                return ;
+            if(ptr->left)
+                internal_clear(ptr->left);
+            if(ptr->right)
+                internal_clear(ptr->right);
+            delete_node(ptr);
+        }
+
+        void delete_ends()
+        {
+            alloc_.destroy(end_->data);
+            alloc_.deallocate(end_->data, 1);
+            node_alloc_.deallocate(end_, 1);
+
+            alloc_.destroy(rend_->data);
+            alloc_.deallocate(rend_->data, 1);
+            node_alloc_.deallocate(rend_, 1);
+        }
+        void swap(new_RBT &other)
+        {
+            node * tmp_r = root_;
+            node * tmp_e = end_;
+            node * tmp_rend = rend_;
+            node * tmp_alloc = alloc_;
+            node * tmp_node_alloc = node_alloc_;
+            key_compare tcomp = compare;
+            size_t tsize = size_;
+
+            root_ = other.root_;
+            end_ = other.end_;
+            rend_ = other.rend_;
+            alloc_ = other.alloc_;
+            compare = other.compare;
+            size_ = other.size_;
+
+            other.root_ = tmp_r;
+            other.end_ = tmp_e;
+            other.rend_ = tmp_rend;
+            other.alloc_ = tmp_alloc;
+            other.node_alloc_ = tmp_node_alloc;
+            other.compare = tcomp;
+            other.size = tsize;
+        }
         private:
         node *root_;
         node *end_;
