@@ -55,7 +55,10 @@ namespace ft
             // nil_ = node_alloc.allocate(1);
             // node_alloc.construct(nil_,s);
             // nil_->construct();
-            root_ = NULL;
+            size_ = 0;
+            create_ends();
+            root_ = end_;
+
         }
         void swap(int &color1, int &color2)
         {
@@ -120,9 +123,46 @@ namespace ft
             ptr->parent = left_child;
         }
 
+        void create_ends()
+        {
+            end_ = node_alloc_.allocate(1);
+            end_->data = end_->alloc.allocate(1);
+            end_->alloc.construct(end_->data);
+            end_->color = BLACK;
+            end_->parent = NULL;
+            end_->left = NULL;
+            end_->right = NULL;
+            
+            rend_ = node_alloc_.allocate(1);
+            rend_->data = end_->alloc.allocate(1);
+            rend_->alloc.construct(end_->data);
+            rend_->color = BLACK;
+            rend_->parent = NULL;
+            rend_->left = NULL;
+            rend_->right = NULL;
+        }
+
+        node *maxValue_node(node *ptr)
+        {
+            node * tmp;
+            tmp = ptr;
+
+            if(!root_)
+            {
+                return end_;
+            }
+            while(tmp->right)
+            {
+                tmp = tmp->right;
+            }
+            return tmp;
+        }
+
         node *minValue_node(node *ptr)
         {
             node *tmp = ptr;
+            if(!root_)
+                return end_;
             while(tmp->left != NULL)
             {
                 tmp = tmp->left;
@@ -139,6 +179,25 @@ namespace ft
             }
         }
 
+        node *getEnd() const
+        {
+            return end_;
+        }
+
+        node *getRend() const
+        {
+            return rend_;
+        }
+
+        node *getRoot() const
+        {
+            return root_;
+        }
+
+        node *getAlloc() const
+        {
+            return alloc_;
+        }
         void set_color(node *ptr, int color)
         {
             if(ptr == NULL)
@@ -167,75 +226,160 @@ namespace ft
             return root;
         }
 
-        void insert(value_type &val)
+        node *find_node(Key val) const
         {
-            //Allocate for node 
-            // node * ptr = new Node<value_type> (;
-            node * ptr = node_alloc_.allocate(1);
-            ptr->data = ptr->alloc.allocate(1);
-            ptr->alloc.construct(ptr->data, val);
-            root_ = internal_insert(root_, ptr);
-            fix_insert(ptr);
+            node * current = root_;
+            if(current == end_)
+                return end_;
+            while(current)
+            {
+                if(val == current->data->first)
+                {
+                    return current;
+                }else if(compare(val, current->data->first))
+                {
+                    if(current->left)
+                        current = current->left;
+                    else
+                        return end_;
+                }else{
+                    if(current->right)
+                        current = current->right;
+                    else
+                        return end_;
+                }
+            }
+            return end_;
         }
 
-        void fix_insert(node *ptr)
+        node *find_node(value_type val) const
         {
-            node *parent = NULL;
-            node *grandparent = NULL;
-
-            while(ptr != root_ && getColor(ptr) == RED && getColor(ptr->parent) == RED)
+            node * current = root_;
+            if(current == end_)
+                return end_;
+            while(current)
             {
-                parent = ptr->parent;
-                grandparent = parent->parent;
-
-                if(parent == grandparent->left)
+                if(val.first == current->data->first)
                 {
-                    node *uncle = grandparent->right;
-                    if(getColor(uncle) == RED)
+                    return current;
+                }else if(compare(val.first, current->data->first))
+                {
+                    if(current->left)
+                        current = current->left;
+                    else
+                        return end_;
+                }else{
+                    if(current->right)
+                        current = current->right;
+                    else
+                        return end_;
+                }
+            }
+            return end_;
+        }
+
+        void    insert_helper(node *ptr)
+        {
+            node *current = root_;
+            while(current)
+            {
+                if(compare(ptr->data->first, current->data->first))
+                {
+                    if(current->left)
                     {
-                        set_color(uncle, BLACK);
-                        set_color(parent, BLACK);
-                        set_color(grandparent, RED);
-                        ptr = grandparent;
-                    }else
-                    {
-                        if(ptr == parent->right)
-                        {
-                            left_rotate(parent);
-                            ptr = parent;
-                            parent = ptr->parent;
-                        }
-                        right_rotate(grandparent);
-                        swap(parent->color, grandparent->color);
-                        ptr = parent;
+                        current = current->left;
+                    }else{
+                        current->left = ptr;
+                        ptr->parent = current;
+                        return ; 
                     }
                 }else
                 {
-                    node *uncle = grandparent->left;
-                    if(getColor(uncle) == RED)
+                    if(current->right)
                     {
-                        set_color(uncle, BLACK);
-                        set_color(parent, BLACK);
-                        set_color(grandparent, RED);
-                        ptr = grandparent;
+                        current = current->right;
                     }else{
-                        if(ptr == parent->left)
-                        {
-                            right_rotate(parent);
-                            ptr = parent;
-                            parent = ptr->parent;
-                        }
-                        left_rotate(grandparent);
-                        swap(parent->color, grandparent->color);
-                        ptr = parent;
+                        current->right = ptr;
+                        ptr->parent = current;
+                        return ;
                     }
                 }
             }
-            set_color(root_, BLACK);
         }
+        void change_color(node *ptr)
+        {
+            if(!ptr)
+            {
+                return ;
+            }
+            ptr->color = !ptr->color;
+        }
+        node * insert(value_type &val)
+        {
+            node *tmp = find_node(val);
+            if(tmp != end_)
+                return tmp;
+            size_++;
+            node *new_node = node_alloc_.allocate(1);
+            node *ptr = new_node;
+            new_node->data = alloc_.allocate(1);
+            alloc_.construct(new_node->data, val);
+            new_node->parent = NULL;
+            new_node->left = NULL;
+            new_node->right = NULL;
+            if(root_ == end_)
+            {
+                new_node->color = BLACK;
+                new_node->parent = NULL;
+                root_ = new_node;
+                end_->parent = root_;
+                rend_->parent = root_;
+                return new_node;
+            }
+            new_node->color = RED;
 
+            insert_helper(new_node);
 
-
+            while(new_node->parent && new_node->parent->color == RED)
+            {
+                if(new_node->parent->parent->left && new_node->parent->parent->right && new_node->parent->parent->left->color == RED
+                && new_node->parent->parent->right->color == RED)
+                {
+                    if(new_node->parent->parent != root_)
+                    {
+                        change_color(new_node->parent->parent);
+                    }
+                    change_color(new_node->parent->parent->right);
+                    change_color(new_node->parent->parent->left);
+                    new_node = new_node->parent->parent;
+                }else{
+                    if(new_node->parent == new_node->parent->parent->right)
+                    {
+                        if(new_node == new_node->parent->left)
+                        {
+                            new_node = new_node->parent;
+                            right_rotate(new_node);
+                        }
+                        left_rotate(new_node->parent->parent);
+                        change_color(new_node->parent);
+                        change_color(new_node->parent->left);
+                    }else
+                    {
+                        if(new_node == new_node->parent->right)
+                        {
+                            new_node = new_node->parent;
+                            left_rotate(new_node);
+                        }
+                        right_rotate(new_node->parent->parent);
+                        change_color(new_node->parent);
+                        change_color(new_node->parent->right);
+                    }
+                }
+            }
+            end_->parent = maxValue_node(root_);
+            rend_->parent = minValue_node(root_);
+            return ptr;
+        }
 
         //Deleting 
         node *internal_delete(node *root, value_type &data)
@@ -439,13 +583,17 @@ namespace ft
             {
                 tmp = tmp->left;
             }
-            return rbt_iterator<node, new_RBT>(tmp,)
+            // return rbt_iterator<node, new_RBT>(tmp,)
         }
 
         private:
         node *root_;
+        node *end_;
+        node *rend_;
         node *nil_;
+        int size_;
         std::allocator<Node<value_type> > node_alloc_;
+        std::allocator<value_type> alloc_;
         Compare						compare;
     };
     
@@ -453,3 +601,61 @@ namespace ft
 
 
 #endif
+
+
+
+        // void fix_insert(node *ptr)
+        // {
+        //     node *parent = NULL;
+        //     node *grandparent = NULL;
+
+        //     while(ptr != root_ && getColor(ptr) == RED && getColor(ptr->parent) == RED)
+        //     {
+        //         parent = ptr->parent;
+        //         grandparent = parent->parent;
+
+        //         if(parent == grandparent->left)
+        //         {
+        //             node *uncle = grandparent->right;
+        //             if(getColor(uncle) == RED)
+        //             {
+        //                 set_color(uncle, BLACK);
+        //                 set_color(parent, BLACK);
+        //                 set_color(grandparent, RED);
+        //                 ptr = grandparent;
+        //             }else
+        //             {
+        //                 if(ptr == parent->right)
+        //                 {
+        //                     left_rotate(parent);
+        //                     ptr = parent;
+        //                     parent = ptr->parent;
+        //                 }
+        //                 right_rotate(grandparent);
+        //                 swap(parent->color, grandparent->color);
+        //                 ptr = parent;
+        //             }
+        //         }else
+        //         {
+        //             node *uncle = grandparent->left;
+        //             if(getColor(uncle) == RED)
+        //             {
+        //                 set_color(uncle, BLACK);
+        //                 set_color(parent, BLACK);
+        //                 set_color(grandparent, RED);
+        //                 ptr = grandparent;
+        //             }else{
+        //                 if(ptr == parent->left)
+        //                 {
+        //                     right_rotate(parent);
+        //                     ptr = parent;
+        //                     parent = ptr->parent;
+        //                 }
+        //                 left_rotate(grandparent);
+        //                 swap(parent->color, grandparent->color);
+        //                 ptr = parent;
+        //             }
+        //         }
+        //     }
+        //     set_color(root_, BLACK);
+        // }
