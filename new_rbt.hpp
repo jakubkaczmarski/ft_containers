@@ -17,6 +17,8 @@ namespace ft
         public:
         typedef allocator allocator_type;
         typedef ft::pair<Key, Value> value_type;
+        typedef Compare key_compare;
+        typedef new_RBT<value_type, key_compare, allocator_type> tree_type; 
         
         template<typename Data>
         struct Node
@@ -50,6 +52,8 @@ namespace ft
         };
 
         typedef Node<value_type> node;
+        typedef typename ft::rbt_iterator<Node<value_type>, tree_type> iterator;
+	    typedef typename ft::const_rbt_iterator<Node<value_type>, tree_type> const_iterator;
         new_RBT()
         {
             // nil_ = node_alloc.allocate(1);
@@ -691,14 +695,34 @@ namespace ft
             }
         }
 
-        rbt_iterator<node, new_RBT> begin()
+        iterator begin()
         {
-            node *tmp = root_;
-            while(tmp != NULL && tmp->left != NULL)
-            {
-                tmp = tmp->left;
-            }
-            // return rbt_iterator<node, new_RBT>(tmp,)
+            return (iterator(minValue_node(root_), end_, rend_));
+        }
+        
+        const_iterator begin() const
+        {
+            return (const_iterator(minValue_node(root_), end_, rend_));
+        }
+
+        iterator end()
+        {
+            return (iterator(end_, end_, rend_));
+        }
+
+        const_iterator end() const
+        {
+            return (const_iterator(end_, end_, rend_));
+        }
+
+        iterator rend()
+        {
+            return (iterator(rend_, end_, rend_));
+        }
+
+        const_iterator rend() const
+        {
+            return (const_iterator(rend_, end_, rend_));
         }
 
         private:
