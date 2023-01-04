@@ -1,5 +1,5 @@
-#ifndef VECTOR_HPP
-#define VECTOR_HPP
+#ifndef Vector_HPP
+#define Vector_HPP
 
 #include <memory>
 #include <iostream>
@@ -9,7 +9,7 @@
 namespace ft
 {
     template<typename T, typename Alloc = std::allocator<T> >
-    class vector
+    class Vector
     {
         public:
         typedef T value_type;
@@ -25,10 +25,10 @@ namespace ft
         typedef typename iterator_traits<iterator>::difference_type difference_type;
         typedef typename allocator_type::size_type size_type;
 
-        explicit vector(const allocator_type &alloc = allocator_type()) : alloc_(alloc), 
+        explicit Vector (const allocator_type &alloc = allocator_type()) : alloc_(alloc), 
         start_(nullptr), end_(nullptr), capacity_(nullptr){}
 
-        explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
+        explicit Vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
         : alloc_(alloc), start_(nullptr), end_(nullptr), capacity_(nullptr)
         {
             start_ = alloc_.allocate(n);
@@ -42,7 +42,8 @@ namespace ft
         }
 
         template<typename InputIterator>
-        vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(), typename enable_if<!is_integral<InputIterator>::value>::type = nullptr)
+        Vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
+				typename enable_if<!is_integral<InputIterator>::value>::type* = nullptr)
         : alloc_(alloc)
         {
             difference_type n = ft::distance(first, last);
@@ -58,12 +59,12 @@ namespace ft
             }
         }
 
-        vector(const vector &val) : alloc_(val.alloc_), start_(NULL), end_(NULL), capacity_(NULL)
+        Vector(const Vector &val) : alloc_(val.alloc_), start_(NULL), end_(NULL), capacity_(NULL)
         {
             this->insert(this->begin(), val.begin(), val.end());
         }
 
-        vector &operator=(const vector &x)
+        Vector &operator=(const Vector &x)
         {
             if(x == *this)
             {
@@ -74,7 +75,7 @@ namespace ft
             return (*this);
         }
 
-        ~vector(void)
+        ~Vector(void)
         {
             this->clear();
             alloc_.deallocate(start_, this->capacity());
@@ -146,7 +147,7 @@ namespace ft
 
         const_iterator begin() const
         {
-            return const_iteraotor(start_);
+            return const_iterator(start_);
         }
 
         iterator end()
@@ -189,7 +190,7 @@ namespace ft
             return reverse_iterator(this->begin());
         }
 
-        void swap(vector &val)
+        void swap(Vector &val)
         {
             pointer val_beg = val.start_;
             pointer val_end = val.end_;
@@ -370,8 +371,8 @@ namespace ft
             {
                 for(int i = 0; i < end_ - pos - 1; i++)
                 {
-                    alloc_.construct(pos + i, pos + i + 1);
-                    alloc_.destruct(pos + i + 1);
+                    alloc_.construct(&(*pos) + i, &(*pos) + i + 1);
+                    alloc_.destruct(&(*pos) + i + 1);
                 }
             }
             end_--;
@@ -433,7 +434,7 @@ namespace ft
                 return ;
             if(n > this->max_size())
                 throw std::length_error("Too many elements");
-            size_type ins_pos = pos - start_;
+            size_type ins_pos = &(*pos) - start_;
             if(size_type(this->capacity_ - end_) >= n)
             {
                 for(size_type i = 0;i < this->size() - ins_pos; i++)
@@ -475,10 +476,10 @@ namespace ft
                
                 for(size_type i = 0; i < n; i++)
                 {
-                    alloc_.construct(tmp_s + pos + i, val);
+                    alloc_.construct(tmp_s + &(*pos) + i, val);
                 }
 
-                for(size_type i = 0; i < this->size() - pos; i++)
+                for(size_type i = 0; i < this->size() - &(*pos); i++)
                 {
                     alloc_.construct(tmp_e - i - 1, *(end_ - i - 1));
                 }
@@ -499,14 +500,14 @@ namespace ft
             size_type n = ft::distance(first, second);
             if(size_type(capacity_ - end_) >= n)
             {
-                for(size_type i = 0; i < this->size() - pos - start_; i++)
+                for(size_type i = 0; i < (this->size() - (&(*pos) - this->start_)); i++)
                 {
                     alloc_.construct(end_ - i + n - 1, *(end_ - i - 1));
                 }
                 end_ += n;
                 while(first != second)
                 {
-                    alloc_.construct(pos, *first);
+                    alloc_.construct(&(*pos), *first);
                     pos++;
                     first++;
                 }
@@ -524,22 +525,22 @@ namespace ft
                     tmp_e = tmp_s + this->size() + n;
                     tmp_c = tmp_e;
                 }
-                for(int i = 0; i < pos - start_; i++)
+                for(int i = 0; i < (&(*pos) - this->start_); i++)
                 {
                     alloc_.construct(tmp_s + i, *(start_ + i));
                 }
                 for(int i = 0; first != second; i++)
                 {
-                    alloc_.construct(tmp_s + pos - start_, *first);
+                    alloc_.construct(tmp_s + (&(*pos) - this->start_) + i, *first);
                     first++;
                 }
-                for(size_type i = 0; i < this->size() - pos - start_; i++)
+                for(size_type i = 0; i < (this->size() - (&(*pos) - this->start_)); i++)
                 {
-                    alloc_.construct(tmp_s + pos - start_ + n + i, *(pos + i));
+                    alloc_.construct(tmp_s + (&(*pos) - this->start_) + n + i, *(pos + i));
                 }
                 for(size_type i = 0; i < this->size(); i++)
                 {
-                    alloc_.destory(start_ + i);
+                    alloc_.destroy(start_ + i);
                 }
                 alloc_.deallocate(start_, this->capacity());
                 start_ = tmp_s;
@@ -554,12 +555,12 @@ namespace ft
         allocator_type alloc_;
     };
 template<class T, class Alloc>
-bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+bool operator==(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
 {
     if(lhs.size() != rhs.size())
         return false;
-    typename vector<T, Alloc>::const_iterator iter_l = lhs.begin();
-    typename vector<T, Alloc>::const_iterator iter_r = rhs.begin();
+    typename Vector<T, Alloc>::const_iterator iter_l = lhs.begin();
+    typename Vector<T, Alloc>::const_iterator iter_r = rhs.begin();
 
     while(iter_l != lhs.end())
     {
@@ -574,37 +575,37 @@ bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 }
 
 template<class T, class Alloc>
-bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+bool operator!=(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
 {
     return (!(lhs == rhs));
 }
 
 template<class T, class Alloc>
-bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+bool operator<(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
 {
     return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template<class T, class Alloc>
-bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+bool operator<=(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
 {
     return (!(rhs < lhs));
 }
 
 template<class T, class Alloc>
-bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+bool operator>(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
 {
     return rhs < lhs;
 }
 
 template<class T, class Alloc>
-bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+bool operator>=(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
 {
     return (!(lhs < rhs));
 }
 
 template<typename T, class Alloc>
-void swap(vector<T, Alloc> &one, vector<T, Alloc> &two)
+void swap(Vector<T, Alloc> &one, Vector<T, Alloc> &two)
 {
     one.swap(two);
 }

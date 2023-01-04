@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/04 19:12:24 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/04 21:24:30 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,20 @@ namespace ft
     struct random_access_iterator_tag : bidirectional_iterator_tag {};
 
     template<typename Iterator>
-    struct iterator_traits
+    class iterator_traits
     {
-        typedef typename Iterator::value_type value_type;
+        public:
         typedef typename Iterator::difference_type difference_type;
+        typedef typename Iterator::value_type value_type;
         typedef typename Iterator::pointer pointer;
         typedef typename Iterator::reference reference;
         typedef typename Iterator::iterator_category iterator_category;
     };
 
     template<typename T>
-    struct iterator_traits<T *>
+    class iterator_traits<T *>
     {
+        public:
         typedef T value_type;
         typedef ptrdiff_t difference_type;
         typedef T* pointer;
@@ -57,7 +59,7 @@ namespace ft
     };
 
     template<typename T>
-    struct iterator_traits<const T *>
+    class iterator_traits<const T *>
     {
         typedef T value_type;
         typedef ptrdiff_t difference_type;
@@ -359,16 +361,16 @@ typename reverse_iterator<Iterator>::difference_type operator-(const reverse_ite
 }
 
 //Distance function 
-template<class InputIterator>
-typename ft::iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator second)
+template <class InputIterator>
+typename ft::iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
 {
     typename ft::iterator_traits<InputIterator>::difference_type n = 0;
-    while(first != second)
+    while (first != last)
     {
         first++;
         n++;
     }
-    return n;
+    return (n);
 }
 
 //Lexinographical compare

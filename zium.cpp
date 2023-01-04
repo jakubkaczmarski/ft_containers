@@ -15,7 +15,7 @@ std::string * new_str (std::string &ref, std::allocator<std::string> alloc )
 
 int main()
 {
-    ft::map<int, std::string> map;
+    // ft::Map<int, std::string> map;
     std::map<int, std::string> mapp;
     std::map<int, std::string>::iterator s;
     ft::new_RBT<int, std::string> ss;
@@ -29,9 +29,9 @@ int main()
     // s.delete_val(p3);
     // s.delete_val(p1);
     // s.delete_val(p2);
-    int dddd = 1;
+    // int dddd = 1;
     int chuj = -4;
-
+    std::cout << sizeof(ft::new_RBT<int, std::string>::value_type) <<std::endl;
     ss.print_tree();
     // ss.delete_val(dddd);
     ss.delete_val(chuj);
