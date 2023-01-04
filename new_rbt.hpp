@@ -11,7 +11,7 @@
 #define DOUBLE_BLACK 2
 namespace ft
 {
-    template<typename Key, typename Value, typename allocator = std::allocator<ft::pair<Key, Value> >, typename Compare = std::less<Key> >
+    template<typename Key, typename Value, typename Compare, typename allocator = std::allocator<ft::pair<Key, Value> >  >
     class new_RBT
     {
         public:
@@ -255,7 +255,7 @@ namespace ft
             }
             return end_;
         }
-
+        
         node *find_node(value_type val) const
         {
             node * current = root_;
