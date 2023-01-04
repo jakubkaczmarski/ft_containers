@@ -38,8 +38,8 @@ namespace ft
             }
             ~Node()
             {
-                alloc.destroy(this->data);
-                alloc.deallocate(this->data, 1);
+                // alloc.destroy(this->data);
+                // alloc.deallocate(this->data, 1);
             }
             Node<Data> *parent;
             Node<Data> *left;
@@ -382,182 +382,297 @@ namespace ft
         }
 
         //Deleting 
-        node *internal_delete(node *root, value_type &data)
+        // node *internal_delete(node *root, value_type &data)
+        // {
+         
+            // return internal_delete(root->right, *tmp->data);
+        // }
+        bool isBlack(node *ptr)
         {
-            if(root == NULL)
-                return root;
-            if(compare(data.first, root->data->first))
-            {
-                return internal_delete(root->left, data);
-            }
-            if(compare(root->data->first ,data.first))
-            {
-                return internal_delete(root->right, data);
-            }
-            if(root->left == NULL || root->right == NULL)
-                return root;
+            if(ptr && ptr->color == BLACK)
+                return true;
             
-            node *tmp = minValue_node(root->right);
-            //Need to free here
-
-            root->data = tmp->data;
-
-            return internal_delete(root->right, *tmp->data);
+            return false;
         }
-
         void fix_delete(node *ptr)
         {
-            if(ptr == NULL)
-            {
-                return ;
-            }
             if(ptr == root_)
             {
-                root_ = NULL;
+                ptr->color = BLACK;
                 return ;
             }
-            
-            if(getColor(ptr) == RED || getColor(ptr->left) == RED || getColor(ptr->right) == RED)
-            {
-                
-                node *child;
-                if(ptr->left != NULL)
-                {
-                    child = ptr->left;
-                }else{
-                    child = ptr->right;
-                }
 
+            node *sibling = ptr->parent->left;
+
+            if(sibling == ptr)
+                sibling = ptr->parent->right;
+            if(sibling->color == RED)
+            {
+                sibling->color = BLACK;
+                ptr->parent->color = RED;
                 if(ptr == ptr->parent->left)
                 {
-                    ptr->parent->left = child;
-                    if(child != NULL)
-                    {
-                        child->parent = ptr->parent;
-                    }
-                    set_color(child, BLACK);
-                    //freeing
-                    node_alloc_.destroy(ptr);
-                    node_alloc_.deallocate(ptr, 1);
-                }else{
-                    ptr->parent->right = child;
-                    if(child != nullptr)
-                    {
-                        child->parent = ptr->parent;
-                    }
-                    set_color(child, BLACK);
-
-                    node_alloc_.destroy(ptr);
-                    node_alloc_.deallocate(ptr, 1);
-                }
-            }else
-            {
-                
-                node *sibling = NULL;
-                node *parent = NULL;
-                node *tmp = ptr;
-
-                set_color(tmp, DOUBLE_BLACK);
-                while(tmp != root_ && getColor(tmp) == DOUBLE_BLACK)
+                    left_rotate(ptr->parent);
+                }else
                 {
-                    
-                    std::cout << "Siemanko 3 " << std::endl;
-                    parent = tmp->parent;
-                    if(tmp == parent->left)
-                    {
-                        sibling = parent->right;
-                        if(getColor(sibling) == RED)
-                        {
-                            set_color(sibling, BLACK);
-                            set_color(parent, RED);
-                            left_rotate(parent);
-                        }else
-                        {
-                            if(getColor(sibling->left) == BLACK && getColor(sibling->right) == BLACK)
-                            {
-                                set_color(sibling, RED);
-                                if(getColor(parent) == RED)
-                                {
-                                    set_color(parent, BLACK);
-                                }else
-                                {
-                                    set_color(parent, DOUBLE_BLACK);
-                                }
-                                tmp = parent;
-                            }else
-                            {
-                                if(getColor(sibling->right) == BLACK)
-                                {
-                                    set_color(sibling->left, BLACK);
-                                    set_color(sibling, RED);
-                                    right_rotate(sibling);
-                                    sibling = parent->right;
-                                }
-                                set_color(sibling, parent->color);
-                                set_color(parent, BLACK);
-                                set_color(sibling->right, BLACK);
-                                left_rotate(parent);
-                                break;
-                            }
-                        }
-                    }else
-                    {
-                        sibling = parent->left;
-                        if(getColor(sibling) == RED)
-                        {
-                            set_color(sibling, BLACK);
-                            set_color(parent, RED);
-                            right_rotate(parent);
-                        }else
-                        {
-                            if(getColor(sibling->left) == BLACK && getColor(sibling->right) == BLACK)
-                            {
-                                set_color(sibling, RED);
-                                if(getColor(parent) == RED)
-                                    set_color(parent, BLACK);
-                                else
-                                    set_color(parent, DOUBLE_BLACK);
-                                tmp = parent;
-                            }else{
-                                if(getColor(sibling->left) == BLACK)
-                                {
-                                    set_color(sibling->right, BLACK);
-                                    set_color(sibling, RED);
-                                    left_rotate(sibling);
-                                    sibling = parent->left;
-                                }
-                                set_color(sibling, parent->color);
-                                set_color(parent, BLACK);
-                                set_color(sibling->left, BLACK);
-                                right_rotate(parent);
-                                break;
-                            }
-                        }
-                    }
+                    right_rotate(ptr->parent);
                 }
-                
-                if(ptr == ptr->parent->left)
-                {
-                    ptr->parent->left = NULL;
-                }else{
-                    ptr->parent->right = NULL;
-                }
-                
-                node_alloc_.destroy(ptr);
-                node_alloc_.deallocate(ptr, 1);
-                set_color(root_, BLACK);
+                sibling = ptr->parent->left;
+                if(sibling == ptr)
+                    sibling = ptr->parent->right;
             }
+            if(isBlack(sibling->left) && isBlack(sibling->right))
+            {
+                sibling->color = RED;
+                if(ptr->parent->color == RED)
+                    ptr->parent->color = BLACK;
+                else
+                    fix_delete(ptr->parent);
+            }else{
+                bool isLeft;
+                if(ptr == ptr->parent->left)
+                {
+                    isLeft = true;
+                }else{
+                    isLeft = false;
+                }
 
+                if(isLeft && isBlack(sibling->right))
+                {
+                    sibling->left->color = BLACK;
+                    sibling->color = RED;
+                    right_rotate(sibling);
+                    sibling = ptr->parent->right;
+                }else if(!isLeft && isBlack(sibling->left))
+                {
+                    sibling->right->color = BLACK;
+                    sibling->color = RED;
+                    left_rotate(sibling);
+                    sibling = ptr->parent->left;
+                }
+                sibling->color = ptr->parent->color;
+                ptr->parent->color = BLACK;
+                if(isLeft)
+                {
+                    sibling->right->color = BLACK;
+                    left_rotate(ptr->parent);
+                }else{
+                    sibling->left->color = BLACK;
+                    right_rotate(ptr->parent);
+                }
+            }
+        }
+
+         node *previous(node *tmp) const
+        {
+            if(tmp == end_)
+            {
+                return maxValue_node(root_);
+            }
+            if(tmp->left)
+                return minValue_node(tmp->left);
             
+            node *ptr = tmp->parent;
+            while(ptr && tmp == ptr->left)
+            {
+                tmp = ptr;
+                ptr = ptr->parent;
+            }
+            return ptr;
+        }
+
+        node *next(node *tmp) const
+        {
+            if(tmp == maxValue_node(root_))
+            {
+                return end_;
+            }
+            if(tmp->right)
+                return minValue_node(tmp->right);
+            
+            node *ptr = tmp->parent;
+            while(ptr && tmp == ptr->right)
+            {
+                tmp = ptr;
+                ptr = ptr->parent;
+            }
+            return ptr;
+        }
+
+        node *previous(node *tmp)
+        {
+            if(tmp == end_)
+            {
+                return maxValue_node(root_);
+            }
+            if(tmp->left)
+                return minValue_node(tmp->left);
+            
+            node *ptr = tmp->parent;
+            while(ptr && tmp == ptr->left)
+            {
+                tmp = ptr;
+                ptr = ptr->parent;
+            }
+            return ptr;
+        }
+
+        node *next(node *tmp)
+        {
+            if(tmp == maxValue_node(root_))
+            {
+                return end_;
+            }
+            if(tmp->right)
+                return minValue_node(tmp->right);
+            
+            node *ptr = tmp->parent;
+            while(ptr && tmp == ptr->right)
+            {
+                tmp = ptr;
+                ptr = ptr->parent;
+            }
+            return ptr;
+        }
+
+        void delete_node(node *ptr)
+        {
+            if(!ptr)
+                return ;
+            if(ptr->parent)
+            {
+                if(ptr == ptr->parent->left)
+                    ptr->parent->left = NULL;
+                else if(ptr == ptr->parent->right)
+                    ptr->parent->right = NULL;
+            }
+            alloc_.destroy(ptr->data);
+            alloc_.deallocate(ptr->data, 1);
+            node_alloc_.deallocate(ptr, 1);
+        }
+
+        node *delete_only_child(node *ptr)
+        {
+            node *child;
+            if(ptr->left)
+                child = ptr->left;
+            else if(ptr->right)
+                child = ptr->right;
+            else
+                return NULL;
+            ptr->color = child->color;
+            alloc_.destroy(ptr->data);
+            alloc_.construct(ptr->data, *(child->data));
+            delete_node(child);
+            return ptr;
+        }
+        
+        node *delete_node_with_zero_children(node *ptr)
+        {
+            node *tmp;
+            if(ptr->left || ptr->right)
+            {
+                // std::cout << "Zium " << std::endl;
+                return delete_only_child(ptr);
+            }
+            else if(ptr->color)
+            {
+                delete_node(ptr);
+                return NULL;
+            }else{
+                tmp = node_alloc_.allocate(1);
+                tmp->color = BLACK;
+                tmp->left = NULL;
+                tmp->right = NULL;
+                tmp->data = NULL;
+                tmp->parent = ptr->parent;
+                if(ptr == ptr->parent->left)
+                    ptr->parent->left = tmp;
+                else
+                    ptr->parent->right = tmp;
+                delete_node(ptr);
+
+                return tmp;
+            }
+        }
+        // void delete_val(iterator pos)
+        // {
+            // if(pos){}
+            // node *ptr = pos->getNodeptr();
+        // }
+        size_t delete_val(Key &k)
+        {
+            node *ptr = find_node(k);
+            if(ptr == end_ || ptr == rend_)
+                return 0;
+            node *tmp;
+
+            tmp = maxValue_node(root_);
+            if(ptr == tmp)
+                end_->parent = previous(tmp);
+            tmp = minValue_node(root_);
+            if(ptr == tmp)
+                rend_->parent = next(tmp);
+            delete_val(ptr);
+            return 1;
         }
         void 
         delete_val(value_type &data)
         {
-            node *ptr = internal_delete(root_, data);
-            fix_delete(ptr);
+            node *ptr = find_node(data);
+            if(ptr == end_ || ptr == rend_)
+                return ;
+            node *tmp;
+            tmp = maxValue_node(root_);
+            if(ptr == tmp)
+            {
+                end_->parent = previous(tmp);
+            }
+            tmp = minValue_node(root_);
+            if(ptr == tmp)
+                rend_->parent = next(tmp);
+            delete_val(ptr);
         }
 
+        void delete_val(node *ptr)
+        {
+            if(!root_->left && !root_->right && root_ != end_)
+            {
+                delete_node(root_);
+                root_ = end_;
+                size_--;
+                return ;
+            }
 
+            size_--;
+
+            node *tmp_up_node;
+            bool delete_node_color;
+            if(!ptr->left || !ptr->right)
+            {
+                
+                delete_node_color = ptr->color;
+                tmp_up_node = delete_node_with_zero_children(ptr);
+            }else{
+                node *next_node = next(ptr);
+                alloc_.destroy(ptr->data);
+                alloc_.construct(ptr->data, *next_node->data);
+                delete_node_color = next_node->color;
+                tmp_up_node = delete_node_with_zero_children(next_node);
+            }
+            if(delete_node_color == BLACK)
+            {
+                fix_delete(tmp_up_node);
+            }
+            if(tmp_up_node && !tmp_up_node->data)
+            {
+                if(tmp_up_node == tmp_up_node->parent->left)
+                    tmp_up_node->parent->left = NULL;
+                else if(tmp_up_node == tmp_up_node->parent->right)
+                    tmp_up_node->parent->right = NULL;
+                node_alloc_.deallocate(tmp_up_node, 1);
+            }
+        }
 
         void print_tree()
         {
@@ -565,14 +680,14 @@ namespace ft
 
         }
         // maximum value in the left subtree
-        void printTree_internal(Node<value_type> *node)
+        void printTree_internal(Node<value_type> *ptr)
         {
-            if(node != NULL)
+            if(ptr != NULL && ptr != end_ && ptr != rend_)
             {
-                printTree_internal(node->left);
-                std::cout << node->data->first << "\t" << node->data->second << std::endl;
-                std::cout << "Color : " << node->color << std::endl;
-                printTree_internal(node->right);
+                printTree_internal(ptr->left);
+                std::cout << ptr->data->first << "\t" << ptr->data->second << std::endl;
+                std::cout << "Color : " << ptr->color << std::endl;
+                printTree_internal(ptr->right);
             }
         }
 

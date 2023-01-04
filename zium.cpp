@@ -29,6 +29,12 @@ int main()
     // s.delete_val(p3);
     // s.delete_val(p1);
     // s.delete_val(p2);
+    int dddd = 1;
+    int chuj = -4;
+
     ss.print_tree();
-    
+    // ss.delete_val(dddd);
+    ss.delete_val(chuj);
+    std::cout << std::endl;
+    ss.print_tree();
 }
