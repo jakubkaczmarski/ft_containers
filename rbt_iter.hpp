@@ -66,7 +66,7 @@ namespace ft{
             return (*(iter_)->data);
         }
 
-        T *operator->() const
+        pointer operator->() const
         {
             return this->iter_->data;
         }
@@ -136,29 +136,29 @@ namespace ft{
             return tmp;
         }
 
-        bool operator==(rbt_iterator<T, Tree> &rhs)
+        bool operator==(rbt_iterator<T, Tree> rhs)
         {
             return (this->base() == rhs.base());
         }
-        bool operator==(const_rbt_iterator<T, Tree> &rhs) const
+        bool operator==(const_rbt_iterator<T, Tree> rhs) const
         {
             return (this->base() == rhs.base());
         }
 
-        bool operator!=(rbt_iterator<T, Tree> &rhs)
+        bool operator!=(rbt_iterator<T, Tree> rhs)
         {
             return (this->base() != rhs.base());
         }
 
-        bool operator!=(const_rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const_rbt_iterator<T, Tree> rhs) const
         {
             return (this->base() != rhs.base());
         }
 
         private:
-        pointer iter_;
-        pointer end_;
-        pointer rend_;
+        T * iter_;
+        T * end_;
+        T * rend_;
     };
 
     template<typename T, typename Tree>
@@ -198,7 +198,7 @@ namespace ft{
         : iter_(rhs.base()), end_(rhs.getEnd()), rend_(rhs.getRend())
         {}
         
-        const_rbt_iterator &operator=(const const_rbt_iterator &cp)
+        const_rbt_iterator &operator=(const const_rbt_iterator<T, Tree> &cp)
         {
             iter_ = cp.iter_;
             end_ = cp.end_;
@@ -234,7 +234,7 @@ namespace ft{
             return (*(iter_)->data);
         }
 
-        const T *operator->() const
+        const pointer operator->() const
         {
             return iter_->data;
         }
@@ -304,29 +304,29 @@ namespace ft{
             return tmp;
         }
 
-        bool operator==(rbt_iterator<T, Tree> &rhs)
+        bool operator==(rbt_iterator<T, Tree> rhs)
         {
             return (this->base() == rhs.base());
         }
-        bool operator==(const_rbt_iterator<T, Tree> &rhs) const
+        bool operator==(const_rbt_iterator<T, Tree> rhs) const
         {
             return (this->base() == rhs.base());
         }
 
-        bool operator!=(rbt_iterator<T, Tree> &rhs)
+        bool operator!=(rbt_iterator<T, Tree> rhs)
         {
             return (this->base() != rhs.base());
         }
 
-        bool operator!=(const_rbt_iterator<T, Tree> &rhs) const
+        bool operator!=(const_rbt_iterator<T, Tree> rhs) const
         {
             return (this->base() != rhs.base());
         }
 
         private:
-        pointer iter_;
-        pointer end_;
-        pointer rend_;
+        T * iter_;
+        T * end_;
+        T * rend_;
     };
 }
 

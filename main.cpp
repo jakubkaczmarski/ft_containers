@@ -1,72 +1,81 @@
-// #include "vector.hpp"
-// #include <vector>
-// #include "map.hpp"
-// // #include "rbt_iter.hpp"
-// // #include "rbt.hpp"
-// #include "tools.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/05 16:37:50 by kmeixner          #+#    #+#             */
+/*   Updated: 2023/01/05 19:03:13 by jkaczmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// int main()
-// {
+#include <map>
+#include <vector>
+#include "map.hpp"
 
-//     // ft::RBT<12, "s"> val;
-//     // ft::rbt<int, int> s;
-//     // ft::vector<int> vec;
-//     // std::vector<int> vec1;
-//     // vec.push_back(12);
-//     // vec.push_back(12321);
-//     // vec.push_back(12321);
-//     // vec1.push_back(12);
-//     // vec1.push_back(12321);
-//     // vec1.push_back(12321);
-//     // ft::vector<int>::iterator it = vec.begin();
-//     // vec1.insert(it1, 123);
-//     // std::vector<int>::iterator it1 = vec1.begin(); 
-//     // vec.insert(it, 123);
-//     // Node<int> s(12, BLACK);/
-//     // int b = 15;
-//     // insert(&s, b);
-//     // ft::map<int , std::string> d;
-//     ft::RBT<int, std::string> tree;
-//     ft::pair<int, std::string> marek = ft::make_pair<int, std::string>(21, "Marek");
-//     // ft::pair<int, std::string> s2= ft::make_pair<int, std::string>(5, "Borys");
-//     ft::pair<int, std::string> borys = ft::make_pair<int, std::string>(4, "Borys");
-//     ft::pair<int, std::string> dinoaur = ft::make_pair<int, std::string>(-1, "Dinozaur");
-//     ft::pair<int, std::string> kapibara = ft::make_pair<int, std::string>(33, "Kapibara");
-//     // int c = 31
+#define STDMAP std::map<int, int>
+#define FTMAP ft::map<int, int>
 
-//     tree.insert(marek);
-//     tree.insert(borys);
-//     tree.insert(borys);
-//     tree.insert(borys);
-//     tree.insert(dinoaur);
-//     tree.insert(kapibara);
-//     tree.print();
-    // tree.delete_(marek);
-    // tree.delete_(borys);
-    // tree.delete_(dinoaur);
-    // tree.delete_(kapibara);
-    // tree.delete_(s2);
-    // tree.print_tree();
-    // tree.print_tree();
-    // printf("\n");
-    // std::cout << s.search(c) << std::endl;
-    // s.delete_(b);
-    // s.delete_(b);
-    // s.delete_(b);
-    // s.delete_(b);
-    // s.delete_(b);
-    // s.delete_(b);
-    // s.print_tree();
+#include <sys/time.h>
+typedef struct timeval	t_timeval;
 
-    // int s = 12;
-    // int b = 13;
-    // ss.insert(s);
-    // ss.insert(b);
-    // ss.insert(s);
-    
-    // ft::rbt_iterator<node, ft::RBT<int, std::string> > s;
-    // for(int i = 0; i < vec1.size(); i++)
-    // {
-        // std::cout << vec1[i] << std::endl;
-    // }
-// }
+template<typename T>
+void compareVectorsDetails(std::vector<T> v, std::vector<T> v2)
+{
+	int i = v.size();
+	int j = v2.size();
+	std::cout << std::endl;
+
+	if (i != j)
+		std::cout << "\x1B[31m" << "SIZES ARE DIFFERENT" <<  "\033[0m";
+	int n = std::min(i, j);
+	for (i = 0; i < n; i++)
+	{
+		if (v[i] != v2[i])
+			std::cout << "Index: " << i << " \x1B[31m" << v[i] << " : " << v2[i] <<  "\033[0m"<< std::endl;
+	}
+}
+template<typename T>
+void compareVectors(std::vector<T> v, std::vector<T> v2)
+{
+	if (v == v2)
+		std::cout << "\x1B[32m" << "OK" <<  "\033[0m";
+	else
+	{
+		std::cout << "\x1B[31m" << "KO" <<  "\033[0m";
+		compareVectorsDetails<T>(v, v2);
+	}
+}
+
+int	gettime(t_timeval start)
+{
+	t_timeval	tv;
+	int			tdiff;
+
+	gettimeofday(&tv, NULL);
+	tdiff = (tv.tv_sec - start.tv_sec) * 1000;
+	tdiff += (tv.tv_usec - start.tv_usec) / 1000;
+	return (tdiff);
+}
+
+
+template<typename map>
+void pushtoVector(map *mp, std::vector<int> *v)
+{
+	v->push_back(mp->size());
+	for (typename map::iterator it = mp->begin(); it != mp->end(); it++)
+	{
+		v->push_back(it->first);
+		v->push_back(it->second);
+	}
+	v->push_back(mp->size());
+}
+
+int main()
+{
+
+    ft::map<int, int> kurwa;
+    kurwa.insert(ft::make_pair<int, int>(12, 33));
+	
+}

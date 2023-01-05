@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/04 21:24:30 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:18:58 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,51 @@
 
 namespace ft
 {
-    template <typename Category, typename T,
-        typename Distance = ptrdiff_t, 
-        typename Pointer = T*, typename Reference = T&>
-    class iterator
+     //ft::pair
+    template <typename T1, typename T2>
+    class pair
     {
         public:
-        typedef T value_type;
-        typedef Distance difference_type;
-        typedef Pointer pointer;
-        typedef Reference reference;
-        typedef Category iterator_category;
+            typedef T1 first_type;
+            typedef T2 second_type;
+            
+            first_type first;
+            second_type second;
+
+            pair() : first(), second() {};
+            template<class U, class V>
+            pair(const pair<U,V>& pr) : first(pr.first), second(pr.second) {};
+            pair(const first_type& a, const second_type& b) : first(a), second(b) {};
+            pair& operator= (const pair& pr)
+            {
+                this->first = pr.first;
+                this->second = pr.second;
+                return (*this);
+            }
     };
 
-    struct input_iterator_tag {};
+    template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
+    struct iterator
+    {
+        typedef T			value_type;
+        typedef Distance	difference_type;
+        typedef Pointer		pointer;
+        typedef Reference	reference;
+        typedef Category	iterator_category;
+    };
+
+    
     struct output_iterator_tag {};
+    struct input_iterator_tag {};
     struct forward_iterator_tag : input_iterator_tag {};
     struct bidirectional_iterator_tag : forward_iterator_tag {};
     struct random_access_iterator_tag : bidirectional_iterator_tag {};
 
-    template<typename Iterator>
+
+    template <class Iterator>
     class iterator_traits
     {
-        public:
+    public:
         typedef typename Iterator::difference_type difference_type;
         typedef typename Iterator::value_type value_type;
         typedef typename Iterator::pointer pointer;
@@ -47,53 +69,28 @@ namespace ft
         typedef typename Iterator::iterator_category iterator_category;
     };
 
-    template<typename T>
-    class iterator_traits<T *>
+    template <class T>
+    class iterator_traits<T*>
     {
-        public:
-        typedef T value_type;
+    public:
         typedef ptrdiff_t difference_type;
+        typedef T value_type;
         typedef T* pointer;
         typedef T& reference;
         typedef random_access_iterator_tag iterator_category;
     };
 
-    template<typename T>
-    class iterator_traits<const T *>
+    template <class T> 
+    class iterator_traits<const T*>
     {
-        typedef T value_type;
+    public:
         typedef ptrdiff_t difference_type;
+        typedef T value_type;
         typedef T* pointer;
         typedef T& reference;
         typedef random_access_iterator_tag iterator_category;
     };
 
-
-    //ft::pair
-    
-    template<typename t_1, typename t_2>
-    class pair
-    {
-        public:
-        typedef t_1 type_one;
-        typedef t_2 type_two;
-        
-        pair() : first(), second(){}
-        pair(const type_one &x, const type_two &y) : first(x), second(y){};
-        template<typename x, typename y>
-        pair(const pair<x, y> &ot) : first(ot.first), second(ot.second){}
-        template<typename x, typename y>
-        pair operator=(pair<const x, y> &cp) 
-        {
-            this->first = cp.first;
-            this->second = cp.second;
-        }
-        ~pair(void){}
-        type_one first;
-        type_two second;
-        private:
-        
-    };
 
     template<typename t_1, typename t_2>
     bool operator==(const pair<t_1, t_2> &lhs, const pair<t_1, t_2> &rhs)

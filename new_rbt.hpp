@@ -11,14 +11,14 @@
 #define DOUBLE_BLACK 2
 namespace ft
 {
-    template<typename Key, typename Value, typename Compare = std::less<Key>, typename allocator = std::allocator<ft::pair<Key, Value> >  >
+    template<typename T, typename Compare, typename allocator = std::allocator<T>  >
     class new_RBT
     {
         public:
         typedef allocator allocator_type;
-        typedef ft::pair<Key, Value> value_type;
+        typedef T value_type;
         typedef Compare key_compare;
-        typedef new_RBT<Key, Value, key_compare, allocator_type> tree_type; 
+        typedef new_RBT<T, key_compare, allocator_type> tree_type; 
         
         template<typename Data>
         struct Node
@@ -228,7 +228,7 @@ namespace ft
 
             return root;
         }
-
+        template<typename Key>
         node *find_node(Key val) const
         {
             node * current = root_;
@@ -321,7 +321,11 @@ namespace ft
         {
             return alloc_.max_size();
         }
-        node * insert(value_type &val)
+        size_t size() const
+        {
+            return size_;
+        }
+        node * insert(const value_type &val)
         {
             node *tmp = find_node(val);
             if(tmp != end_)
@@ -618,6 +622,7 @@ namespace ft
                 rend_->parent = next(tmp);
             delete_val(ptr);
         }
+        template<typename Key>
         size_t delete_val(Key &k)
         {
             node *ptr = find_node(k);
