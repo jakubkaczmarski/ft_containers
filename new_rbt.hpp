@@ -52,8 +52,8 @@ namespace ft
         };
 
         typedef Node<value_type> node;
-        typedef typename ft::rbt_iterator<Node<value_type>, tree_type> iterator;
-	    typedef typename ft::const_rbt_iterator<Node<value_type>, tree_type> const_iterator;
+        typedef typename ft::rbt_iterator<node , tree_type> iterator;
+	    typedef typename ft::const_rbt_iterator<node , tree_type> const_iterator;
         new_RBT(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
         {
             compare = comp;
@@ -191,7 +191,7 @@ namespace ft
             rend_->right = NULL;
         }
 
-        node *maxValue_node(node *ptr)
+        node *maxValue_node(node *ptr) const
         {
             node * tmp;
             tmp = ptr;
@@ -208,6 +208,18 @@ namespace ft
         }
 
         node *minValue_node(node *ptr)
+        {
+            node *tmp = ptr;
+            if(!root_)
+                return end_;
+            while(tmp->left != NULL)
+            {
+                tmp = tmp->left;
+            }
+            return tmp;
+        }
+
+        node *minValue_node(node *ptr) const
         {
             node *tmp = ptr;
             if(!root_)
@@ -852,7 +864,7 @@ namespace ft
         node *nil_;
         int size_;
         std::allocator<Node<value_type> > node_alloc_;
-        std::allocator<value_type> alloc_;
+        allocator_type alloc_;
         Compare						compare;
     };
     

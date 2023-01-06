@@ -15,11 +15,9 @@ std::string * new_str (std::string &ref, std::allocator<std::string> alloc )
 
 int main()
 {
-    ft::Map<int, int>::iterator it;
+    ft::map<int, int, std::plus<int> > mp3;
+    ft::map<int, int>::iterator it = mp3.begin();
 
-    it->first = 1;
-
-    return (0);
        // ft::Map<int, std::string> map
-    std::map<int, std::string>::iterator s;
+    // std::map<int, std::string>::iterator s;
 }
