@@ -63,6 +63,53 @@ namespace ft
             root_ = end_;
 
         }
+        new_RBT &operator= (const new_RBT &rhs)
+        {
+            this->clear();
+            compare = rhs.getCompare();
+            this->alloc_ = rhs.alloc_;
+            this->size_ = rhs.size();
+            if(rhs.getRoot() != rhs.getEnd())
+            {
+                this->root_ = this->node_alloc_.allocate(1);
+                this->root_->parent = NULL;
+                this->root_->left = NULL;
+                this->root_->right = NULL;
+                this->root_->color = BLACK;
+                this->root_->data = alloc_.allocate(1);
+                this->alloc_.construct(root_->data, *(rhs.getRoot()->data));
+                this->copy_stuff(this->root_, rhs.getRoot());
+            }
+            end_->parent = this->maxValue_node(this->root_);
+            rend_->parent = this->minValue_node(this->root_);
+            return *this;
+        }
+
+        void copy_stuff(node *ptr, node *rhs)
+        {
+            if(rhs->left)
+            {
+                ptr->left = node_alloc_.allocate(1);
+                ptr->left->parent = ptr;
+                ptr->left->left = NULL;
+                ptr->left->right = NULL;
+                ptr->left->color = rhs->left->color;
+                ptr->left->data = this->alloc_.allocate(1);
+                this->alloc_.construct(ptr->left->data, *(rhs->left->data));
+                copy_stuff(ptr->left, rhs->left);
+
+            }else if(rhs->right)
+            {
+                ptr->right = node_alloc_.allocate(1);
+                ptr->right->parent = ptr;
+                ptr->right->left = NULL;
+                ptr->right->right = NULL;
+                ptr->right->color = rhs->right->color;
+                ptr->right->data = this->alloc_.allocate(1);
+                this->alloc_.construct(ptr->right->data, *(rhs->right->data));
+                copy_stuff(ptr->right, rhs->right);
+            }
+        }        
         void swap(int &color1, int &color2)
         {
             int tmp = color1;
@@ -98,7 +145,6 @@ namespace ft
             right_child->left = ptr;
             ptr->parent = right_child;
         }
-    
         void right_rotate(node *ptr)
         {
             node *left_child = ptr->left;
@@ -196,7 +242,10 @@ namespace ft
         {
             return root_;
         }
-
+        Compare getCompare() const
+        {
+            return compare;
+        }
         node *getAlloc() const
         {
             return alloc_;
