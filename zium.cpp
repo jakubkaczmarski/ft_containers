@@ -17,6 +17,7 @@ int main()
 {
     ft::map<int, int, std::plus<int> > mp3;
     ft::map<int, int>::iterator it = mp3.begin();
+    if(!it.base()){}
 
        // ft::Map<int, std::string> map
     // std::map<int, std::string>::iterator s;

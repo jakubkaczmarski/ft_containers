@@ -8,7 +8,38 @@
 #include "rbt_iter.hpp"
 #define BLACK 0
 #define RED 1
-#define DOUBLE_BLACK 2
+
+template<typename Data>
+struct Node
+{
+    Node()
+    {
+        // this->data = alloc.allocate(1);
+        // alloc.construct(this->data, val);
+    parent = NULL;
+        left = NULL;
+        right = NULL;
+    }
+    void construct()
+    {
+        parent = NULL;
+        left = NULL;
+        right = NULL;
+        data = NULL;
+    }
+    ~Node()
+    {
+        // alloc.destroy(this->data);
+        // alloc.deallocate(this->data, 1);
+    }
+    Node<Data> *parent;
+    Node<Data> *left;
+    Node<Data> *right;
+    int    color;
+    Data    *data;
+};
+
+
 namespace ft
 {
     template<typename T, typename Compare, typename allocator = std::allocator<T>  >
@@ -19,41 +50,11 @@ namespace ft
         typedef T value_type;
         typedef Compare key_compare;
         typedef new_RBT<T, key_compare, allocator_type> tree_type; 
-        
-        template<typename Data>
-        struct Node
-        {
-            Node()
-            {
-                // this->data = alloc.allocate(1);
-                // alloc.construct(this->data, val);
-               parent = NULL;
-                left = NULL;
-                right = NULL;
-            }
-            void construct()
-            {
-                parent = NULL;
-                left = NULL;
-                right = NULL;
-                data = NULL;
-            }
-            ~Node()
-            {
-                // alloc.destroy(this->data);
-                // alloc.deallocate(this->data, 1);
-            }
-            Node<Data> *parent;
-            Node<Data> *left;
-            Node<Data> *right;
-            std::allocator<Data> alloc;
-            int    color;
-            Data    *data;
-        };
-
         typedef Node<value_type> node;
         typedef typename ft::rbt_iterator<node , tree_type> iterator;
 	    typedef typename ft::const_rbt_iterator<node , tree_type> const_iterator;
+
+     
         new_RBT(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
         {
             compare = comp;
@@ -175,16 +176,16 @@ namespace ft
         void create_ends()
         {
             end_ = node_alloc_.allocate(1);
-            end_->data = end_->alloc.allocate(1);
-            end_->alloc.construct(end_->data);
+            end_->data = alloc_.allocate(1);
+            alloc_.construct(end_->data);
             end_->color = BLACK;
             end_->parent = NULL;
             end_->left = NULL;
             end_->right = NULL;
             
             rend_ = node_alloc_.allocate(1);
-            rend_->data = end_->alloc.allocate(1);
-            rend_->alloc.construct(end_->data);
+            rend_->data = alloc_.allocate(1);
+            alloc_.construct(end_->data);
             rend_->color = BLACK;
             rend_->parent = NULL;
             rend_->left = NULL;
