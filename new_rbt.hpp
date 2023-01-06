@@ -69,7 +69,7 @@ namespace ft
             this->clear();
             compare = rhs.getCompare();
             this->alloc_ = rhs.alloc_;
-            this->size_ = rhs.size();
+            this->size_ = rhs.size_;
             if(rhs.getRoot() != rhs.getEnd())
             {
                 this->root_ = this->node_alloc_.allocate(1);
@@ -461,62 +461,50 @@ namespace ft
             // return internal_delete(root->right, *tmp->data);
         // }
         bool isBlack(node *ptr)
-        {
-            if(ptr && ptr->color == BLACK)
-                return true;
-            
-            return false;
+        {            
+            return (!ptr || ptr->color == BLACK);
         }
         void fix_delete(node *ptr)
         {
-            if(ptr == root_)
+            if (ptr == this->root_)
             {
-                ptr->color = BLACK;
+                ptr->color = BLACK;	
                 return ;
             }
-
-            node *sibling = ptr->parent->left;
-
-            if(sibling == ptr)
+            node * sibling = ptr->parent->left;
+            if (sibling == ptr)
                 sibling = ptr->parent->right;
-            if(sibling->color == RED)
+            if (sibling->color == RED)
             {
                 sibling->color = BLACK;
                 ptr->parent->color = RED;
-                if(ptr == ptr->parent->left)
-                {
+                if (ptr == ptr->parent->left)
                     left_rotate(ptr->parent);
-                }else
-                {
+                else
                     right_rotate(ptr->parent);
-                }
                 sibling = ptr->parent->left;
-                if(sibling == ptr)
+                if (sibling == ptr)
                     sibling = ptr->parent->right;
             }
-            if(isBlack(sibling->left) && isBlack(sibling->right))
+            if (isBlack(sibling->left) && isBlack(sibling->right))
             {
                 sibling->color = RED;
-                if(ptr->parent->color == RED)
+                if (ptr->parent->color == RED)
                     ptr->parent->color = BLACK;
                 else
                     fix_delete(ptr->parent);
-            }else{
-                bool isLeft;
-                if(ptr == ptr->parent->left)
-                {
-                    isLeft = true;
-                }else{
-                    isLeft = false;
-                }
-
-                if(isLeft && isBlack(sibling->right))
+            }
+            else
+            {
+                bool isLeft = (ptr == ptr->parent->left);
+                if (isLeft && isBlack(sibling->right))
                 {
                     sibling->left->color = BLACK;
                     sibling->color = RED;
                     right_rotate(sibling);
                     sibling = ptr->parent->right;
-                }else if(!isLeft && isBlack(sibling->left))
+                }
+                else if (!isLeft && isBlack(sibling->left))
                 {
                     sibling->right->color = BLACK;
                     sibling->color = RED;
@@ -525,11 +513,13 @@ namespace ft
                 }
                 sibling->color = ptr->parent->color;
                 ptr->parent->color = BLACK;
-                if(isLeft)
+                if (isLeft)
                 {
                     sibling->right->color = BLACK;
                     left_rotate(ptr->parent);
-                }else{
+                }
+                else
+                {
                     sibling->left->color = BLACK;
                     right_rotate(ptr->parent);
                 }
@@ -645,7 +635,6 @@ namespace ft
             node *tmp;
             if(ptr->left || ptr->right)
             {
-                // std::cout << "Zium " << std::endl;
                 return delete_only_child(ptr);
             }
             else if(ptr->color)
@@ -653,6 +642,7 @@ namespace ft
                 delete_node(ptr);
                 return NULL;
             }else{
+                
                 tmp = node_alloc_.allocate(1);
                 tmp->color = BLACK;
                 tmp->left = NULL;
@@ -688,6 +678,7 @@ namespace ft
         size_t delete_val(Key &k)
         {
             node *ptr = find_node(k);
+
             if(ptr == end_ || ptr == rend_)
                 return 0;
             node *tmp;
@@ -721,42 +712,42 @@ namespace ft
 
         void delete_val(node *ptr)
         {
-            if(!root_->left && !root_->right && root_ != end_)
+            if (!this->root_->left && !this->root_->right && this->root_ != this->end_)
             {
-                delete_node(root_);
-                root_ = end_;
-                size_--;
+                delete_node(this->root_);
+                this->root_ = this->end_;
+                this->size_--;
                 return ;
             }
+            this->size_--;
+            node * movedupnode;
+            bool deletednodecolour;
+            if (!ptr->left || !ptr->right)
+            {
+                deletednodecolour = ptr->color;
+                movedupnode = delete_node_with_zero_children(ptr);
+            }
+            else
+            {
+                node * successor = this->next(ptr);
+                this->alloc_.destroy(ptr->data);
+                this->alloc_.construct(ptr->data, *(successor->data));
+                deletednodecolour = successor->color;
+                movedupnode = delete_node_with_zero_children(successor);
+            }
+            if (deletednodecolour == BLACK)
+            {
+                fix_delete(movedupnode);
+            }
+            if (movedupnode && !movedupnode->data)
+            {
+                if (movedupnode == movedupnode->parent->left)
+                    movedupnode->parent->left = NULL;
+                else if (movedupnode == movedupnode->parent->right)
+                    movedupnode->parent->right = NULL;
+                this->node_alloc_.deallocate(movedupnode, 1);
+            }
 
-            size_--;
-
-            node *tmp_up_node;
-            bool delete_node_color;
-            if(!ptr->left || !ptr->right)
-            {
-                
-                delete_node_color = ptr->color;
-                tmp_up_node = delete_node_with_zero_children(ptr);
-            }else{
-                node *next_node = next(ptr);
-                alloc_.destroy(ptr->data);
-                alloc_.construct(ptr->data, *next_node->data);
-                delete_node_color = next_node->color;
-                tmp_up_node = delete_node_with_zero_children(next_node);
-            }
-            if(delete_node_color == BLACK)
-            {
-                fix_delete(tmp_up_node);
-            }
-            if(tmp_up_node && !tmp_up_node->data)
-            {
-                if(tmp_up_node == tmp_up_node->parent->left)
-                    tmp_up_node->parent->left = NULL;
-                else if(tmp_up_node == tmp_up_node->parent->right)
-                    tmp_up_node->parent->right = NULL;
-                node_alloc_.deallocate(tmp_up_node, 1);
-            }
         }
 
         void print_tree()
@@ -838,8 +829,8 @@ namespace ft
             node * tmp_r = root_;
             node * tmp_e = end_;
             node * tmp_rend = rend_;
-            node * tmp_alloc = alloc_;
-            node * tmp_node_alloc = node_alloc_;
+            allocator_type tmp_alloc = alloc_;
+            std::allocator<Node<value_type> > tmp_node_alloc = node_alloc_;
             key_compare tcomp = compare;
             size_t tsize = size_;
 
@@ -856,14 +847,14 @@ namespace ft
             other.alloc_ = tmp_alloc;
             other.node_alloc_ = tmp_node_alloc;
             other.compare = tcomp;
-            other.size = tsize;
+            other.size_ = tsize;
         }
         private:
         node *root_;
         node *end_;
         node *rend_;
         node *nil_;
-        int size_;
+        size_t size_;
         std::allocator<Node<value_type> > node_alloc_;
         allocator_type alloc_;
         Compare						compare;

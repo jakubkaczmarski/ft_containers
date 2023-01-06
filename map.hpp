@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/06 18:13:32 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/06 18:45:12 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,9 +352,12 @@ namespace ft
         {
             return !(lhs < rhs);
         }
+};
+
+namespace std{
     template<class Key, class T, class Compare, class Alloc>
     void swap(ft::map<Key, T, Compare, Alloc> &x, ft::map<Key, T, Compare, Alloc> &y)
     {
         x.swap(y);
-    }        
-};
+    }            
+}
