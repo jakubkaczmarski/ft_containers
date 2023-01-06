@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/06 15:29:38 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/06 18:13:32 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ namespace ft
 
         iterator insert(iterator position, const value_type &val)
         {
-            if(position){}
+            (void)position;
             return (insert(val).first);
         }
 
@@ -329,10 +329,10 @@ namespace ft
             return !(lhs == rhs);
         }
 
-        template<typename Key, typename T, typename Compare, typename Alloc>
-        bool operator< (const map<Key, T, Compare, Alloc> &lhs, const map<Key,T,Compare,Alloc> &rhs)
+        template <class Key, class T, class Compare, class Alloc>
+        bool operator< ( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
         {
-            return ft::lexicographical_compare<typename ft::map<Key, T>::const_iterator, typename ft::map<Key, T>::const_iterator>(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+            return (ft::lexicographical_compare<typename ft::map<Key, T>::const_iterator, typename ft::map<Key, T>::const_iterator>(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
         }
 
         template<typename Key, typename T, typename Compare, typename Alloc>
