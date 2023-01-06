@@ -28,7 +28,7 @@ namespace ft{
         {
         }
 
-        rbt_iterator(const rbt_iterator &rhs)
+        rbt_iterator(const rbt_iterator<T, Tree> &rhs)
         : iter_(rhs.iter_), end_(rhs.end_), rend_(rhs.rend_)
         {
         }
@@ -178,7 +178,7 @@ namespace ft{
         {
         }
 
-        const_rbt_iterator(const const_rbt_iterator &rhs)
+        const_rbt_iterator(const const_rbt_iterator<T, Tree> &rhs)
         : iter_(rhs.iter_), end_(rhs.end_), rend_(rhs.rend_)
         {
         }

@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/05 18:18:58 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/06 14:22:38 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ namespace ft
                 return (*this);
             }
     };
-
     template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
     struct iterator
     {
@@ -50,18 +49,16 @@ namespace ft
         typedef Category	iterator_category;
     };
 
-    
     struct output_iterator_tag {};
     struct input_iterator_tag {};
     struct forward_iterator_tag : input_iterator_tag {};
     struct bidirectional_iterator_tag : forward_iterator_tag {};
     struct random_access_iterator_tag : bidirectional_iterator_tag {};
 
-
     template <class Iterator>
     class iterator_traits
     {
-    public:
+        public:
         typedef typename Iterator::difference_type difference_type;
         typedef typename Iterator::value_type value_type;
         typedef typename Iterator::pointer pointer;
@@ -146,17 +143,18 @@ namespace ft
     };
 
     //Is integral
-    
-    template<typename T, T x>
-    struct integral_constant
+    template<typename T, T tt>
+    class integral_constant
     {
-        static const T value = x;
-        typedef T value_type;
-        typedef integral_constant<T, x> type;
+        public:
+	    static const T value = tt;
+	    typedef T value_type;
+	    typedef integral_constant<T,tt> type;
+	    operator value_type() {return (this->value);}
     };
 
     typedef integral_constant<bool, false> false_type;
-    typedef integral_constant<bool, false> true_type;
+    typedef integral_constant<bool, true> true_type;
 
     template <typename T> struct is_integral : false_type{};
     
@@ -371,21 +369,23 @@ typename ft::iterator_traits<InputIterator>::difference_type distance(InputItera
 }
 
 //Lexinographical compare
-template<typename InputIterator, typename InputIterator2, typename Compare>
-bool lexicographical_compare(InputIterator x, InputIterator x1, InputIterator2 y, InputIterator2 y1, Compare comp)
+
+template <class InputIterator1, class InputIterator2>
+bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2)
 {
-    while(x != y)
-    {
-        if(x1 == y1 || comp(*x1, *x))
-        {
+	while (first1 != last1)
+	{
+        
+		if (first2 == last2 || *first2 <* first1)
             return false;
-        }else if(comp(*x, *x1))
+		else if (*first1 <* first2)
             return true;
-        x++;
-        x1++;
-    }
-    return x1 != y1;
+		first1++;
+        first2++;
+	}
+	return (first2!=last2);
 }
+
 
 template <class InputIterator1, class InputIterator2>
 bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )

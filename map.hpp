@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/05 19:28:36 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/06 14:05:10 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,12 +189,12 @@ namespace ft
 
         void erase (iterator pos)
         {
-            tree_.erase(*pos);
+            tree_.delete_val(*pos);
         }
 
         size_t erase(const key_type &k)
         {
-            return tree_.erase(k);
+            return tree_.delete_val(k);
         }
 
         void erase(iterator first, iterator last)
