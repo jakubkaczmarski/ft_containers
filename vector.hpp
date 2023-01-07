@@ -20,8 +20,8 @@ namespace ft
         typedef typename allocator_type::const_pointer const_pointer;
         typedef typename ft::random_access_iterator<T> iterator;
         typedef typename ft::const_random_access_iterator<const T> const_iterator;
-        typedef typename ft::reverse_iterator<T> reverse_iterator;
-        typedef typename ft::reverse_iterator<const T> const_reverse_iterator;
+        typedef typename ft::reverse_iterator<iterator> reverse_iterator;
+        typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
         typedef typename iterator_traits<iterator>::difference_type difference_type;
         typedef typename allocator_type::size_type size_type;
 
@@ -170,41 +170,45 @@ namespace ft
         }
 
         reverse_iterator rbegin()
-        {
-            return reverse_iterator(this->end());
-        }
+		{
+            reverse_iterator tmp(this->end_);
+            return tmp;
+		}
 
-        const_reverse_iterator rbegin() const
-        {
-            return reverse_iterator(this->end());
-        }
+		const_reverse_iterator rbegin() const
+		{
+			const_reverse_iterator tmp(this->end_);
+            return tmp;
+		}
 
-        reverse_iterator rend()
-        {
-            return reverse_iterator(this->begin());
-        }
-        
-        const_reverse_iterator rend() const
-        {
-            return reverse_iterator(this->begin());
-        }
+		reverse_iterator rend()
+		{
+			reverse_iterator tmp(this->start_);
+            return tmp;
+		}
+
+		const_reverse_iterator rend() const
+		{
+            const_reverse_iterator tmp(this->start_);
+            return tmp;
+		}
 
         void swap(Vector &val)
         {
-            pointer val_beg = val.start_;
-            pointer val_end = val.end_;
-            pointer val_capacity = val.capacity_;
-            allocator_type val_alloc = val.alloc_;
+            pointer x_start = val.start_;
+		    pointer x_end = val.end_;
+			pointer x_capacity = val.capacity_;
+			allocator_type x_alloc = val.alloc_;
 
-            val.start_ = this->start_;
-            val.end_ = this->end_;
-            val.capacity_ = this->capacity_;
-            val.alloc_ = this->alloc_;
+			val.start_ = this->start_;
+			val.end_ = this->end_;
+			val.capacity_ = this->capacity_;
+			val.alloc_ = this->alloc_;
 
-            start_ = val_beg;
-            end_  = val_end;
-            capacity_ = val_capacity;
-            alloc_ = val_alloc;
+			this->start_ = x_start;
+			this->end_ = x_end;
+			this->capacity_ = x_capacity;
+			this->alloc_ = x_alloc;
         }
 
         size_type size() const
@@ -386,7 +390,7 @@ namespace ft
             {
                 for(int i = 0; i < end_ - pos - 1; i++)
                 {
-                    alloc_.construct(&(*pos) + i, &(*pos) + i + 1);
+                    alloc_.construct(&(*pos) + i, *(pos + i + 1));
                     alloc_.destroy(&(*pos) + i + 1);
                 }
             }
@@ -510,9 +514,10 @@ namespace ft
         }
 
         template<typename InputIterator>
-        void insert(iterator pos, InputIterator first, InputIterator second)
+        void insert(iterator pos, InputIterator first, InputIterator second,
+        typename enable_if<!is_integral<InputIterator>::value>::type* = nullptr)
         {
-            size_type n = ft::distance<InputIterator>(first, second);
+            size_type n = ft::distance(first, second);
             if(size_type(capacity_ - end_) >= n)
             {
                 for(size_type i = 0; i < (this->size() - (&(*pos) - this->start_)); i++)
@@ -619,11 +624,15 @@ bool operator>=(const Vector<T, Alloc> &lhs, const Vector<T, Alloc> &rhs)
     return (!(lhs < rhs));
 }
 
-template<typename T, class Alloc>
-void swap(Vector<T, Alloc> &one, Vector<T, Alloc> &two)
-{
-    one.swap(two);
 }
 
+namespace std
+{
+    template<class T, class Alloc>
+    void swap(ft::Vector<T, Alloc> &x, ft::Vector<T, Alloc> &y)
+    {
+        x.swap(y);
+    }
 };
+
 #endif

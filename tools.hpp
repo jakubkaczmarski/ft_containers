@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/07 18:52:11 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/07 21:08:25 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ class reverse_iterator
             return (*this);
         }
 
-        reference operator*(void) const
+        reference operator*() const
         {
             iterator_type tmp(this->iter_);
             tmp--;
@@ -215,7 +215,7 @@ class reverse_iterator
             return (reverse_iterator(this->iter_ - n));
         }
         
-        reverse_iterator &operator++(void)
+        reverse_iterator &operator++()
         {
             this->iter_--;
             return (*this);
@@ -238,7 +238,7 @@ class reverse_iterator
             return (reverse_iterator(this->iter_ + n));
         }
         
-        reverse_iterator &operator--(void)
+        reverse_iterator &operator--()
         {
             this->iter_++;
             return (*this);
@@ -255,7 +255,7 @@ class reverse_iterator
 		    this->iter_ += n;
 		    return (*this);
 	    }
-        pointer operator->(void) const
+        pointer operator->() const
         {
             return (&(operator*()));
         }

@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:26:17 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/04 21:17:29 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/07 21:10:39 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ namespace ft
     class random_access_iterator : public ft::iterator<random_access_iterator_tag, T>
     {
         public:
+        // typedef T::iterator iterator_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type value_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
@@ -180,6 +181,7 @@ namespace ft
     class const_random_access_iterator : public ft::iterator<random_access_iterator_tag, T>
     {
         public:
+        // typedef T::iterator iterator_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type value_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
