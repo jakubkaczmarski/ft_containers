@@ -138,21 +138,22 @@ namespace ft{
 
         bool operator==(rbt_iterator<T, Tree> rhs)
         {
-            return (this->base() == rhs.base());
+            return ((this->base() == rhs.base()));
         }
+        
         bool operator==(const_rbt_iterator<T, Tree> rhs) const
         {
-            return (this->base() == rhs.base());
+            return ((this->base() == rhs.base()));
         }
-
+        
         bool operator!=(rbt_iterator<T, Tree> rhs)
         {
-            return (this->base() != rhs.base());
+            return ((this->base() != rhs.base()));
         }
 
         bool operator!=(const_rbt_iterator<T, Tree> rhs) const
         {
-            return (this->base() != rhs.base());
+            return ((this->base() != rhs.base()));
         }
 
         private:
@@ -304,24 +305,26 @@ namespace ft{
             return tmp;
         }
 
-        bool operator==(rbt_iterator<T, Tree> rhs)
+       	bool operator==(const_rbt_iterator<T, Tree> rhs)
         {
-            return (this->base() == rhs.base());
+            return ((this->base() == rhs.base()));
         }
+        
         bool operator==(const_rbt_iterator<T, Tree> rhs) const
         {
-            return (this->base() == rhs.base());
+            return ((this->base() == rhs.base()));
         }
-
+        
         bool operator!=(rbt_iterator<T, Tree> rhs)
         {
-            return (this->base() != rhs.base());
+            return ((this->base() != rhs.base()));
         }
 
         bool operator!=(const_rbt_iterator<T, Tree> rhs) const
         {
-            return (this->base() != rhs.base());
+            return ((this->base() != rhs.base()));
         }
+	
 
         private:
         T * iter_;

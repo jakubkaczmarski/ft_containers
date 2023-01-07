@@ -86,7 +86,8 @@ namespace ft
                 this->alloc_.construct(ptr->left->data, *(rhs->left->data));
                 copy_stuff(ptr->left, rhs->left);
 
-            }else if(rhs->right)
+            }
+            if(rhs->right)
             {
                 ptr->right = node_alloc_.allocate(1);
                 ptr->right->parent = ptr;
