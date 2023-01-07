@@ -14,28 +14,15 @@ struct Node
 {
     Node()
     {
-        // this->data = alloc.allocate(1);
-        // alloc.construct(this->data, val);
-    parent = NULL;
-        left = NULL;
-        right = NULL;
     }
-    void construct()
-    {
-        parent = NULL;
-        left = NULL;
-        right = NULL;
-        data = NULL;
-    }
+
     ~Node()
     {
-        // alloc.destroy(this->data);
-        // alloc.deallocate(this->data, 1);
     }
     Node<Data> *parent;
     Node<Data> *left;
     Node<Data> *right;
-    int    color;
+    bool    color;
     Data    *data;
 };
 
@@ -126,9 +113,9 @@ namespace ft
             node *right_child = ptr->right;
             ptr->right = right_child->left;
 
-            if(ptr->right != NULL)
+            if(right_child->left)
             {
-                ptr->right->parent = ptr;
+                right_child->left->parent = ptr;
             }
 
             right_child->parent = ptr->parent;
@@ -138,7 +125,7 @@ namespace ft
                 root_ = right_child;
             }else if(ptr == ptr->parent->left)
             {
-                ptr->parent->right = right_child;
+                ptr->parent->left = right_child;
             }else{
                 ptr->parent->right = right_child;
             }
@@ -151,9 +138,9 @@ namespace ft
             node *left_child = ptr->left;
             ptr->left = left_child->right;
 
-            if(ptr->left != NULL)
+            if(left_child->right != NULL)
             {
-                ptr->left->parent = ptr;
+                left_child->right->parent = ptr;
             }
 
             left_child->parent = ptr->parent;
@@ -161,12 +148,12 @@ namespace ft
             if(ptr->parent == NULL)
             {
                 root_ = left_child;
-            }else if(ptr == ptr->parent->left)
-            {
-                ptr->parent->left = left_child;
-            }else
+            }else if(ptr == ptr->parent->right)
             {
                 ptr->parent->right = left_child;
+            }else
+            {
+                ptr->parent->left = left_child;
             }
 
             left_child->right = ptr;
@@ -182,10 +169,9 @@ namespace ft
             end_->parent = NULL;
             end_->left = NULL;
             end_->right = NULL;
-            
             rend_ = node_alloc_.allocate(1);
             rend_->data = alloc_.allocate(1);
-            alloc_.construct(end_->data);
+            alloc_.construct(rend_->data);
             rend_->color = BLACK;
             rend_->parent = NULL;
             rend_->left = NULL;
@@ -201,6 +187,7 @@ namespace ft
             {
                 return end_;
             }
+            
             while(tmp->right)
             {
                 tmp = tmp->right;
@@ -293,77 +280,84 @@ namespace ft
         template<typename Key>
         node *find_node(Key val) const
         {
-            node * current = root_;
-            if(current == end_)
-                return end_;
-            while(current)
+           node * current = this->root_;
+            if (current == this->end_)
+                return (this->end_);
+            while (current)
             {
-                if(val == current->data->first)
+                if (val == current->data->first)
+                    return (current);
+                else if (this->compare(val , current->data->first))
                 {
-                    return current;
-                }else if(compare(val, current->data->first))
-                {
-                    if(current->left)
+                    if (current->left)
                         current = current->left;
                     else
-                        return end_;
-                }else{
-                    if(current->right)
+                        return (this->end_);
+                }
+                else
+                {
+                    if (current->right)
                         current = current->right;
                     else
-                        return end_;
+                        return (this->end_);
                 }
             }
-            return end_;
+            return (this->end_);
         }
         
         node *find_node(value_type val) const
         {
-            node * current = root_;
-            if(current == end_)
-                return end_;
-            while(current)
+            node * current = this->root_;
+            if (current == this->end_)
+                return (this->end_);
+            while (current)
             {
-                if(val.first == current->data->first)
+                if (val.first == current->data->first)
+                    return (current);
+                else if (this->compare(val.first, current->data->first))
                 {
-                    return current;
-                }else if(compare(val.first, current->data->first))
-                {
-                    if(current->left)
+                    if (current->left)
                         current = current->left;
                     else
-                        return end_;
-                }else{
-                    if(current->right)
+                        return (this->end_);
+                }
+                else
+                {
+                    if (current->right)
                         current = current->right;
                     else
-                        return end_;
+                        return (this->end_);
                 }
             }
-            return end_;
+            return (this->end_);
         }
 
         void    insert_helper(node *ptr)
         {
-            node *current = root_;
-            while(current)
+            node * current = this->root_;
+            while (current)
             {
-                if(compare(ptr->data->first, current->data->first))
+                if (this->compare(ptr->data->first, current->data->first))
                 {
-                    if(current->left)
+                    if (current->left)
                     {
                         current = current->left;
-                    }else{
+                    }
+                    else
+                    {
                         current->left = ptr;
                         ptr->parent = current;
-                        return ; 
+                        return ;
                     }
-                }else
+                }
+                else
                 {
-                    if(current->right)
+                    if (current->right)
                     {
                         current = current->right;
-                    }else{
+                    }
+                    else
+                    {
                         current->right = ptr;
                         ptr->parent = current;
                         return ;
@@ -387,71 +381,92 @@ namespace ft
         {
             return size_;
         }
-        node * insert(const value_type &val)
+        node * insert(value_type val)
         {
-            node *tmp = find_node(val);
-            if(tmp != end_)
-                return tmp;
-            size_++;
-            node *new_node = node_alloc_.allocate(1);
-            node *ptr = new_node;
-            new_node->data = alloc_.allocate(1);
-            alloc_.construct(new_node->data, val);
-            new_node->parent = NULL;
-            new_node->left = NULL;
-            new_node->right = NULL;
-            if(root_ == end_)
+           node * temp = find_node(val);
+            if (temp != this->end_)
+                return (temp);
+            this->size_++;
+            node * newnode = this->node_alloc_.allocate(1);
+            node * org = newnode;
+            newnode->data = this->alloc_.allocate(1);
+            this->alloc_.construct(newnode->data, val);
+            newnode->parent = NULL;
+            newnode->left = NULL;
+            newnode->right = NULL;
+            if (this->root_ == this->end_)	//Case 1: Tree is empty - insert at root and make black
             {
-                new_node->color = BLACK;
-                new_node->parent = NULL;
-                root_ = new_node;
-                end_->parent = root_;
-                rend_->parent = root_;
-                return new_node;
+                newnode->color = BLACK;
+                newnode->parent = NULL;
+                this->root_ = newnode;
+                this->end_->parent = this->root_;
+                this->rend_->parent = this->root_;
+                
+                return (newnode);
             }
-            new_node->color = RED;
-
-            insert_helper(new_node);
-
-            while(new_node->parent && new_node->parent->color == RED)
+            newnode->color = RED;
+            insert_helper(newnode);
+            
+            //Case 2: Parent is black - nothing to be done
+            // std::cout << newnode->color << std::endl;
+            // if(newnode->parent && newnode->parent->color == RED) 
+            //     std::cout << "Other ones " << newnode->parent->color << std::endl;
+            // else{
+            //     std::cout << "Black ones " << newnode->parent->color << std::endl;
+            // }
+            while (newnode->parent && newnode->parent->color == RED )		//Case 3: Parent is red
             {
-                if(new_node->parent->parent->left && new_node->parent->parent->right && new_node->parent->parent->left->color == RED
-                && new_node->parent->parent->right->color == RED)
+                if (newnode->parent->parent->left && newnode->parent->parent->right && newnode->parent->parent->left->color == RED 
+			        && newnode->parent->parent->right->color == RED)
                 {
-                    if(new_node->parent->parent != root_)
-                    {
-                        change_color(new_node->parent->parent);
-                    }
-                    change_color(new_node->parent->parent->right);
-                    change_color(new_node->parent->parent->left);
-                    new_node = new_node->parent->parent;
-                }else{
-                    if(new_node->parent == new_node->parent->parent->right)
-                    {
-                        if(new_node == new_node->parent->left)
-                        {
-                            new_node = new_node->parent;
-                            right_rotate(new_node);
-                        }
-                        left_rotate(new_node->parent->parent);
-                        change_color(new_node->parent);
-                        change_color(new_node->parent->left);
-                    }else
-                    {
-                        if(new_node == new_node->parent->right)
-                        {
-                            new_node = new_node->parent;
-                            left_rotate(new_node);
-                        }
-                        right_rotate(new_node->parent->parent);
-                        change_color(new_node->parent);
-                        change_color(new_node->parent->right);
-                    }
+                    
+                    if (newnode->parent->parent != this->root_)
+                        change_color(newnode->parent->parent);
+                    
+                    change_color(newnode->parent->parent->right);
+                    change_color(newnode->parent->parent->left);
+                    newnode = newnode->parent->parent;
                 }
+                else	//Case 3.2: Parent is red and Uncle is black or NULL 
+                {
+                    
+                    if (newnode->parent == newnode->parent->parent->right)	//Parent is right child of Grandparent
+                    {
+                        if (newnode == newnode->parent->left) //Case 3.2.2: Parent is right child of Grandparent and newnode is left child of Parent - right rotate to get to Case 3.2.1
+                        {
+                            newnode = newnode->parent;
+                            right_rotate(newnode);
+                        }
+                        //Case 3.2.1: Parent is right child of Grandparent and newnode is right child of Parent - left rotation at Grandparent, change (new) Sibling to red and Parent to Black
+                        left_rotate(newnode->parent->parent);
+                        change_color(newnode->parent);
+                        change_color(newnode->parent->left);
+                    }
+                    else
+                    {
+                        if (newnode == newnode->parent->right) //Case 3.2.4: Mirrored version of 3.2.2
+                        {
+                            newnode = newnode->parent;	
+                            left_rotate(newnode);
+                        }
+                        right_rotate(newnode->parent->parent);
+                        change_color(newnode->parent);
+                        change_color(newnode->parent->right);
+                    }
+                    
+                    // std::cout << "Kurwa 3"<< std::endl; 
+                    // std::cout << newnode->data->first << std::endl;
+                }
+                // std::cout << "Chuj 2" << std::endl;
+                // std::cout << newnode->data->first << std::endl;
+           
             }
-            end_->parent = maxValue_node(root_);
-            rend_->parent = minValue_node(root_);
-            return ptr;
+    
+            this->end_->parent = this->maxValue_node(this->root_);
+         
+            this->rend_->parent = this->minValue_node(this->root_);
+            // print_tree();
+            return (org);
         }
 
         //Deleting 
@@ -752,18 +767,24 @@ namespace ft
 
         void print_tree()
         {
-            this->printTree_internal(root_);
+            this->printTree_internal("", root_, false);
 
         }
         // maximum value in the left subtree
-        void printTree_internal(Node<value_type> *ptr)
+        void printTree_internal(const std::string& prefix, Node<value_type> *ptr, bool isLeft)
         {
-            if(ptr != NULL && ptr != end_ && ptr != rend_)
+            if( ptr != NULL )
             {
-                printTree_internal(ptr->left);
-                std::cout << ptr->data->first << "\t" << ptr->data->second << std::endl;
-                std::cout << "Color : " << ptr->color << std::endl;
-                printTree_internal(ptr->right);
+                std::cout << prefix;
+
+                std::cout << (isLeft ? "├──" : "└──" );
+
+                // print the value of the node
+                std::cout << ptr->data->first << std::endl;
+
+                // enter the next tree level - left and right branch
+                printTree_internal( prefix + (isLeft ? "│   " : "    "), ptr->left, true);
+                printTree_internal( prefix + (isLeft ? "│   " : "    "), ptr->right, false);
             }
         }
 

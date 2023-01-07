@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 18:23:29 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/06 18:45:12 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/07 17:06:39 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,15 +160,12 @@ namespace ft
             return (*tmp).second;
         }
 
-        ft::pair<iterator, bool> insert (const value_type &val)
+       ft::pair<iterator,bool> insert (const value_type& val)
         {
-            bool tmp;
-            if(tree_.find_node(val) == tree_.getEnd())
-                tmp = true;
-            else
-                tmp = false;
-            iterator temp = iterator(tree_.insert(val), tree_.getEnd(), tree_.getRend());
-            return ft::make_pair<iterator, bool>(temp, tmp);
+            bool booltemp = (this->tree_.find_node(val)) == this->tree_.getEnd();
+            auto *ptr = this->tree_.insert(val);
+            iterator temp = iterator(ptr, this->tree_.getEnd(), this->tree_.getRend());
+            return (ft::make_pair<iterator, bool>(temp, booltemp));
         }
 
         iterator insert(iterator position, const value_type &val)
