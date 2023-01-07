@@ -29,16 +29,16 @@ namespace ft
         start_(nullptr), end_(nullptr), capacity_(nullptr){}
 
         explicit Vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
-        : alloc_(alloc), start_(nullptr), end_(nullptr), capacity_(nullptr)
+        : alloc_(alloc)
         {
             start_ = alloc_.allocate(n);
-            capacity_ = start_ + n;
-            end_ = start_;
-            while(n != 0)
-            {
-                alloc_.construct(end_, val);
-                end_++;
-            }
+			capacity_ =  start_ + n;
+			end_ = start_;
+			while (n--)
+			{
+				alloc_.construct(end_, val);
+				end_++;
+			}
         }
 
         template<typename InputIterator>
@@ -47,16 +47,15 @@ namespace ft
         : alloc_(alloc)
         {
             difference_type n = ft::distance(first, last);
-            start_ = alloc_.allocate(n);
-            end_ = start_;
-            capacity_ = start_ + n;
-            while(n != 0)
-            {
-                alloc_.construct(end_, *first);
-                first++;
-                end_++;
-                n--;
-            }
+			this->start_ = this->alloc_.allocate(n);
+			this->end_ = this->start_;
+			this->capacity_ = this->start_ + n;
+			while (n--)
+			{
+				this->alloc_.construct(this->end_, *first);
+				first++;
+				this->end_++;
+			}
         }
 
         Vector(const Vector &val) : alloc_(val.alloc_), start_(NULL), end_(NULL), capacity_(NULL)
@@ -288,6 +287,22 @@ namespace ft
             return start_;
         }
 
+        void resize(size_type n, value_type val = value_type())
+        {
+            if (n > max_size())
+            {
+                throw std::length_error("resize error");
+            }else if(n < size())
+            {
+                while(size() > n)
+                {
+                    end_--;
+                    alloc_.destroy(end_);
+                }
+            }else{
+                insert(end(), n - size(), val);
+            }
+        }
         void reserve(size_type n)
         {
             if(this->max_size() < n)
@@ -346,20 +361,20 @@ namespace ft
 
         iterator erase(iterator first, iterator last)
         {
-            pointer pos = first.base();
+            pointer pos = &(*first);
             //Destroy elements 
             while(first != last)
             {
-                alloc_.destroy(first);
+                alloc_.destroy(&(*first));
                 first++;
             }
             //Move elements 
-            for(int i = 0; i < end_ - last; i++)
+            for(int i = 0; i < end_ - &(*last); i++)
             {
-                alloc_.destruct(last + i);
-                alloc_.construct(pos + i, last + i);
+                alloc_.construct(pos + i, *(&(*last)) + i);
+                alloc_.destroy(&(*last) + i);
             }
-            end_ = last - pos;
+            end_ -= &(*last) - pos;
             return (iterator(pos));
         }
 
@@ -372,7 +387,7 @@ namespace ft
                 for(int i = 0; i < end_ - pos - 1; i++)
                 {
                     alloc_.construct(&(*pos) + i, &(*pos) + i + 1);
-                    alloc_.destruct(&(*pos) + i + 1);
+                    alloc_.destroy(&(*pos) + i + 1);
                 }
             }
             end_--;
@@ -444,7 +459,7 @@ namespace ft
                 end_ += n;
                 while(n != 0)
                 {
-                    alloc_(ins_pos + (n - 1), val);
+                    alloc_.construct(&(*pos) + (n - 1), val);
                     n--;
                 }
             }else{
@@ -462,24 +477,24 @@ namespace ft
                 {
                     if(tmp_s)
                     {
-                        alloc_deallocate(tmp_s, tmp_cap - tmp_s);
+                        alloc_.deallocate(tmp_s, tmp_cap - tmp_s);
                     }
                     new_cap = this->size() + n;
                     tmp_s = this->alloc_.allocate(new_cap);
                     tmp_cap = tmp_s + new_cap;
                 }
                 tmp_e = tmp_s + this->size() + n;
-                for(size_type i = 0; i < ins_pos - start_; i++)
+                for(size_type i = 0; i < (&(*pos)) - start_; i++)
                 {
                     alloc_.construct(tmp_s + i, *(start_ + i));
                 }
                
                 for(size_type i = 0; i < n; i++)
                 {
-                    alloc_.construct(tmp_s + &(*pos) + i, val);
+                    alloc_.construct(tmp_s + ins_pos + i, val);
                 }
 
-                for(size_type i = 0; i < this->size() - &(*pos); i++)
+                for(size_type i = 0; i < this->size() - ins_pos; i++)
                 {
                     alloc_.construct(tmp_e - i - 1, *(end_ - i - 1));
                 }
@@ -497,7 +512,7 @@ namespace ft
         template<typename InputIterator>
         void insert(iterator pos, InputIterator first, InputIterator second)
         {
-            size_type n = ft::distance(first, second);
+            size_type n = ft::distance<InputIterator>(first, second);
             if(size_type(capacity_ - end_) >= n)
             {
                 for(size_type i = 0; i < (this->size() - (&(*pos) - this->start_)); i++)
