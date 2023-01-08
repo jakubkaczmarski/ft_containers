@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:26:17 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/07 21:10:39 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/08 01:16:38 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace ft
     class random_access_iterator : public ft::iterator<random_access_iterator_tag, T>
     {
         public:
-        // typedef T::iterator iterator_type;
+        typedef T               iterator_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type value_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
@@ -181,7 +181,7 @@ namespace ft
     class const_random_access_iterator : public ft::iterator<random_access_iterator_tag, T>
     {
         public:
-        // typedef T::iterator iterator_type;
+        typedef T									iterator_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type value_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer pointer;
@@ -189,14 +189,16 @@ namespace ft
         typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category iterator_category;
 
         const_random_access_iterator() : iter_(nullptr) {}
-
-        const_random_access_iterator(const const_random_access_iterator &cp) : iter_(cp.iter_){}
+        template<typename X>
+        const_random_access_iterator(const random_access_iterator<X> &cp) : iter_(cp.base()){}
+        
+        const_random_access_iterator(const const_random_access_iterator &cp) : iter_(cp.base()){}
 
         const_random_access_iterator(pointer element) : iter_(element) {}
 
         virtual ~const_random_access_iterator(void) {}
 
-        const_random_access_iterator &operator=(const const_random_access_iterator &val)
+        const_random_access_iterator &operator=(const_random_access_iterator const &val)
         {
             iter_ = val.iter_;
             return (*this);

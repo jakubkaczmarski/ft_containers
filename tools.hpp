@@ -6,7 +6,7 @@
 /*   By: jkaczmar <jkaczmar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:27:09 by jkaczmar          #+#    #+#             */
-/*   Updated: 2023/01/07 21:08:25 by jkaczmar         ###   ########.fr       */
+/*   Updated: 2023/01/08 01:07:07 by jkaczmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ class reverse_iterator
         template<typename Iter>
         reverse_iterator(const reverse_iterator<Iter> &cp) : iter_(cp.base()){}
 
-        reverse_iterator base(void) const{
+        iterator_type base(void) const{
             return iter_;
         }
 

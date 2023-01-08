@@ -25,8 +25,8 @@ namespace ft
         typedef typename iterator_traits<iterator>::difference_type difference_type;
         typedef typename allocator_type::size_type size_type;
 
-        explicit vector (const allocator_type &alloc = allocator_type()) : alloc_(alloc), 
-        start_(nullptr), end_(nullptr), capacity_(nullptr){}
+        explicit vector (const allocator_type &alloc = allocator_type()) : 
+        start_(NULL), end_(NULL), capacity_(NULL), alloc_(alloc) {}
 
         explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
         : alloc_(alloc)
@@ -58,7 +58,7 @@ namespace ft
 			}
         }
 
-        vector(const vector &val) : alloc_(val.alloc_), start_(NULL), end_(NULL), capacity_(NULL)
+        vector(const vector &val) : start_(NULL), end_(NULL), capacity_(NULL), alloc_(val.alloc_)
         {
             this->insert(this->begin(), val.begin(), val.end());
         }
@@ -488,7 +488,7 @@ namespace ft
                     tmp_cap = tmp_s + new_cap;
                 }
                 tmp_e = tmp_s + this->size() + n;
-                for(size_type i = 0; i < (&(*pos)) - start_; i++)
+                for(long i = 0; i < ((&(*pos)) - start_); i++)
                 {
                     alloc_.construct(tmp_s + i, *(start_ + i));
                 }
